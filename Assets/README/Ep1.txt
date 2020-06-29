@@ -1,0 +1,8 @@
+Create new unity project
+Git the project
+Add Bolt
+Create account on Photon bolt
+Create new App with bolt
+Add appId
+Compile / clear project
+Push git

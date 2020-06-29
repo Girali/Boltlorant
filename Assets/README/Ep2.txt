@@ -1,0 +1,13 @@
+Create new scene Start
+Add headless server
+Create bat
+"Boltlorant.exe" -s false
+"Boltlorant.exe" -s true -m snow_2
+Add AppManager
+Create menu
+Create buttons
+Create Network Controller
+Add maps to scences
+Add Larency
+7
+40

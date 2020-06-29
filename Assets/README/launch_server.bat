@@ -1,0 +1,1 @@
+"Boltlorant.exe" -isServer true -map snow_2
