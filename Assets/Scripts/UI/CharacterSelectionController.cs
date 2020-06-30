@@ -5,11 +5,11 @@ using UnityEngine;
 public class CharacterSelectionController : MonoBehaviour
 {
     [SerializeField]
-    PlayerSetupController playerSetupController;
+    PlayerSetupController _playerSetupController;
 
     public void InstantiatePlayer()
     {
-        playerSetupController.RaiseSpawnPlayerEvent();
+        _playerSetupController.RaiseSpawnPlayerEvent();
         gameObject.SetActive(false);
     }
 

@@ -4,21 +4,21 @@ using UnityEngine.SceneManagement;
 
 public class AppManager : MonoBehaviour
 {
-    static AppManager instance;
+    private static AppManager _instance;
 
     public static AppManager Instance
     {
         get
         {
-            if (instance == null)
-                instance = FindObjectOfType<AppManager>();                               
+            if (_instance == null)
+                _instance = FindObjectOfType<AppManager>();                               
 
-            return instance;
+            return _instance;
         }
     }
 
     [SerializeField]
-    private HeadlessServerManager headlessServerManager = null;
+    private HeadlessServerManager _headlessServerManager = null;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class AppManager : MonoBehaviour
 
     void Start()
     {
-        if (!headlessServerManager.IsServer)
+        if (!_headlessServerManager.IsServer)
         {
             SceneManager.LoadScene("Menu");
         }

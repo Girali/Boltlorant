@@ -9,15 +9,15 @@ namespace Bolt.Samples.HeadlessServer
     public class HeadlessServerManager : Bolt.GlobalEventListener
     {
         [SerializeField]
-        private string Map = "";
+        private string _map = "";
         [SerializeField]
-        private string GameType = "";
+        private string _gameType = "";
         [SerializeField]
-        private string RoomID = "";
+        private string _roomID = "";
         [SerializeField]
-        private bool isServer = false;
+        private bool _isServer = false;
 
-        public bool IsServer { get => isServer; set => isServer = value; }
+        public bool IsServer { get => _isServer; set => _isServer = value; }
 
         public override void BoltStartBegin()
         {
@@ -32,23 +32,23 @@ namespace Bolt.Samples.HeadlessServer
                 // Create some room custom properties
                 PhotonRoomProperties roomProperties = new PhotonRoomProperties();
 
-                roomProperties.AddRoomProperty("t", GameType); // ex: game type
-                roomProperties.AddRoomProperty("m", Map); // ex: map id
+                roomProperties.AddRoomProperty("t", _gameType); // ex: game type
+                roomProperties.AddRoomProperty("m", _map); // ex: map id
 
                 roomProperties.IsOpen = true;
                 roomProperties.IsVisible = true;
 
                 // If RoomID was not set, create a random one
-                if (RoomID.Length == 0)
+                if (_roomID.Length == 0)
                 {
-                    RoomID = Guid.NewGuid().ToString();
+                    _roomID = Guid.NewGuid().ToString();
                 }
 
                 // Create the Photon Room
                 BoltMatchmaking.CreateSession(
-                    sessionID: RoomID,
+                    sessionID: _roomID,
                     token: roomProperties,
-                    sceneToLoad: Map
+                    sceneToLoad: _map
                 );
             }
         }
@@ -57,10 +57,10 @@ namespace Bolt.Samples.HeadlessServer
         void Awake()
         {
             // Get custom arguments from command line
-            isServer = "true" == (GetArg("-s", "-isServer") ?? (isServer ? "true" : "false"));
-            Map = GetArg("-m", "-map") ?? Map;
-            GameType = GetArg("-t", "-gameType") ?? GameType; // ex: get game type from command line
-            RoomID = GetArg("-r", "-room") ?? RoomID;
+            _isServer = "true" == (GetArg("-s", "-isServer") ?? (_isServer ? "true" : "false"));
+            _map = GetArg("-m", "-map") ?? _map;
+            _gameType = GetArg("-t", "-gameType") ?? _gameType; // ex: get game type from command line
+            _roomID = GetArg("-r", "-room") ?? _roomID;
 
             if (IsServer)
             {
@@ -71,7 +71,7 @@ namespace Bolt.Samples.HeadlessServer
                 {
                     if (SceneManager.GetActiveScene().name != value)
                     {
-                        if (Map == value)
+                        if (_map == value)
                         {
                             validMap = true;
                             break;

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerSetupController : Bolt.GlobalEventListener
 {
-    [SerializeField]
-    GameObject player;
 
     public void RaiseSpawnPlayerEvent()
     {

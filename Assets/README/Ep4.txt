@@ -1,0 +1,7 @@
+Create PhysicsState
+	Transform
+Make PhysicsState the parent of PlayerState
+	Remove Transform form PlayerState
+
+Create NetworkRigidbody
+	Move setTransform form Attached() of PLayerController to NetworkRigidbody

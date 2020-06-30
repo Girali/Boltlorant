@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 {
-    private PlayerMotor playerMotor;
+    private PlayerMotor _playerMotor;
 
     bool _forward;
     bool _backward;
@@ -17,22 +17,21 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
     public override void Attached()
     {
-        state.SetTransforms(state.Transform, transform);
         if (!entity.HasControl)
-            playerMotor.DisableCamera();
+            _playerMotor.DisableCamera();
     }
 
     public void Awake()
     {
-        playerMotor = GetComponent<PlayerMotor>();
+        _playerMotor = GetComponent<PlayerMotor>();
     }
 
     void Update()
     {
-        PollKeys();
+        _PollKeys();
     }
 
-    void PollKeys()
+    private void _PollKeys()
     {
         _forward = Input.GetKey(KeyCode.W);
         _backward = Input.GetKey(KeyCode.S);
@@ -56,7 +55,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
         entity.QueueInput(input);
 
-        playerMotor.Move(_forward, _backward, _left, _right, _yaw, _pitch);
+        _playerMotor.Move(_forward, _backward, _left, _right, _yaw, _pitch);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -66,14 +65,14 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         if (resetState)
         {
             // we got a correction from the server, reset (this only runs on the client)
-            playerMotor.SetState(cmd.Result.Position, cmd.Result.Rotation);
+            _playerMotor.SetState(cmd.Result.Position, cmd.Result.Rotation);
         }
         else
         {
 
             PlayerMotor.State motorState = new PlayerMotor.State();
             if (!entity.HasControl)
-                motorState = playerMotor.Move(
+                motorState = _playerMotor.Move(
                 cmd.Input.Forward,
                 cmd.Input.Backward,
                 cmd.Input.Left,
