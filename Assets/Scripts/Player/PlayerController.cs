@@ -11,6 +11,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     bool _backward;
     bool _left;
     bool _right;
+    bool _jump;
 
     float _yaw;
     float _pitch;
@@ -37,6 +38,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         _backward = Input.GetKey(KeyCode.S);
         _left = Input.GetKey(KeyCode.A);
         _right = Input.GetKey(KeyCode.D);
+        _jump = Input.GetKey(KeyCode.Space);
 
         _yaw += Input.GetAxisRaw("Mouse X");
         _yaw %= 360f;
@@ -50,12 +52,13 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         input.Backward = _backward;
         input.Right = _right;
         input.Left = _left;
+        input.Jump = _jump;
         input.Yaw = _yaw;
         input.Pitch = _pitch;
 
         entity.QueueInput(input);
 
-        _playerMotor.Move(_forward, _backward, _left, _right, _yaw, _pitch);
+        _playerMotor.Move(_forward, _backward, _left, _right, _jump, _yaw, _pitch);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -64,7 +67,6 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
         if (resetState)
         {
-            // we got a correction from the server, reset (this only runs on the client)
             _playerMotor.SetState(cmd.Result.Position, cmd.Result.Rotation);
         }
         else
@@ -77,6 +79,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
                 cmd.Input.Backward,
                 cmd.Input.Left,
                 cmd.Input.Right,
+                cmd.Input.Jump,
                 cmd.Input.Yaw,
                 cmd.Input.Pitch);
 

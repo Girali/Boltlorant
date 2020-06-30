@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc7ebc7938094345ad4deb4b7cd465a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headlessServerManager: {fileID: 1897845219}
+  _headlessServerManager: {fileID: 1897845219}
 --- !u!4 &700298967
 Transform:
   m_ObjectHideFlags: 0
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34ed16d0ce78f4945884e2ab1fca8a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Map: snow_2
-  GameType: 
-  RoomID: 
-  isServer: 1
+  _map: snow_2
+  _gameType: 
+  _roomID: 
+  _isServer: 1

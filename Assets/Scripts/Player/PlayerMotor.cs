@@ -5,16 +5,26 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
     [SerializeField]
-    private Camera cam;
-    private Rigidbody rb;
+    private Camera _cam;
+    private Rigidbody _rb;
+    private NetworkRigidbody _networkBody;
+    private bool _jumpPressed=false;
+    /*[SerializeField]
+    private GroundDetector _groundDetector;*/
+
+    private int _collisionCount = 0;
+    private bool _isGrounded = true;
+
+    
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
+        _networkBody = GetComponent<NetworkRigidbody>();
     }
-    
 
-    public State Move(bool forward, bool backward, bool left, bool right, float yaw, float pitch)
+
+    public State Move(bool forward, bool backward, bool left, bool right, bool jump, float yaw, float pitch)
     {
         Vector3 movingDir = Vector3.zero;
         if (forward ^ backward)
@@ -27,16 +37,31 @@ public class PlayerMotor : MonoBehaviour
         }
         movingDir.Normalize();
 
-        //networkBody.MoveForce = new Vector3(movingDir.x, networkBody.MoveForce.y, movingDir.z);
-        rb.velocity = movingDir*10f;
-        cam.transform.localEulerAngles = new Vector3(pitch, 0f, 0f);
+        if (jump)
+        {
+            if (_jumpPressed == false && _isGrounded)
+            {
+                _isGrounded = false;
+                _jumpPressed = true;
+                _networkBody.moveForce += Vector3.up * 10;
+            }
+        }
+        else
+        {
+            if (_jumpPressed)
+                _jumpPressed = false;
+        }
+
+        _networkBody.moveForce = new Vector3(movingDir.x *5, _networkBody.moveForce.y, movingDir.z*5);
+        //_rb.velocity = movingDir*10f;
+        _cam.transform.localEulerAngles = new Vector3(pitch, 0f, 0f);
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
-        State stateMotor = new State();
-        stateMotor.position = transform.position;
-        stateMotor.rotation = yaw;
+        State _stateMotor = new State();
+        _stateMotor.position = transform.position;
+        _stateMotor.rotation = yaw;
         
-        return stateMotor;
+        return _stateMotor;
     }
 
     public void SetState(Vector3 position, float rotation)
@@ -58,6 +83,12 @@ public class PlayerMotor : MonoBehaviour
 
     public void DisableCamera()
     {
-        cam.gameObject.SetActive(false);
+        _cam.gameObject.SetActive(false);
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        _isGrounded = true;
+    }
+
 }

@@ -5,3 +5,17 @@ Make PhysicsState the parent of PlayerState
 
 Create NetworkRigidbody
 	Move setTransform form Attached() of PLayerController to NetworkRigidbody
+Create AddForceEvent
+	Global : none Entity : Owner
+	Force
+	Mode (int 0->7)
+Script NetworkRigidbody
+Disable GravityUse on PLayer Rigidbody
+
+Add Sphere in Player prefab (0.5,0,5,0.5)
+	set it at (0,-0.8,0)
+	remove collider
+	remove Renderer
+	rename it to GroundDetector
+Add script GroundDetector
+Add jump part to PlayerMotor
