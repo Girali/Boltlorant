@@ -211,4 +211,4 @@ MonoBehaviour:
   Map: snow_2
   GameType: 
   RoomID: 
-  isServer: 1
+  isServer: 0

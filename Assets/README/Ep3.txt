@@ -1,0 +1,47 @@
+Create plane in snow 2
+	size (10,1,10)
+
+Create capsule
+Rename it PLayer
+Add cube inside it (0,0.2,-0.5)
+	size (0.5,1,0.5)
+Add cameras inside it (0,1,-3)
+Add RigidBody
+	Rotation Constraints
+Add to prefab
+
+Create canvas
+Create Panel
+	Remove Image
+	Rename CharacterSelection
+Add button
+	Set Text to Spawn player
+Create SpawnPlayerEvent
+	Global : Onlyc Client Entity : None
+Script CharacterSelectionController
+Add OnClick InstantiatePlayer
+Script PlayerSetupController
+Create Empty
+	Rename GameController
+	Add PlayerSetupController
+	Set PlayerPrefab
+Set PLayerSetup to CharacterSelectionController
+
+Create PLayerCommand
+	Input : Forward,Backward,Right,Left,Yaw,Pitch
+	Result : Position, Rotation
+Add Bolt entity to PLayer Prefab
+Create PlayerState
+	Transform
+Bolt compile
+Add PlayerState to the player prefab bolt entity
+	
+Script PlayerController
+Script PlayerMotor
+	
+
+
+
+
+
+
