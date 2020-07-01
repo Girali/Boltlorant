@@ -4,42 +4,23 @@ using UnityEngine;
 
 public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
 {
-    private Vector3 _velocityMove;
-    private Vector3 _velocityForce;
+    private Vector3 _moveVelocity;
     private Rigidbody _rb;
-
-    private float _drag = 0.01f;
     private float _gravityForce = 1f;
 
-
-    public Vector3 moveForce
+    public Vector3 MoveVelocity
     {
         set
         {
             if (entity.IsOwner || entity.HasControl)
             {
-                _velocityMove = value;
+                _moveVelocity = value;
             }
         }
 
         get
         {
-            return _velocityMove;
-        }
-    }
-    public Vector3 force
-    {
-        set
-        {
-            if (entity.IsOwner || entity.HasControl)
-            {
-                _velocityForce = value;
-            }
-        }
-
-        get
-        {
-            return _velocityForce;
+            return _moveVelocity;
         }
     }
 
@@ -53,40 +34,19 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
         state.SetTransforms(state.Transform, transform);
     }
 
-    public void AddForce(BoltEntity launcher, Vector3 force, ForceMode mode)
-    {
-        if (entity.HasControl || entity.IsOwner && launcher.NetworkId == entity.NetworkId)
-        {
-            _velocityForce += force;
-        }
-        else if (entity.IsOwner)
-        {
-            _velocityForce += force;
-            AddForceEvent addForce = AddForceEvent.Create(entity, Bolt.EntityTargets.OnlyController);
-            addForce.Force = force;
-            addForce.Mode = (int)mode;
-            addForce.Send();
-        }
-    }
-
-    public override void OnEvent(AddForceEvent evnt)
-    {
-        _rb.AddForce(evnt.Force, (ForceMode)evnt.Mode);
-    }
-
     private void FixedUpdate()
     {
-        _velocityForce = Vector3.Lerp(_velocityForce, Vector3.zero, _drag);
-        float g = _velocityMove.y;
-        if (_velocityMove.y < 0f)
+        float g = _moveVelocity.y;
+
+        if (_moveVelocity.y < 0f)
             g += 1.5f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
-        else if (_velocityMove.y > 0f)
+        else if (_moveVelocity.y > 0f)
             g += 1f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
+        else
+            g = _rb.velocity.y;
 
+        _moveVelocity = new Vector3(_moveVelocity.x, g, _moveVelocity.z);
 
-        _velocityMove = new Vector3(_velocityMove.x, g, _velocityMove.z);
-        _rb.velocity = _velocityMove + _velocityForce;
-
+        _rb.velocity = _moveVelocity;
     }
-
 }

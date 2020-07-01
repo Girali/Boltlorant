@@ -1,9 +1,18 @@
-﻿using System.Collections;
+﻿using Bolt;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSetupController : Bolt.GlobalEventListener
 {
+    [SerializeField]
+    private GameObject _classSelector = null;
+
+    public override void SceneLoadLocalDone(string scene, IProtocolToken token)
+    {
+        if (!BoltNetwork.IsServer)
+            _classSelector.SetActive(true);
+    }
 
     public void RaiseSpawnPlayerEvent()
     {

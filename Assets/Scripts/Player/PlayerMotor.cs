@@ -5,24 +5,34 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
     [SerializeField]
-    private Camera _cam;
-    private Rigidbody _rb;
+    private Camera _cam = null;
     private NetworkRigidbody _networkBody;
     private bool _jumpPressed=false;
-    /*[SerializeField]
-    private GroundDetector _groundDetector;*/
-
-    private int _collisionCount = 0;
+    private float _speed = 5.0f;
+    private float _jumpForce = 7.5f;
     private bool _isGrounded = true;
-
-    
+    [SerializeField]
+    private Transform _groundTarget = null;
 
     void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
         _networkBody = GetComponent<NetworkRigidbody>();
     }
 
+    private void FixedUpdate()
+    {
+        _isGrounded = false;
+        Collider[] _colliders = Physics.OverlapSphere(_groundTarget.position, 0.475f);
+        foreach (Collider col in _colliders)
+        {
+            if (col.gameObject.GetHashCode() != gameObject.GetHashCode())
+            {
+                _isGrounded = true;
+                if (_networkBody.MoveVelocity.y < 0)
+                    _networkBody.MoveVelocity = Vector3.Scale(_networkBody.MoveVelocity, new Vector3(1, 0, 1));
+            }
+        }
+    }
 
     public State Move(bool forward, bool backward, bool left, bool right, bool jump, float yaw, float pitch)
     {
@@ -35,7 +45,9 @@ public class PlayerMotor : MonoBehaviour
         {
             movingDir += right ? transform.right : -transform.right;
         }
+
         movingDir.Normalize();
+        movingDir *= _speed;
 
         if (jump)
         {
@@ -43,7 +55,7 @@ public class PlayerMotor : MonoBehaviour
             {
                 _isGrounded = false;
                 _jumpPressed = true;
-                _networkBody.moveForce += Vector3.up * 10;
+                _networkBody.MoveVelocity += Vector3.up * _jumpForce;
             }
         }
         else
@@ -52,16 +64,15 @@ public class PlayerMotor : MonoBehaviour
                 _jumpPressed = false;
         }
 
-        _networkBody.moveForce = new Vector3(movingDir.x *5, _networkBody.moveForce.y, movingDir.z*5);
-        //_rb.velocity = movingDir*10f;
+        _networkBody.MoveVelocity = new Vector3(movingDir.x, _networkBody.MoveVelocity.y, movingDir.z);
         _cam.transform.localEulerAngles = new Vector3(pitch, 0f, 0f);
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
-        State _stateMotor = new State();
-        _stateMotor.position = transform.position;
-        _stateMotor.rotation = yaw;
+        State stateMotor = new State();
+        stateMotor.position = transform.position;
+        stateMotor.rotation = yaw;
         
-        return _stateMotor;
+        return stateMotor;
     }
 
     public void SetState(Vector3 position, float rotation)
@@ -85,10 +96,4 @@ public class PlayerMotor : MonoBehaviour
     {
         _cam.gameObject.SetActive(false);
     }
-
-    private void OnTriggerStay(Collider other)
-    {
-        _isGrounded = true;
-    }
-
 }
