@@ -13,10 +13,17 @@ public class PlayerMotor : MonoBehaviour
     private bool _isGrounded = true;
     [SerializeField]
     private Transform _groundTarget = null;
+    [SerializeField]
+    private Weapon weapon;
 
     void Awake()
     {
         _networkBody = GetComponent<NetworkRigidbody>();
+    }
+
+    public void Init()
+    {
+        weapon.Init(GetComponent<BoltEntity>(), _cam.transform);
     }
 
     private void FixedUpdate()
@@ -34,7 +41,7 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
-    public State Move(bool forward, bool backward, bool left, bool right, bool jump, float yaw, float pitch)
+    public State Move(bool forward, bool backward, bool left, bool right, bool jump, bool fire, bool aiming, bool reload, float yaw, float pitch)
     {
         Vector3 movingDir = Vector3.zero;
         if (forward ^ backward)
@@ -68,11 +75,18 @@ public class PlayerMotor : MonoBehaviour
         _cam.transform.localEulerAngles = new Vector3(pitch, 0f, 0f);
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
+        weapon.ExecuteCommand(fire, aiming, reload);
+
         State stateMotor = new State();
         stateMotor.position = transform.position;
         stateMotor.rotation = yaw;
         
         return stateMotor;
+    }
+
+    public void FireEffect()
+    {
+        weapon.FireEffect();
     }
 
     public void SetState(Vector3 position, float rotation)
@@ -94,6 +108,6 @@ public class PlayerMotor : MonoBehaviour
 
     public void DisableCamera()
     {
-        _cam.gameObject.SetActive(false);
+        _cam.enabled = false;
     }
 }

@@ -1,0 +1,11 @@
+Add pistol to Player Prefab camera
+	Add MuzzleFlash to Pistol
+Create WeaponStats
+Create Weapon
+Add Fire Trigger to PlayerState
+	Except Controller, Parameter, Bolt
+Add Aiming, Fire and Reload to PlayerCommand
+Add aiming and Fire and Reload processing to PlayerContoller and PlayerMotor
+Add Weapon to PlayerMotor
+Script Weapon ExecuteCommand, _Fire(), _Reload() and _FireEffect()
+Add lambda to state.OnFire to PlayerController to Synch FireEffect

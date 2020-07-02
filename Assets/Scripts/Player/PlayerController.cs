@@ -12,6 +12,9 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     bool _left;
     bool _right;
     bool _jump;
+    bool _fire;
+    bool _aiming;
+    bool _reload;
 
     float _yaw;
     float _pitch;
@@ -20,6 +23,11 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     {
         if (!entity.HasControl)
             _playerMotor.DisableCamera();
+        _playerMotor.Init();
+        state.OnFire = () =>
+        {
+            _playerMotor.FireEffect();
+        };
     }
 
     public void Awake()
@@ -39,6 +47,9 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         _left = Input.GetKey(KeyCode.A);
         _right = Input.GetKey(KeyCode.D);
         _jump = Input.GetKey(KeyCode.Space);
+        _fire = Input.GetMouseButton(0);
+        _aiming = Input.GetMouseButton(1);
+        _reload = Input.GetKey(KeyCode.R);
 
         _yaw += Input.GetAxisRaw("Mouse X");
         _yaw %= 360f;
@@ -53,12 +64,15 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         input.Right = _right;
         input.Left = _left;
         input.Jump = _jump;
+        input.Fire = _fire;
+        input.Aiming = _aiming;
+        input.Reload = _reload;
         input.Yaw = _yaw;
         input.Pitch = _pitch;
 
         entity.QueueInput(input);
 
-        _playerMotor.Move(_forward, _backward, _left, _right, _jump, _yaw, _pitch);
+        _playerMotor.Move(_forward, _backward, _left, _right, _jump, _fire, _aiming, _reload, _yaw, _pitch);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -80,6 +94,9 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
                 cmd.Input.Left,
                 cmd.Input.Right,
                 cmd.Input.Jump,
+                cmd.Input.Fire,
+                cmd.Input.Aiming,
+                cmd.Input.Reload,
                 cmd.Input.Yaw,
                 cmd.Input.Pitch);
 
