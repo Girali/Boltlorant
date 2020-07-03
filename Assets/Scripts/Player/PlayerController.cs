@@ -15,6 +15,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     bool _fire;
     bool _aiming;
     bool _reload;
+    bool _ability;
 
     float _yaw;
     float _pitch;
@@ -50,6 +51,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         _fire = Input.GetMouseButton(0);
         _aiming = Input.GetMouseButton(1);
         _reload = Input.GetKey(KeyCode.R);
+        _ability = Input.GetKey(KeyCode.Q);
 
         _yaw += Input.GetAxisRaw("Mouse X");
         _yaw %= 360f;
@@ -67,12 +69,13 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         input.Fire = _fire;
         input.Aiming = _aiming;
         input.Reload = _reload;
+        input.Ability = _ability;
         input.Yaw = _yaw;
         input.Pitch = _pitch;
 
         entity.QueueInput(input);
 
-        _playerMotor.Move(_forward, _backward, _left, _right, _jump, _fire, _aiming, _reload, _yaw, _pitch);
+        _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _fire, _aiming, _reload, _ability, _yaw, _pitch);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -88,7 +91,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
             PlayerMotor.State motorState = new PlayerMotor.State();
             if (!entity.HasControl)
-                motorState = _playerMotor.Move(
+                motorState = _playerMotor.ExecuteCommand(
                 cmd.Input.Forward,
                 cmd.Input.Backward,
                 cmd.Input.Left,
@@ -97,6 +100,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
                 cmd.Input.Fire,
                 cmd.Input.Aiming,
                 cmd.Input.Reload,
+                cmd.Input.Ability,
                 cmd.Input.Yaw,
                 cmd.Input.Pitch);
 

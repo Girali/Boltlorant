@@ -8,11 +8,14 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
     private Rigidbody _rb;
     private float _gravityForce = 1f;
 
+    private bool _canWriteMoveVelocity = true;
+
+
     public Vector3 MoveVelocity
     {
         set
         {
-            if (entity.IsOwner || entity.HasControl)
+            if (_canWriteMoveVelocity && ( entity.IsOwner || entity.HasControl))
             {
                 _moveVelocity = value;
             }
@@ -48,5 +51,16 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
         _moveVelocity = new Vector3(_moveVelocity.x, g, _moveVelocity.z);
 
         _rb.velocity = _moveVelocity;
+    }
+
+    public void LockMoveVelocity(Vector3 moveVelocity)
+    {
+        MoveVelocity = moveVelocity;
+        _canWriteMoveVelocity = false;
+    }
+
+    public void UnlockMoveVelocity()
+    {
+        _canWriteMoveVelocity = true;
     }
 }

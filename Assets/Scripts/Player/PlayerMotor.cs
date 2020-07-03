@@ -14,16 +14,18 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField]
     private Transform _groundTarget = null;
     [SerializeField]
-    private Weapon weapon;
+    private Weapon _weapon;
+    private Ability _ability;
 
     void Awake()
     {
         _networkBody = GetComponent<NetworkRigidbody>();
+        _ability = GetComponent<Ability>();
     }
 
     public void Init()
     {
-        weapon.Init(GetComponent<BoltEntity>(), _cam.transform);
+        _weapon.Init(GetComponent<BoltEntity>(), _cam.transform);
     }
 
     private void FixedUpdate()
@@ -41,7 +43,7 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
-    public State Move(bool forward, bool backward, bool left, bool right, bool jump, bool fire, bool aiming, bool reload, float yaw, float pitch)
+    public State ExecuteCommand(bool forward, bool backward, bool left, bool right, bool jump, bool fire, bool aiming, bool reload, bool ability, float yaw, float pitch)
     {
         Vector3 movingDir = Vector3.zero;
         if (forward ^ backward)
@@ -75,7 +77,8 @@ public class PlayerMotor : MonoBehaviour
         _cam.transform.localEulerAngles = new Vector3(pitch, 0f, 0f);
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
-        weapon.ExecuteCommand(fire, aiming, reload);
+        _weapon.ExecuteCommand(fire, aiming, reload);
+        _ability.UpdateAbility(ability);
 
         State stateMotor = new State();
         stateMotor.position = transform.position;
@@ -86,7 +89,7 @@ public class PlayerMotor : MonoBehaviour
 
     public void FireEffect()
     {
-        weapon.FireEffect();
+        _weapon.FireEffect();
     }
 
     public void SetState(Vector3 position, float rotation)
