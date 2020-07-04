@@ -15,11 +15,10 @@ MonoBehaviour:
   reloadTime: 1.2
   magazin: 10
   totalMagazin: 40
-  rpm: 80
+  rpm: 120
   dmg: 25
-  shellPrefab: {fileID: 0}
+  maxRange: 30
   impactPrefab: {fileID: 1260490535886162419, guid: 7e716a774f5d52e4b8fe11625d63028e,
     type: 3}
   trailPrefab: {fileID: 3331758041860932221, guid: 6b9a6193480b0ab4d99b044563745805,
     type: 3}
-  shellEjector: {fileID: 0}

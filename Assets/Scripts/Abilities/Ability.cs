@@ -9,6 +9,7 @@ public class Ability : MonoBehaviour
     [SerializeField]
     protected int _cooldown = 0;
     protected float _timer = 0f;
+
     protected int _abilityInterval
     {
         get { return _cooldown * BoltNetwork.FramesPerSecond; }

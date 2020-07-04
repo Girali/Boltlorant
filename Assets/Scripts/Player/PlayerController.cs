@@ -20,6 +20,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     float _yaw;
     float _pitch;
 
+    float _mouseSensitivity = 5f;
+
     public override void Attached()
     {
         if (!entity.HasControl)
@@ -53,9 +55,10 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         _reload = Input.GetKey(KeyCode.R);
         _ability = Input.GetKey(KeyCode.Q);
 
-        _yaw += Input.GetAxisRaw("Mouse X");
+        _yaw += Input.GetAxisRaw("Mouse X") * _mouseSensitivity;
         _yaw %= 360f;
-        _pitch += -Input.GetAxisRaw("Mouse Y");
+        _pitch += -Input.GetAxisRaw("Mouse Y") * _mouseSensitivity;
+        _pitch = Mathf.Clamp(_pitch, -85, 85);
     }
 
     public override void SimulateController()

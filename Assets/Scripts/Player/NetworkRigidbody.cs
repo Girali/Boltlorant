@@ -6,16 +6,14 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
 {
     private Vector3 _moveVelocity;
     private Rigidbody _rb;
+    [SerializeField]
     private float _gravityForce = 1f;
-
-    private bool _canWriteMoveVelocity = true;
-
 
     public Vector3 MoveVelocity
     {
         set
         {
-            if (_canWriteMoveVelocity && ( entity.IsOwner || entity.HasControl))
+            if (entity.IsControllerOrOwner)
             {
                 _moveVelocity = value;
             }
@@ -39,28 +37,23 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
 
     private void FixedUpdate()
     {
-        float g = _moveVelocity.y;
+        if (entity.IsAttached)
+        {
+            if (entity.IsControllerOrOwner)
+            {
+                float g = _moveVelocity.y;
 
-        if (_moveVelocity.y < 0f)
-            g += 1.5f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
-        else if (_moveVelocity.y > 0f)
-            g += 1f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
-        else
-            g = _rb.velocity.y;
+                if (_moveVelocity.y < 0f)
+                    g += 1.5f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
+                else if (_moveVelocity.y > 0f)
+                    g += 1f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
+                else
+                    g = _rb.velocity.y;
 
-        _moveVelocity = new Vector3(_moveVelocity.x, g, _moveVelocity.z);
+                _moveVelocity = new Vector3(_moveVelocity.x, g, _moveVelocity.z);
 
-        _rb.velocity = _moveVelocity;
-    }
-
-    public void LockMoveVelocity(Vector3 moveVelocity)
-    {
-        MoveVelocity = moveVelocity;
-        _canWriteMoveVelocity = false;
-    }
-
-    public void UnlockMoveVelocity()
-    {
-        _canWriteMoveVelocity = true;
+                _rb.velocity = _moveVelocity;
+            }
+        }
     }
 }

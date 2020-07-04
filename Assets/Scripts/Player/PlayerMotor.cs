@@ -6,7 +6,7 @@ public class PlayerMotor : MonoBehaviour
 {
     [SerializeField]
     private Camera _cam = null;
-    private NetworkRigidbody _networkBody;
+    private NetworkRigidbody _networkBody = null;
     private bool _jumpPressed=false;
     private float _speed = 5.0f;
     private float _jumpForce = 7.5f;
@@ -14,8 +14,8 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField]
     private Transform _groundTarget = null;
     [SerializeField]
-    private Weapon _weapon;
-    private Ability _ability;
+    private Weapon _weapon = null;
+    private Ability _ability = null;
 
     void Awake()
     {
@@ -30,15 +30,21 @@ public class PlayerMotor : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _isGrounded = false;
-        Collider[] _colliders = Physics.OverlapSphere(_groundTarget.position, 0.475f);
-        foreach (Collider col in _colliders)
+        if (_networkBody.entity.IsAttached)
         {
-            if (col.gameObject.GetHashCode() != gameObject.GetHashCode())
+            if (_networkBody.entity.IsControllerOrOwner)
             {
-                _isGrounded = true;
-                if (_networkBody.MoveVelocity.y < 0)
-                    _networkBody.MoveVelocity = Vector3.Scale(_networkBody.MoveVelocity, new Vector3(1, 0, 1));
+                _isGrounded = false;
+                Collider[] _colliders = Physics.OverlapSphere(_groundTarget.position, 0.475f);
+                foreach (Collider col in _colliders)
+                {
+                    if (col.gameObject.GetHashCode() != gameObject.GetHashCode())
+                    {
+                        _isGrounded = true;
+                        if (_networkBody.MoveVelocity.y < 0)
+                            _networkBody.MoveVelocity = Vector3.Scale(_networkBody.MoveVelocity, new Vector3(1, 0, 1));
+                    }
+                }
             }
         }
     }

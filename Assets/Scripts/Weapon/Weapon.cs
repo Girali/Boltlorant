@@ -9,15 +9,15 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private WeaponStats _weaponStat = null;
 
-    private bool _reloading = false;
-    private bool _reloadNeed = false;
-    private Coroutine _reloadCoroutine = null;
+    //private bool _reloading = false;
+    //private bool _reloadNeed = false;
+    //private Coroutine _reloadCoroutine = null;
     private int _currentAmmo = 0;
     private int _currentTotalAmmo = 0;
     private bool _isReloading = false;
 
     [SerializeField]
-    private ParticleSystem _muzzleFlash;
+    private ParticleSystem _muzzleFlash = null;
 
     private int _fireInterval
     {
