@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Shootable
+  - LocalPlayer
   layers:
   - Default
   - TransparentFX
@@ -17,7 +17,7 @@ TagManager:
   - Lighting
   - Ground
   - Postprocessing
-  - 
+  - Weapons
   - 
   - 
   - 

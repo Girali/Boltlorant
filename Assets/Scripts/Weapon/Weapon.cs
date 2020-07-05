@@ -8,7 +8,8 @@ public class Weapon : MonoBehaviour
     private Transform _camera;
     [SerializeField]
     private WeaponStats _weaponStat = null;
-
+    [SerializeField]
+    private Animator _aniamtor = null;
     //private bool _reloading = false;
     //private bool _reloadNeed = false;
     //private Coroutine _reloadCoroutine = null;
@@ -35,10 +36,19 @@ public class Weapon : MonoBehaviour
         _currentTotalAmmo = _weaponStat.totalMagazin;
     }
 
-    public void Init(BoltEntity be, Transform camera)
+    private void OnEnable()
     {
-        _playerState = be.GetState<IPlayerState>();
+        GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
+    }
+
+    public void Init(BoltEntity entity, Transform camera)
+    {
+        if (!entity.HasControl)
+            gameObject.layer = 0;
+
+        _playerState = entity.GetState<IPlayerState>();
         _camera = camera;
+
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload)
@@ -73,6 +83,7 @@ public class Weapon : MonoBehaviour
                 _playerState.Fire();
 
                 _currentAmmo--;
+                GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
                 Ray r = new Ray(_camera.position, _camera.rotation * Vector3.forward);
                 RaycastHit rh;
 
@@ -81,7 +92,7 @@ public class Weapon : MonoBehaviour
                     PlayerMotor target = rh.transform.GetComponent<PlayerMotor>();
                     if (target != null)
                     {
-                        //TODO hit
+                        target.Life -= _weaponStat.dmg;
                     }
                 }
             }
@@ -96,6 +107,7 @@ public class Weapon : MonoBehaviour
     {
         Ray r = new Ray(_camera.position, _camera.rotation * Vector3.forward);
         RaycastHit rh;
+        _aniamtor.SetTrigger("Fire");
 
         if (Physics.Raycast(r, out rh))
         {
@@ -136,12 +148,12 @@ public class Weapon : MonoBehaviour
     {
         _isReloading = true;
         yield return new WaitForSeconds(_weaponStat.reloadTime);
+        GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
         _currentTotalAmmo += _currentAmmo;
         int _ammo = Mathf.Min(_currentTotalAmmo, _weaponStat.magazin);
-
         _currentTotalAmmo -= _ammo;
         _currentAmmo = _ammo;
         _isReloading = false;
+        GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
     }
-    
 }

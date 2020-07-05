@@ -1,20 +1,24 @@
-﻿using System.Collections;
+﻿using Bolt;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMotor : MonoBehaviour
+public class PlayerMotor : EntityBehaviour<IPlayerState>
 {
+
+
     [SerializeField]
     private Camera _cam = null;
     private NetworkRigidbody _networkBody = null;
     private bool _jumpPressed=false;
     private float _speed = 5.0f;
     private float _jumpForce = 7.5f;
+    [SerializeField]
+    private int _totalLife = 250;
     private bool _isGrounded = true;
     [SerializeField]
     private Transform _groundTarget = null;
-    [SerializeField]
-    private Weapon _weapon = null;
+
     private Ability _ability = null;
 
     void Awake()
@@ -23,9 +27,38 @@ public class PlayerMotor : MonoBehaviour
         _ability = GetComponent<Ability>();
     }
 
+    public int Life
+    {
+        set
+        {
+            if (entity.IsOwner)
+                state.Life = value;
+        }
+
+        get
+        {
+            return state.Life;
+        }
+    }
+
+    public int TotalLife { get => _totalLife; set => _totalLife = value; }
+
     public void Init()
     {
-        _weapon.Init(GetComponent<BoltEntity>(), _cam.transform);
+        if (entity.IsOwner)
+        {
+            state.Life = _totalLife;
+        }
+
+        if (entity.HasControl)
+        {
+            tag = "LocalPlayer";
+            GUI_Controller.Current.UpdateLife(_totalLife,_totalLife);
+        }
+        else
+        {
+            _cam.enabled = false;
+        }
     }
 
     private void FixedUpdate()
@@ -49,7 +82,7 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
-    public State ExecuteCommand(bool forward, bool backward, bool left, bool right, bool jump, bool fire, bool aiming, bool reload, bool ability, float yaw, float pitch)
+    public State ExecuteCommand(bool forward, bool backward, bool left, bool right, bool jump, bool ability, float yaw, float pitch)
     {
         Vector3 movingDir = Vector3.zero;
         if (forward ^ backward)
@@ -83,7 +116,6 @@ public class PlayerMotor : MonoBehaviour
         _cam.transform.localEulerAngles = new Vector3(pitch, 0f, 0f);
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
-        _weapon.ExecuteCommand(fire, aiming, reload);
         _ability.UpdateAbility(ability);
 
         State stateMotor = new State();
@@ -91,11 +123,6 @@ public class PlayerMotor : MonoBehaviour
         stateMotor.rotation = yaw;
         
         return stateMotor;
-    }
-
-    public void FireEffect()
-    {
-        _weapon.FireEffect();
     }
 
     public void SetState(Vector3 position, float rotation)
@@ -113,10 +140,5 @@ public class PlayerMotor : MonoBehaviour
     {
         public Vector3 position;
         public float rotation;
-    }
-
-    public void DisableCamera()
-    {
-        _cam.enabled = false;
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 {
     private PlayerMotor _playerMotor;
+    private PlayerWeapons _playerWeapons;
 
     bool _forward;
     bool _backward;
@@ -24,18 +25,19 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
     public override void Attached()
     {
-        if (!entity.HasControl)
-            _playerMotor.DisableCamera();
         _playerMotor.Init();
-        state.OnFire = () =>
-        {
-            _playerMotor.FireEffect();
-        };
+        _playerWeapons.Init();
+    }
+
+    public override void ControlGained()
+    {
+        GUI_Controller.Current.Show(true);
     }
 
     public void Awake()
     {
         _playerMotor = GetComponent<PlayerMotor>();
+        _playerWeapons = GetComponent<PlayerWeapons>();
     }
 
     void Update()
@@ -78,7 +80,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
         entity.QueueInput(input);
 
-        _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _fire, _aiming, _reload, _ability, _yaw, _pitch);
+        _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _ability, _yaw, _pitch);
+        _playerWeapons.ExecuteCommand(_fire, _aiming, _reload);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -91,26 +94,29 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         }
         else
         {
-
             PlayerMotor.State motorState = new PlayerMotor.State();
             if (!entity.HasControl)
+            {
                 motorState = _playerMotor.ExecuteCommand(
                 cmd.Input.Forward,
                 cmd.Input.Backward,
                 cmd.Input.Left,
                 cmd.Input.Right,
                 cmd.Input.Jump,
-                cmd.Input.Fire,
-                cmd.Input.Aiming,
-                cmd.Input.Reload,
                 cmd.Input.Ability,
                 cmd.Input.Yaw,
                 cmd.Input.Pitch);
 
+                _playerWeapons.ExecuteCommand(
+                    cmd.Input.Fire, 
+                    cmd.Input.Aiming,
+                    cmd.Input.Reload);
+            }
+
+
 
             cmd.Result.Position = motorState.position;
             cmd.Result.Rotation = cmd.Input.Yaw;
-
         }
     }
 }
