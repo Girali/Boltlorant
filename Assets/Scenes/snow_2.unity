@@ -3390,6 +3390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _classSelector: {fileID: 1460743940}
+  _cam: {fileID: 1086089058}
 --- !u!4 &2004967415
 Transform:
   m_ObjectHideFlags: 0

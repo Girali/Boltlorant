@@ -38,6 +38,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     {
         _playerMotor = GetComponent<PlayerMotor>();
         _playerWeapons = GetComponent<PlayerWeapons>();
+        GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
     }
 
     void Update()

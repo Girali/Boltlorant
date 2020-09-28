@@ -20,7 +20,6 @@ public class Dash : Ability
     public override void UpdateAbility(bool button)
     {
         base.UpdateAbility(button);
-
         if (_buttonDown && _timer + _abilityInterval <= BoltNetwork.ServerFrame)
         {
             _timer = BoltNetwork.ServerFrame;
@@ -44,6 +43,4 @@ public class Dash : Ability
         yield return new WaitForSeconds(_dashDuration);
         _dashing = false;
     }
-
-
 }
