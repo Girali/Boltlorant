@@ -20,6 +20,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
     float _yaw;
     float _pitch;
+    int _wheel = 0;
 
     float _mouseSensitivity = 5f;
 
@@ -27,18 +28,19 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     {
         _playerMotor.Init();
         _playerWeapons.Init();
+        state.AddCallback("WeaponIndex",_SetWeapon);
     }
 
     public override void ControlGained()
     {
         GUI_Controller.Current.Show(true);
+        GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
     }
 
     public void Awake()
     {
         _playerMotor = GetComponent<PlayerMotor>();
         _playerWeapons = GetComponent<PlayerWeapons>();
-        GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
     }
 
     void Update()
@@ -62,6 +64,11 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         _yaw %= 360f;
         _pitch += -Input.GetAxisRaw("Mouse Y") * _mouseSensitivity;
         _pitch = Mathf.Clamp(_pitch, -85, 85);
+
+        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        {
+            _wheel = _playerWeapons.CalculateIndex(Input.GetAxis("Mouse ScrollWheel"));
+        }
     }
 
     public override void SimulateController()
@@ -78,11 +85,12 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         input.Ability = _ability;
         input.Yaw = _yaw;
         input.Pitch = _pitch;
+        input.Wheel = _wheel;
 
         entity.QueueInput(input);
 
         _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _ability, _yaw, _pitch);
-        _playerWeapons.ExecuteCommand(_fire, _aiming, _reload);
+        _playerWeapons.ExecuteCommand(_fire, _aiming, _reload, _wheel);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -111,13 +119,21 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
                 _playerWeapons.ExecuteCommand(
                     cmd.Input.Fire, 
                     cmd.Input.Aiming,
-                    cmd.Input.Reload);
+                    cmd.Input.Reload,
+                    cmd.Input.Wheel);
             }
 
-
+            if (entity.IsOwner)
+                state.WeaponIndex = _playerWeapons.weaponIndex;
 
             cmd.Result.Position = motorState.position;
             cmd.Result.Rotation = cmd.Input.Yaw;
         }
+    }
+
+    private void _SetWeapon()
+    {
+        if (!entity.HasControl && !entity.IsOwner)
+            _playerWeapons.SetWeapon(state.WeaponIndex);
     }
 }

@@ -6,14 +6,13 @@ public class Dash : Ability
     private NetworkRigidbody _networkBody = null;
     [SerializeField]
     private Transform _cam = null;
-    [SerializeField]
     private float _dashForce = 20f;
-    [SerializeField]
     private float _dashDuration = 1f;
     private bool _dashing = false;
 
     public void Awake()
     {
+        _cooldown = 2;
         _networkBody = GetComponent<NetworkRigidbody>();
     }
 

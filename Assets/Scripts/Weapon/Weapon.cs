@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    private IPlayerState _playerState;
-    private Transform _camera;
+    protected IPlayerState _playerState;
+    protected BoltEntity _entity;
+    protected Transform _camera;
     [SerializeField]
     private WeaponStats _weaponStat = null;
     [SerializeField]
@@ -13,14 +14,15 @@ public class Weapon : MonoBehaviour
     //private bool _reloading = false;
     //private bool _reloadNeed = false;
     //private Coroutine _reloadCoroutine = null;
-    private int _currentAmmo = 0;
-    private int _currentTotalAmmo = 0;
-    private bool _isReloading = false;
+    protected int _currentAmmo = 0;
+    protected int _currentTotalAmmo = 0;
+    protected bool _isReloading = false;
 
     [SerializeField]
     private ParticleSystem _muzzleFlash = null;
 
-    private int _fireInterval
+    protected int _fireFrame = 0;
+    protected int _fireInterval
     {
         get
         {
@@ -28,17 +30,11 @@ public class Weapon : MonoBehaviour
             return BoltNetwork.FramesPerSecond / rps;
         }
     }
-    private int _fireFrame = 0;
-
-    private void Start()
-    {
-        _currentAmmo = _weaponStat.magazin;
-        _currentTotalAmmo = _weaponStat.totalMagazin;
-    }
 
     private void OnEnable()
     {
-        GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
+        if(_entity.HasControl)
+            GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
     }
 
     public void Init(BoltEntity entity, Transform camera)
@@ -46,9 +42,12 @@ public class Weapon : MonoBehaviour
         if (!entity.HasControl)
             gameObject.layer = 0;
 
+        _entity = entity;
         _playerState = entity.GetState<IPlayerState>();
         _camera = camera;
 
+        _currentAmmo = _weaponStat.magazin;
+        _currentTotalAmmo = _weaponStat.totalMagazin;
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload)
@@ -73,7 +72,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void _Fire()
+    protected virtual void _Fire()
     {
         if (_currentAmmo > 0)
         {
@@ -84,6 +83,7 @@ public class Weapon : MonoBehaviour
 
                 _currentAmmo--;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
+
                 Ray r = new Ray(_camera.position, _camera.rotation * Vector3.forward);
                 RaycastHit rh;
 
@@ -103,7 +103,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void FireEffect()
+    public virtual void FireEffect()
     {
         Ray r = new Ray(_camera.position, _camera.rotation * Vector3.forward);
         RaycastHit rh;
@@ -138,7 +138,7 @@ public class Weapon : MonoBehaviour
         //TODO aim
     }
     
-    private void _Reload()
+    protected void _Reload()
     {
         StartCoroutine(Reloading());
     }
