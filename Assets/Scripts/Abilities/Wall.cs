@@ -1,18 +1,119 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Wall : MonoBehaviour
+public class Wall : Ability
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Transform _cam = null;
+    [SerializeField]
+    private LayerMask _layerMask;
+    private static float MAX_DISTANCE = 5f;
+    private static float WALL_HALF_SIZE = 0.5f;
+    private static float VERTICAL_THRESHOLD = 0.4f;
+
+    [SerializeField]
+    private GameObject _wallPreset = null;
+    private GameObject _wallInstatiated = null;
+    [SerializeField]
+    private GameObject _stateMachine = null;
+    private GameObject _preview = null;
+    private bool _previewMode = false;
+
+    private MeshRenderer _renderer;
+    private bool _tooFar=false;
+
+    private Color _red;
+    private Color _blue;
+
+
+    RaycastHit hit;
+
+    public void Awake()
     {
-        
+        _cooldown = 10;
+        _red = new Color(255 / 255, 81 / 255, 0, 40 / 255);
+        _blue = new Color(0, 183 / 255, 255 / 255, 40 / 255);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void UpdateAbility(bool button)
     {
-        
+        base.UpdateAbility(button);
+        if (_buttonDown && _timer + _abilityInterval <= BoltNetwork.ServerFrame)
+        {
+            if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, Mathf.Infinity, _layerMask))
+            {
+                if (entity.HasControl)
+                {
+                    if (_preview == null)
+                    {
+                        _preview = GameObject.Instantiate(_stateMachine, hit.point, _cam.transform.rotation);
+                        _renderer = _preview.GetComponent<MeshRenderer>();
+                        _renderer.material.SetColor("_Color", _blue);
+                        //_renderer.material.color = _blue;
+                    }
+                    else
+                    {
+                        if (!_tooFar)
+                        {
+                            _timer = BoltNetwork.ServerFrame;
+                        }
+                        _tooFar = false;
+                        GameObject.Destroy(_preview);
+                    }
+                }
+                if (entity.IsOwner)
+                {
+                    if (_previewMode)
+                    {
+                        if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, Mathf.Infinity, _layerMask))
+                        {
+                            if (hit.distance < MAX_DISTANCE)
+                            {
+                                _timer = BoltNetwork.ServerFrame;
+                                if (_wallInstatiated != null)
+                                    BoltNetwork.Destroy(_wallInstatiated);
+                                _wallInstatiated = BoltNetwork.Instantiate(_wallPreset, hit.point, Quaternion.Euler(Vector3.Scale(_cam.transform.eulerAngles, Vector3.up)));
+                            }
+                        }
+                    }
+                    _previewMode ^= true;
+                }
+            }
+        }
     }
+
+    private void FixedUpdate()
+    {
+        if (_preview != null)
+        {
+            if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, Mathf.Infinity, _layerMask))
+            {
+                _preview.transform.rotation = Quaternion.Euler(Vector3.Scale(_cam.transform.eulerAngles, Vector3.up));
+
+                _preview.transform.position = hit.point;
+                _preview.transform.Translate(Vector3.up * 0.5f);
+
+                if (hit.normal.y > VERTICAL_THRESHOLD)
+                {
+                    if ((hit.distance > MAX_DISTANCE) != _tooFar)
+                    {
+                        _tooFar ^= true;
+                        _renderer.material.SetColor("_Color", (_tooFar) ? _red : _blue);
+                        //_renderer.material.color = (_tooFar) ? _red : _blue;
+                    }
+                }
+                else
+                {
+                    _tooFar = true;
+                    _renderer.material.color = _red;
+                }
+            }
+        }
+    }
+    /*
+    public override void OnEvent(CreateWallEvent evnt)
+    {
+        if (_wallInstatiated != null)
+            BoltNetwork.Destroy(_wallInstatiated);
+         _wallInstatiated = BoltNetwork.Instantiate(_wallPreset,evnt.Position,Quaternion.Euler(0,evnt.Rotation,0));
+    }*/
 }

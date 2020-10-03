@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : Bolt.EntityBehaviour<IPlayerState>
 {
     protected IPlayerState _playerState;
-    protected BoltEntity _entity;
     protected Transform _camera;
     [SerializeField]
     private WeaponStats _weaponStat = null;
@@ -33,16 +32,15 @@ public class Weapon : MonoBehaviour
 
     private void OnEnable()
     {
-        if(_entity.HasControl)
+        if(entity.HasControl)
             GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
     }
 
-    public void Init(BoltEntity entity, Transform camera)
+    public void Init(Transform camera)
     {
         if (!entity.HasControl)
             gameObject.layer = 0;
 
-        _entity = entity;
         _playerState = entity.GetState<IPlayerState>();
         _camera = camera;
 
@@ -79,7 +77,7 @@ public class Weapon : MonoBehaviour
             if (_fireFrame + _fireInterval <= BoltNetwork.ServerFrame)
             {
                 _fireFrame = BoltNetwork.ServerFrame;
-                _playerState.Fire();
+                state.Fire();
 
                 _currentAmmo--;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);

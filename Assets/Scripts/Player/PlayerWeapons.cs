@@ -30,7 +30,7 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
             _weaponsCam.enabled = false;
         for(int i=0;i<_weapons.Count;i++)
         {
-            _weapons[i].Init(entity, _cam.transform);
+            _weapons[i].Init(_cam.transform);
         }
         SetWeapon(state.WeaponIndex);
 

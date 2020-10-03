@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Ability : MonoBehaviour
+public class Ability : Bolt.EntityEventListener<IPlayerState>
 {
     protected bool _pressed = false;
     protected bool _buttonUp;

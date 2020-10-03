@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bolt;
 
-public class Rocket : EntityEventListener<IPhysicState>
+public class Rocket : Bolt.EntityBehaviour<IPhysicState>
 {
     private static float _FORCE = 30f;
     private static float _LIFETIME = 10f;

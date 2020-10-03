@@ -17,7 +17,7 @@ public class RocketLauncher : Weapon
                 _playerState.Fire();
                 _currentAmmo--;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
-                if (_entity.IsOwner)
+                if (entity.IsOwner)
                 {
                     BoltNetwork.Instantiate(_rocket, transform.position, _camera.rotation);
                 }
