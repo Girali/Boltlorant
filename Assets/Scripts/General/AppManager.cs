@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class AppManager : MonoBehaviour
 {
     private static AppManager _instance;
+    public string username;
 
     public static AppManager Instance
     {

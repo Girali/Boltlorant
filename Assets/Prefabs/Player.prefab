@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 5515444011811122710}
   - component: {fileID: -53695251359695591}
   - component: {fileID: 7500209154837236}
+  - component: {fileID: -2729347108270361237}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -284,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7112a27c9e93fc047aad71cfc70a52ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderTransform: {fileID: 2071820735259268214}
+  _renderTransform: {fileID: 0}
   _gravityForce: 2
 --- !u!114 &7500209154837236
 MonoBehaviour:
@@ -306,6 +307,19 @@ MonoBehaviour:
     type: 3}
   _stateMachine: {fileID: 2369222816916921689, guid: 5a37712e1b9fe2e4d97ad7c72dcf2e04,
     type: 3}
+--- !u!114 &-2729347108270361237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486356111897762221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c672ef422b943c42951667e9ed413a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cam: {fileID: 3486356112979482112}
 --- !u!1 &3486356112430307986
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +747,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f921972db6cbe844692302148255e1dd, type: 3}
+--- !u!4 &5207355927590901109 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 153984473644906339, guid: f921972db6cbe844692302148255e1dd,
+    type: 3}
+  m_PrefabInstance: {fileID: 5361305216057811478}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1065852199866193297 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4948757104736663431, guid: f921972db6cbe844692302148255e1dd,
@@ -745,12 +765,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c32ebef9681d3644ab734edaf8fc288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5207355927590901109 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 153984473644906339, guid: f921972db6cbe844692302148255e1dd,
-    type: 3}
-  m_PrefabInstance: {fileID: 5361305216057811478}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6213395925823190231
 PrefabInstance:
   m_ObjectHideFlags: 0
