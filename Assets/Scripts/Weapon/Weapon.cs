@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour
     protected ParticleSystem _muzzleFlash = null;
     protected int _fireFrame = 0;
     protected float _precision = 0;
-    private Coroutine reloadCrt = null;
+    private Coroutine _reloadCrt = null;
 
     protected int _fireInterval
     {
@@ -44,7 +44,7 @@ public class Weapon : MonoBehaviour
         if (_playerWeapons.entity.IsControllerOrOwner)
         {
             if (_currentAmmo == 0)
-                reloadCrt = StartCoroutine(Reloading());
+                _reloadCrt = StartCoroutine(Reloading());
         }
     }
 
@@ -53,7 +53,7 @@ public class Weapon : MonoBehaviour
         if (_isReloading)
         {
             _isReloading = false;
-            StopCoroutine(reloadCrt);
+            StopCoroutine(_reloadCrt);
         }
     }
 

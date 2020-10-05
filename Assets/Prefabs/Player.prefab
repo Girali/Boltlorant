@@ -284,6 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7112a27c9e93fc047aad71cfc70a52ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  renderTransform: {fileID: 2071820735259268214}
   _gravityForce: 2
 --- !u!114 &7500209154837236
 MonoBehaviour:

@@ -6,7 +6,7 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
 {
     private Vector3 _moveVelocity;
     [SerializeField]
-    private Transform renderTransform;
+    private Transform _renderTransform;
     private Rigidbody _rb;
     [SerializeField]
     private float _gravityForce = 1f;
@@ -34,10 +34,10 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
 
     public override void Attached()
     {
-        if(renderTransform)
-            state.SetTransforms(state.Transform, transform, renderTransform);
-        else
-            state.SetTransforms(state.Transform, transform);
+        //if(renderTransform)
+        //    state.SetTransforms(state.Transform, transform, renderTransform);
+        //else
+        state.SetTransforms(state.Transform, transform);
     }
 
     private void FixedUpdate()
