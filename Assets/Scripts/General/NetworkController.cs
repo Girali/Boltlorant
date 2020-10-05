@@ -25,15 +25,7 @@ public class NetworkController : GlobalEventListener
     {
         FeedbackUser("Searching ...");
 
-        foreach (var session in sessionList)
-        {
-            UdpSession photonSession = session.Value as UdpSession;
-
-            if (photonSession.Source == UdpSessionSource.Photon)
-            {
-                BoltMatchmaking.JoinSession(photonSession);
-            }
-        }
+        BoltMatchmaking.JoinSession(HeadlessServerManager.RoomID());
     }
 
     public void FeedbackUser(string text)

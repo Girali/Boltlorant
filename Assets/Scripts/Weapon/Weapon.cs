@@ -111,8 +111,8 @@ public class Weapon : MonoBehaviour
             if (_fireFrame + _fireInterval <= BoltNetwork.ServerFrame)
             {
                 _fireFrame = BoltNetwork.ServerFrame;
-                _playerCallback.CreateFireEffect(seed);
-                FireEffect(seed);
+                _playerCallback.CreateFireEffect(seed, _precision);
+                FireEffect(seed, _precision);
 
                 _currentAmmo--;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
@@ -138,10 +138,10 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public virtual void FireEffect(int seed)
+    public virtual void FireEffect(int seed, float precision)
     {
         Random.InitState(seed);
-        Vector2 rnd = Random.insideUnitSphere * _precision;
+        Vector2 rnd = Random.insideUnitSphere * precision;
         Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
         RaycastHit rh;
         _aniamtor.SetTrigger("Fire");

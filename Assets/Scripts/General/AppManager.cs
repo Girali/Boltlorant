@@ -1,5 +1,4 @@
-﻿using Bolt.Samples.HeadlessServer;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AppManager : MonoBehaviour

@@ -5,23 +5,23 @@ using Bolt;
 public class UI_Cooldown : MonoBehaviour
 {
     [SerializeField]
-    private Image _fill;
+    private Image _fill = null;
     [SerializeField]
-    private Text _timer;
+    private Text _timer = null;
     [SerializeField]
-    private Text _shortcut;
+    private Text _shortcut = null;
     [SerializeField]
-    private Text _cost1;
+    private Text _cost1 = null;
     [SerializeField]
-    private Text _cost2;
+    private Text _cost2 = null;
     [SerializeField]
-    private Image _BGS;
+    private Image _BGS = null;
     [SerializeField]
-    private Color _gray;
+    private Color _gray = Color.gray;
     [SerializeField]
-    private Color _blue;
+    private Color _blue = Color.blue;
     [SerializeField]
-    private Color _darkGray;
+    private Color _darkGray = Color.black;
 
     float _time;
     float _cdTimer;
@@ -31,9 +31,10 @@ public class UI_Cooldown : MonoBehaviour
     {
         if (_counting)
         {
-            if (_time < BoltNetwork.ServerFrame)
+            if (_time > BoltNetwork.ServerFrame)
             {
                 _timer.text = FloatToTime(-(BoltNetwork.ServerFrame - _time) / BoltNetwork.FramesPerSecond, "00.0");
+                _fill.fillAmount = -(BoltNetwork.ServerFrame - _time) / _cdTimer;
             }
             else
             {
@@ -42,6 +43,7 @@ public class UI_Cooldown : MonoBehaviour
                 _timer.text = "READY";
                 _timer.color = _blue;
                 _fill.color = _blue;
+                _fill.fillAmount = 1;
             }
         }
     }
@@ -49,16 +51,24 @@ public class UI_Cooldown : MonoBehaviour
     public void InitView(float cd)
     {
         _cdTimer = cd;
+        _counting = false;
+        _shortcut.color = _blue;
+        _timer.text = "READY";
+        _timer.color = _blue;
+        _fill.color = _blue;
+        _fill.fillAmount = 1;
     }
 
     public void StartCooldown()
     {
+        Debug.Log("Test");
         _time = _cdTimer + BoltNetwork.ServerFrame;
-        _counting = false;
+        _counting = true;
         _shortcut.color = Color.black;
-        _timer.text = FloatToTime(_time / BoltNetwork.FramesPerSecond, "00.0"); ;
+        _timer.text = FloatToTime(_time / BoltNetwork.FramesPerSecond, "00.0");
         _timer.color = Color.white;
         _fill.color = _darkGray;
+        _fill.fillAmount = 0;
     }
 
     public void UpdateCost(int i)

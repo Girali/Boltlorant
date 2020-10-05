@@ -23,7 +23,7 @@ public class Wall : Ability
     private Color _red;
     private Color _blue;
 
-
+    UI_Cooldown _UI_cooldown;
     RaycastHit hit;
 
     public void Awake()
@@ -31,6 +31,8 @@ public class Wall : Ability
         _cooldown = 10;
         _red = new Color(255 / 255, 81 / 255, 0, 40 / 255);
         _blue = new Color(0, 183 / 255, 255 / 255, 40 / 255);
+        _UI_cooldown = GUI_Controller.Current.Cooldown1;
+        _UI_cooldown.InitView(_abilityInterval);
     }
 
     public override void UpdateAbility(bool button)
@@ -53,6 +55,7 @@ public class Wall : Ability
                     {
                         if (!_tooFar)
                         {
+                            _UI_cooldown.StartCooldown();
                             _timer = BoltNetwork.ServerFrame;
                         }
                         _tooFar = false;
@@ -108,11 +111,4 @@ public class Wall : Ability
             }
         }
     }
-    /*
-    public override void OnEvent(CreateWallEvent evnt)
-    {
-        if (_wallInstatiated != null)
-            BoltNetwork.Destroy(_wallInstatiated);
-         _wallInstatiated = BoltNetwork.Instantiate(_wallPreset,evnt.Position,Quaternion.Euler(0,evnt.Rotation,0));
-    }*/
 }

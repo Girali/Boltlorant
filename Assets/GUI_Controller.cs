@@ -16,6 +16,9 @@ public class GUI_Controller : MonoBehaviour
             return _instance;
         }
     }
+
+    public UI_Cooldown Cooldown1 { get => _cooldown1; }
+    public UI_Cooldown Cooldown2 { get => _cooldown2; }
     #endregion
 
     [SerializeField]
@@ -43,6 +46,9 @@ public class GUI_Controller : MonoBehaviour
         _crossair.gameObject.SetActive(active);
         _healthBar.gameObject.SetActive(active);
         _ammoPanel.gameObject.SetActive(active);
+        _energyCount.transform.parent.gameObject.SetActive(active);
+        _cooldown1.gameObject.SetActive(active);
+        _cooldown2.gameObject.SetActive(active);
     }
 
     public void UpdateLife(int current, int total)

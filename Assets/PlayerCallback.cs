@@ -17,19 +17,20 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         state.AddCallback("WeaponIndex", UpdateWeaponIndex);
     }
 
-    public void CreateFireEffect(int seed)
+    public void CreateFireEffect(int seed, float precision)
     {
         if (entity.IsOwner)
         {
             FireEffectEvent evnt = FireEffectEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
             evnt.Seed = seed;
+            evnt.Precision = precision;
             evnt.Send();
         }
     }
 
     public override void OnEvent(FireEffectEvent evnt)
     {
-        _playerWeapons.FireEffect(evnt.Seed);
+        _playerWeapons.FireEffect(evnt.Seed,evnt.Precision);
     }
 
     public void UpdateWeaponIndex()
