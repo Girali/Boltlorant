@@ -177,7 +177,7 @@ public class Weapon : MonoBehaviour
     
     protected void _Reload()
     {
-        reloadCrt = StartCoroutine(Reloading());
+        _reloadCrt = StartCoroutine(Reloading());
     }
 
     

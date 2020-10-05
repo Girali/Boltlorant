@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class GUI_Controller : MonoBehaviour
 {
@@ -23,6 +24,14 @@ public class GUI_Controller : MonoBehaviour
     private UI_HealthBar _healthBar = null;
     [SerializeField]
     private UI_AmmoPanel _ammoPanel = null;
+
+    [SerializeField]
+    private Text _energyCount = null;
+
+    [SerializeField]
+    private UI_Cooldown _cooldown1 = null;
+    [SerializeField]
+    private UI_Cooldown _cooldown2 = null;
 
     private void Start()
     {
