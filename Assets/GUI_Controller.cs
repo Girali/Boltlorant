@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GUI_Controller : MonoBehaviour
 {
@@ -20,15 +18,20 @@ public class GUI_Controller : MonoBehaviour
     #endregion
 
     [SerializeField]
-    private GameObject _crossair = null;
+    private UI_Crossair _crossair = null;
     [SerializeField]
     private UI_HealthBar _healthBar = null;
     [SerializeField]
     private UI_AmmoPanel _ammoPanel = null;
 
+    private void Start()
+    {
+        Show(false);
+    }
+
     public void Show(bool active)
     {
-        _crossair.SetActive(active);
+        _crossair.gameObject.SetActive(active);
         _healthBar.gameObject.SetActive(active);
         _ammoPanel.gameObject.SetActive(active);
     }
@@ -41,5 +44,15 @@ public class GUI_Controller : MonoBehaviour
     public void UpdateAmmo(int current, int total)
     {
         _ammoPanel.UpdateLife(current, total);
+    }
+
+    public void InitCrossair(Vector2 v)
+    {
+        _crossair.Init(v);
+    }
+
+    public void UpdateCrossair(float t)
+    {
+        _crossair.UpdateView(t);
     }
 }

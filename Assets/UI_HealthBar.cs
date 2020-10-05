@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class UI_HealthBar : MonoBehaviour
 {
     [SerializeField]
-    private Gradient _gradient;
+    private Gradient _gradient = null;
 
     [SerializeField]
-    private Image _bg;
+    private Image _bg = null;
     [SerializeField]
-    private Image _bar;
+    private Image _bar = null;
     [SerializeField]
-    private Text _text;
+    private Text _text = null;
 
     public void UpdateLife(int hp,int totalHp)
     {

@@ -5,9 +5,8 @@ public class Wall : Ability
     [SerializeField]
     private Transform _cam = null;
     [SerializeField]
-    private LayerMask _layerMask;
+    private LayerMask _layerMask = 0;
     private static float MAX_DISTANCE = 5f;
-    private static float WALL_HALF_SIZE = 0.5f;
     private static float VERTICAL_THRESHOLD = 0.4f;
 
     [SerializeField]

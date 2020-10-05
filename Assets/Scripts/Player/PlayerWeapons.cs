@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Bolt;
 
@@ -10,58 +9,80 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
     [SerializeField]
     private Camera _weaponsCam = null;
     [SerializeField]
-    private List<Weapon> _weapons;
+    private List<Weapon> _weapons = null;
     private int _weaponIndex = 0;
-    public int weaponIndex
+    private float _precisionFactor = 0;
+    private NetworkRigidbody _networkRigidbody = null;
+    private PlayerMotor _playerMotor = null;
+
+
+    public int WeaponIndex
     {
         get => _weaponIndex;
     }
 
-    public override void Attached()
+    public Camera Cam { get => _cam; }
+    public float PrecisionFactor { get => _precisionFactor; set => _precisionFactor = value; }
+
+    private void Awake()
     {
-        state.OnFire = () =>
-        {
-            _weapons[_weaponIndex].FireEffect();
-        };
+        _networkRigidbody = GetComponent<NetworkRigidbody>();
+        _playerMotor = GetComponent<PlayerMotor>();
     }
+
+    public void Update()
+    {
+        _precisionFactor = Mathf.Lerp(_precisionFactor, _networkRigidbody.MoveVelocity.magnitude / _playerMotor.Speed, 0.05f);
+    }
+
     public void Init()
     {
         if (!entity.HasControl)
             _weaponsCam.enabled = false;
+
         for(int i=0;i<_weapons.Count;i++)
         {
-            _weapons[i].Init(_cam.transform);
+            _weapons[i].Init(this);
         }
-        SetWeapon(state.WeaponIndex);
 
+        SetWeapon(_weaponIndex);
     }
 
-    public void ExecuteCommand(bool fire, bool aiming, bool reload, int wheel)
+    public void ExecuteCommand(bool fire, bool aiming, bool reload, int wheel,int seed)
     {
-        if (wheel != _weaponIndex)
+        if (wheel != state.WeaponIndex)
         {
-            SetWeapon(wheel);
+            if(entity.IsOwner)
+                state.WeaponIndex = wheel;
         }
-        _weapons[_weaponIndex].ExecuteCommand(fire, aiming, reload);
+
+        _weapons[_weaponIndex].ExecuteCommand(fire, aiming, reload, seed);
+    }
+
+    public void FireEffect(int seed)
+    {
+        _weapons[_weaponIndex].FireEffect(seed);
     }
 
     public void SetWeapon(int index)
     {
+        _weaponIndex = index;
+
         for (int i = 0; i < _weapons.Count; i++)
             _weapons[i].gameObject.SetActive(false);
-        _weaponIndex = index;
+
         _weapons[_weaponIndex].gameObject.SetActive(true);
     }
 
     public int CalculateIndex(float valueToAdd)
     {
-        return _AbsoluteModulo(_weaponIndex + (int)Mathf.Sign(valueToAdd), _weapons.Count); 
-    }
+        int i = 0;
 
-    private int _AbsoluteModulo(int x, int m)
-    {
-        return (x % m + m) % m;
-    }
+        if (valueToAdd > 0)
+            i++;
+        else if (valueToAdd < 0)
+            i--;
 
-    
+        return Mathf.Abs((_weaponIndex + i) % _weapons.Count); 
+    }
 }

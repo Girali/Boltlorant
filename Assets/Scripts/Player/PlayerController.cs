@@ -1,6 +1,4 @@
 ﻿using Bolt;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
@@ -21,14 +19,15 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     float _yaw;
     float _pitch;
     int _wheel = 0;
-
+    int _seed = 0;
     float _mouseSensitivity = 5f;
 
     public override void Attached()
     {
         _playerMotor.Init();
         _playerWeapons.Init();
-        state.AddCallback("WeaponIndex",_SetWeapon);
+        if (entity.HasControl)
+            Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void ControlGained()
@@ -56,6 +55,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         _right = Input.GetKey(KeyCode.D);
         _jump = Input.GetKey(KeyCode.Space);
         _fire = Input.GetMouseButton(0);
+        if (_fire)
+            _seed = Random.Range(0, 1023);
         _aiming = Input.GetMouseButton(1);
         _reload = Input.GetKey(KeyCode.R);
         _ability = Input.GetKey(KeyCode.Q);
@@ -86,11 +87,12 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         input.Yaw = _yaw;
         input.Pitch = _pitch;
         input.Wheel = _wheel;
-
+        input.Seed = _seed;
+        
         entity.QueueInput(input);
 
         _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _ability, _yaw, _pitch);
-        _playerWeapons.ExecuteCommand(_fire, _aiming, _reload, _wheel);
+        _playerWeapons.ExecuteCommand(_fire, _aiming, _reload, _wheel, _seed);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -120,20 +122,12 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
                     cmd.Input.Fire, 
                     cmd.Input.Aiming,
                     cmd.Input.Reload,
-                    cmd.Input.Wheel);
+                    cmd.Input.Wheel,
+                    cmd.Input.Seed);
             }
-
-            if (entity.IsOwner)
-                state.WeaponIndex = _playerWeapons.weaponIndex;
 
             cmd.Result.Position = motorState.position;
             cmd.Result.Rotation = cmd.Input.Yaw;
         }
-    }
-
-    private void _SetWeapon()
-    {
-        if (!entity.HasControl && !entity.IsOwner)
-            _playerWeapons.SetWeapon(state.WeaponIndex);
     }
 }

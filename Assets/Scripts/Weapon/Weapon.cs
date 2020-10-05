@@ -1,26 +1,29 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : Bolt.EntityBehaviour<IPlayerState>
+public class Weapon : MonoBehaviour
 {
-    protected IPlayerState _playerState;
     protected Transform _camera;
     [SerializeField]
-    private WeaponStats _weaponStat = null;
+    protected WeaponStats _weaponStat = null;
     [SerializeField]
-    private Animator _aniamtor = null;
+    protected Animator _aniamtor = null;
     //private bool _reloading = false;
     //private bool _reloadNeed = false;
     //private Coroutine _reloadCoroutine = null;
     protected int _currentAmmo = 0;
     protected int _currentTotalAmmo = 0;
     protected bool _isReloading = false;
+    protected PlayerWeapons _playerWeapons;
+    protected PlayerCallback _playerCallback;
+    protected NetworkRigidbody _networkRigidbody;
 
     [SerializeField]
-    private ParticleSystem _muzzleFlash = null;
-
+    protected ParticleSystem _muzzleFlash = null;
     protected int _fireFrame = 0;
+    protected float _precision = 0;
+    private Coroutine reloadCrt = null;
+
     protected int _fireInterval
     {
         get
@@ -32,23 +35,54 @@ public class Weapon : Bolt.EntityBehaviour<IPlayerState>
 
     private void OnEnable()
     {
-        if(entity.HasControl)
+        if (_playerWeapons.entity.HasControl)
+        {
             GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
+            GUI_Controller.Current.InitCrossair(_weaponStat.crossairLimits);
+        }
+
+        if (_playerWeapons.entity.IsControllerOrOwner)
+        {
+            if (_currentAmmo == 0)
+                reloadCrt = StartCoroutine(Reloading());
+        }
     }
 
-    public void Init(Transform camera)
+    private void OnDisable()
     {
-        if (!entity.HasControl)
+        if (_isReloading)
+        {
+            _isReloading = false;
+            StopCoroutine(reloadCrt);
+        }
+    }
+
+    private void Update()
+    {
+        _precision = _weaponStat.precision * (_playerWeapons.PrecisionFactor * _weaponStat.precisionMoveFactor);
+        
+        if (_playerWeapons.entity.HasControl)
+        {
+            GUI_Controller.Current.UpdateCrossair(_precision / _weaponStat.precision);
+        }
+    }
+
+    public void Init(PlayerWeapons pw)
+    {
+        _playerWeapons = pw;
+
+        if (!_playerWeapons.entity.HasControl)
             gameObject.layer = 0;
 
-        _playerState = entity.GetState<IPlayerState>();
-        _camera = camera;
+        _playerCallback = pw.GetComponent<PlayerCallback>();
+        _networkRigidbody = pw.GetComponent<NetworkRigidbody>();
+        _camera = _playerWeapons.Cam.transform;
 
         _currentAmmo = _weaponStat.magazin;
         _currentTotalAmmo = _weaponStat.totalMagazin;
     }
 
-    public void ExecuteCommand(bool fire, bool aiming, bool reload)
+    public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
     {
         if (!_isReloading)
         {
@@ -60,7 +94,7 @@ public class Weapon : Bolt.EntityBehaviour<IPlayerState>
             {
                 if (fire)
                 {
-                    _Fire();
+                    _Fire(seed);
                 }
                 if (aiming)
                 {
@@ -70,19 +104,22 @@ public class Weapon : Bolt.EntityBehaviour<IPlayerState>
         }
     }
 
-    protected virtual void _Fire()
+    protected virtual void _Fire(int seed)
     {
         if (_currentAmmo > 0)
         {
             if (_fireFrame + _fireInterval <= BoltNetwork.ServerFrame)
             {
                 _fireFrame = BoltNetwork.ServerFrame;
-                state.Fire();
+                _playerCallback.CreateFireEffect(seed);
+                FireEffect(seed);
 
                 _currentAmmo--;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
 
-                Ray r = new Ray(_camera.position, _camera.rotation * Vector3.forward);
+                Random.InitState(seed);
+                Vector2 rnd = Random.insideUnitSphere * _precision;
+                Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
                 RaycastHit rh;
 
                 if (Physics.Raycast(r, out rh,_weaponStat.maxRange))
@@ -101,19 +138,21 @@ public class Weapon : Bolt.EntityBehaviour<IPlayerState>
         }
     }
 
-    public virtual void FireEffect()
+    public virtual void FireEffect(int seed)
     {
-        Ray r = new Ray(_camera.position, _camera.rotation * Vector3.forward);
+        Random.InitState(seed);
+        Vector2 rnd = Random.insideUnitSphere * _precision;
+        Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
         RaycastHit rh;
         _aniamtor.SetTrigger("Fire");
 
         if (Physics.Raycast(r, out rh))
         {
             if (_weaponStat.impactPrefab)
-                GameObject.Instantiate(_weaponStat.impactPrefab, rh.point, Quaternion.LookRotation(rh.normal));
+                Instantiate(_weaponStat.impactPrefab, rh.point, Quaternion.LookRotation(rh.normal));
             if (_weaponStat.trailPrefab)
             {
-                var trailGo = GameObject.Instantiate(_weaponStat.trailPrefab, _muzzleFlash.transform.position, Quaternion.identity) as GameObject;
+                var trailGo = Instantiate(_weaponStat.trailPrefab, _muzzleFlash.transform.position, Quaternion.identity);
                 var trail = trailGo.GetComponent<LineRenderer>();
 
                 trail.SetPosition(0, _muzzleFlash.transform.position);
@@ -122,13 +161,13 @@ public class Weapon : Bolt.EntityBehaviour<IPlayerState>
         }
         else if (_weaponStat.trailPrefab)
         {
-            var trailGo = GameObject.Instantiate(_weaponStat.trailPrefab, _muzzleFlash.transform.position, Quaternion.identity) as GameObject;
+            var trailGo = Instantiate(_weaponStat.trailPrefab, _muzzleFlash.transform.position, Quaternion.identity);
             var trail = trailGo.GetComponent<LineRenderer>();
 
             trail.SetPosition(0, _muzzleFlash.transform.position);
             trail.SetPosition(1, _camera.forward * _weaponStat.maxRange + _camera.position);
         }
-        _muzzleFlash.Play();
+        _muzzleFlash.Play(true);
     }
 
     private void _Aiming()
@@ -138,7 +177,7 @@ public class Weapon : Bolt.EntityBehaviour<IPlayerState>
     
     protected void _Reload()
     {
-        StartCoroutine(Reloading());
+        reloadCrt = StartCoroutine(Reloading());
     }
 
     

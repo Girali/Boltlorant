@@ -11,8 +11,12 @@ public class WeaponStats : ScriptableObject
     public int rpm = 80;
     public int dmg = 25;
     public int maxRange = 30;
+    public float precision = 0.3f;
+    public float precisionMoveFactor = 1f;
     [Space(10)]
     public GameObject impactPrefab;
     public GameObject trailPrefab;
+    [Space(30)]
+    public Vector2 crossairLimits = new Vector2(5,40);
 }
 

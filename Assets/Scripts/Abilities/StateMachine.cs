@@ -5,11 +5,11 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
     [SerializeField]
-    private Material _materialGood;
+    private Material _materialGood = null;
     [SerializeField]
-    private Material _materialBad;
+    private Material _materialBad = null;
 
-    private MeshRenderer _renderer;
+    private MeshRenderer _renderer = null;
     private List<int> _colliders = new List<int>();
 
     private bool _tooFar = false;

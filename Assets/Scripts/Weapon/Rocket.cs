@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bolt;
 
-public class Rocket : Bolt.EntityBehaviour<IPhysicState>
+public class Rocket : EntityBehaviour<IPhysicState>
 {
     private static float _FORCE = 30f;
     private static float _LIFETIME = 10f;
@@ -15,6 +15,12 @@ public class Rocket : Bolt.EntityBehaviour<IPhysicState>
 
     [SerializeField]
     private GameObject _explosion = null;
+    private NetworkRigidbody _networkRigidbody = null;
+
+    private void Awake()
+    {
+        _networkRigidbody = GetComponent<NetworkRigidbody>();
+    }
 
     private IEnumerator Start()
     {
@@ -41,6 +47,12 @@ public class Rocket : Bolt.EntityBehaviour<IPhysicState>
     {
         if (entity.IsOwner && (_inited || !collision.gameObject.GetComponent<PlayerMotor>()))
             _Explode();
+    }
+
+    public override void SimulateOwner()
+    {
+        base.SimulateOwner();
+        transform.rotation = Quaternion.LookRotation(_networkRigidbody.MoveVelocity);
     }
 
     private void _Explode()

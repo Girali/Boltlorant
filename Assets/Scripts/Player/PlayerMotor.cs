@@ -1,6 +1,4 @@
 ﻿using Bolt;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMotor : EntityBehaviour<IPlayerState>
@@ -11,8 +9,8 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     private Camera _cam = null;
     private NetworkRigidbody _networkBody = null;
     private bool _jumpPressed=false;
-    private float _speed = 5.0f;
-    private float _jumpForce = 7.5f;
+    private float _speed = 7f;
+    private float _jumpForce = 9f;
     [SerializeField]
     private int _totalLife = 250;
     private bool _isGrounded = true;
@@ -42,6 +40,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     }
 
     public int TotalLife { get => _totalLife; set => _totalLife = value; }
+    public float Speed { get => _speed; set => _speed = value; }
 
     public void Init()
     {
