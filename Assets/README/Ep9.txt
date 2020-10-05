@@ -1,0 +1,6 @@
+Create PlayerToken
+Create NetworkCallbacks and put it on AppController
+Modify SpawnPlayerEvent so it contains player name, team and class
+	Modify PlayerSetup so it uses the new SpawnPlayerEvent and the token
+Modify PlayerSelection to add the "chosse a class""
+Modify NetworkController,AppManager and scene Menu to add "Enter a name"

@@ -42,9 +42,23 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     public int TotalLife { get => _totalLife; set => _totalLife = value; }
     public float Speed { get => _speed; set => _speed = value; }
 
-    public void Init()
+    public void Init(CharacterClass characterClass)
     {
-        if (entity.IsOwner)
+        foreach (Ability a in GetComponents<Ability>())
+            a.enabled = false;
+        switch (characterClass)
+        {
+            case CharacterClass.Heavy:
+                _ability = GetComponent<Wall>();
+                break;
+            case CharacterClass.Scout:
+                _ability = GetComponent<Dash>();
+                break;
+            case CharacterClass.Medic:
+                break;
+        }
+        _ability.enabled = true;
+            if (entity.IsOwner)
         {
             state.Life = _totalLife;
         }

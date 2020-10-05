@@ -14,16 +14,24 @@ public class PlayerSetupController : Bolt.GlobalEventListener
             _classSelector.SetActive(true);
     }
 
-    public void RaiseSpawnPlayerEvent()
+    public void RaiseSpawnPlayerEvent(int index)
     {
         SpawnPlayerEvent spawn = SpawnPlayerEvent.Create(Bolt.GlobalTargets.OnlyServer);
+        spawn.PlayerName = AppManager.Instance.username;
+        spawn.Team = (short)Team.AT;//TODO
+        spawn.Class = index;
         spawn.Send();
     }
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
+        var token = new PlayerToken();
+        token.name = evnt.PlayerName;
+        token.team = (Team)evnt.Team;
+        token.characterClass = (CharacterClass)evnt.Class;
+
         Vector3 v = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
-        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Player, new Vector3(0f, 1f, 0f) + v, Quaternion.identity);
+        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Player, token, new Vector3(0f, 1f, 0f) + v, Quaternion.identity);
         entity.AssignControl(evnt.RaisedBy);
     }
 }

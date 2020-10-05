@@ -24,7 +24,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 
     public override void Attached()
     {
-        _playerMotor.Init();
+        var token = (PlayerToken)entity.AttachToken;
+        _playerMotor.Init(token.characterClass);
         _playerWeapons.Init();
         if (entity.HasControl)
             Cursor.lockState = CursorLockMode.Locked;

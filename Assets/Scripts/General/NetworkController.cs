@@ -7,11 +7,18 @@ using Bolt.Matchmaking;
 public class NetworkController : GlobalEventListener
 {
     public UnityEngine.UI.Text feedback;
+    public UnityEngine.UI.Text username;
 
     public void Connect()
     {
-        FeedbackUser("Starting");
-        BoltLauncher.StartClient();
+        if (username.text != "")
+        {
+            AppManager.Instance.username = username.text;
+            BoltLauncher.StartClient();
+            FeedbackUser("Starting");
+        }
+        else
+            FeedbackUser("Enter a valid name");
     }
 
     public override void SessionListUpdated(Map<Guid, UdpSession> sessionList)

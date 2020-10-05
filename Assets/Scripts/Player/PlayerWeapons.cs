@@ -6,6 +6,8 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
 {
     [SerializeField]
     private Camera _cam = null;
+    public Camera cam
+    { get => _cam; }
     [SerializeField]
     private Camera _weaponsCam = null;
     [SerializeField]
