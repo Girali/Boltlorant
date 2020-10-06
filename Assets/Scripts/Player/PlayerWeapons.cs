@@ -85,6 +85,6 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
         else if (valueToAdd < 0)
             i--;
 
-        return Mathf.Abs((_weaponIndex + i) % _weapons.Count); 
+        return Mathf.Abs((_weaponIndex + i + _weapons.Count) % _weapons.Count);
     }
 }

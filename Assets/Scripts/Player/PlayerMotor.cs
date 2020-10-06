@@ -1,5 +1,6 @@
 ﻿using Bolt;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerMotor : EntityBehaviour<IPlayerState>
 {
@@ -9,8 +10,15 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     private Camera _cam = null;
     private NetworkRigidbody _networkBody = null;
     private bool _jumpPressed=false;
-    private float _speed = 7f;
     private float _jumpForce = 9f;
+
+    private float _speed = 7f;
+    private float _baseSpeed = 7f;
+    public float baseSpeed
+    {
+        get => _baseSpeed;
+    }
+
     [SerializeField]
     private int _totalLife = 250;
     private float _maxAngle = 45f;
@@ -24,6 +32,13 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
 
     private Vector3 _lastServerPos = Vector3.zero;
     private bool _firstState = true;
+
+    public void ChangeSpeed(float speed)
+    {
+        _speed = speed;
+        //_speedWanted = speed;
+    }
+
 
     void Awake()
     {
@@ -126,7 +141,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         if (entity.IsAttached)
         {
             if (entity.IsControllerOrOwner)
-            { 
+            {
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.3f))
                 {
