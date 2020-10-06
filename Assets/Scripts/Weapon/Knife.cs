@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Knife : Weapon
 {
-    private static float SPEED_MULTIPLIER = 2f;
+    private static float SPEED_MULTIPLIER = 1.5f;
     private static int DAMAGE_MULTIPLIER = 2;
     private static float BACK_ANGLE_THRESHOLD = 60f;
     private static Vector3 VECTOR_SCALE = new Vector3(1, 0, 1);

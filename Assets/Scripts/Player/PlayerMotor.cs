@@ -18,7 +18,6 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     {
         get => _baseSpeed;
     }
-    private float _speedWanted = -1f;
 
     [SerializeField]
     private int _totalLife = 250;
@@ -36,7 +35,8 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
 
     public void ChangeSpeed(float speed)
     {
-        _speedWanted = speed;
+        _speed = speed;
+        //_speedWanted = speed;
     }
 
 
@@ -142,15 +142,6 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         {
             if (entity.IsControllerOrOwner)
             {
-                if (Mathf.Abs(_speed - _speedWanted) < 0.1f)
-                {
-                    _speed = _speedWanted;
-                    _speedWanted = -1f;
-                }
-                else if (_speedWanted != -1)
-                {
-                    _speed = Mathf.Lerp(_speed,_speedWanted,BoltNetwork.FrameDeltaTime*10f);
-                }
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.3f))
                 {

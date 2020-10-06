@@ -25,7 +25,7 @@ public class PlayerRenderer : EntityBehaviour<IPlayerState>
 
     public void Init()
     {
-        if (entity.HasControl) 
+        if (entity.IsControllerOrOwner) 
         {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<PlayerSetupController>().SceneCamera.gameObject.SetActive(false);
             _camera.gameObject.SetActive(true);
