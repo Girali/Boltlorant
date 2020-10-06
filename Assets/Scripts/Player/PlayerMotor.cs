@@ -91,6 +91,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
 
             foreach (GameObject go in players)
             {
+                go.GetComponent<PlayerMotor>().TeamCheck();
                 go.GetComponent<PlayerRenderer>().Init();
             }
         }
@@ -99,6 +100,11 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
             _cam.enabled = false;
         }
 
+        TeamCheck();
+    }
+
+    public void TeamCheck()
+    {
         GameObject localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer");
         Team t = Team.AT;
         if (localPlayer)
@@ -119,16 +125,17 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
             if (entity.IsControllerOrOwner)
             { 
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.1f))
+                if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.3f))
                 {
                     float slopeNormal = Mathf.Abs(Vector3.Angle(hit.normal, new Vector3(hit.normal.x, 0, hit.normal.z)) - 90) % 90;
+
+                    if (_networkBody.MoveVelocity.y < 0)
+                        _networkBody.MoveVelocity = Vector3.Scale(_networkBody.MoveVelocity, new Vector3(1, 0, 1));
 
                     if (!_isGrounded && slopeNormal <= _maxAngle)
                     {
                         _isGrounded = true;
-                        _networkBody.UseGravity = false;
-                        if(_networkBody.MoveVelocity.y < 0)
-                            _networkBody.MoveVelocity = Vector3.Scale(_networkBody.MoveVelocity,new Vector3(1,0,1));
+                        //_networkBody.UseGravity = false;
                     }
                     //else if (_isGrounded)
                     //{
@@ -142,7 +149,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
                 {
                     if (_isGrounded)
                     {
-                        _networkBody.UseGravity = true;
+                        //_networkBody.UseGravity = true;
                         _isGrounded = false;
                     }
                 }

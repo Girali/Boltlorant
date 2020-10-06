@@ -46,8 +46,6 @@ public class PlayerRenderer : EntityBehaviour<IPlayerState>
                 PlayerToken pt = (PlayerToken)entity.AttachToken;
                 _textMesh.text = pt.name;
             }
-
         }
-
     }
 }
