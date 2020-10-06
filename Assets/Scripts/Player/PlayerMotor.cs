@@ -107,15 +107,18 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     {
         GameObject localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer");
         Team t = Team.AT;
+        PlayerToken pt = (PlayerToken)entity.AttachToken;
+
         if (localPlayer)
         {
             PlayerToken lpt = (PlayerToken)localPlayer.GetComponent<PlayerMotor>().entity.AttachToken;
             t = lpt.team;
         }
-        PlayerToken pt = (PlayerToken)entity.AttachToken;
 
         if (pt.team == t)
             _isEnemy = false;
+        else
+            _isEnemy = true;
     }
 
     private void FixedUpdate()
