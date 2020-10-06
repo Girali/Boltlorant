@@ -10,7 +10,7 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
     private Rigidbody _rb;
     [SerializeField]
     private float _gravityForce = 1f;
-
+    private bool _useGravity = true;
     public Vector3 MoveVelocity
     {
         set
@@ -40,6 +40,16 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
         state.SetTransforms(state.Transform, transform);
     }
 
+    public float GravityForce
+    {
+        get
+        {
+            return Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
+        }
+    }
+
+    public bool UseGravity { get => _useGravity; set => _useGravity = value; }
+
     private void FixedUpdate()
     {
         if (entity.IsAttached)
@@ -48,12 +58,15 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
             {
                 float g = _moveVelocity.y;
 
-                if (_moveVelocity.y < 0f)
-                    g += 1.5f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
-                else if (_moveVelocity.y > 0f)
-                    g += 1f * Physics.gravity.y * _gravityForce * BoltNetwork.FrameDeltaTime;
-                else
-                    g = _rb.velocity.y;
+                if(_useGravity)
+                {
+                    if (_moveVelocity.y < 0f)
+                        g += 1.5f * GravityForce;
+                    else if (_moveVelocity.y > 0f)
+                        g += 1f * GravityForce;
+                    else
+                        g = _rb.velocity.y;
+                }
 
                 _moveVelocity = new Vector3(_moveVelocity.x, g, _moveVelocity.z);
 

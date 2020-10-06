@@ -43,39 +43,63 @@
             "ExtrapolationMaxFrames": 9,
             "SnapMagnitude": 10.0
           }
+        },
+        {
+          "Name": "Energy",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 6,
+            "CompressionEnabled": true
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyStateSettings, bolt.compiler",
+            "ExtrapolationErrorTolerance": 0.25,
+            "_ExtrapolationCorrectionFrames": 6,
+            "ExtrapolationMaxFrames": 9,
+            "SnapMagnitude": 10.0
+          }
         }
       ],
       "ParentGuid": "4fd4eb95-407f-4cfc-ab83-86f7da2cedf8",
       "PacketMaxBits": 512,
       "PacketMaxProperties": 16,
+      "CompressInstantiationValues": true,
       "InitialPositionCompression": {
+        "Selection": 14,
         "Compression": [
           {
-            "MinValue": -1024,
-            "MaxValue": 1024,
+            "MinValue": -163,
+            "MaxValue": 163,
             "Accuracy": 0.01,
+            "Enabled": true,
             "Pack": 100.0,
             "Read": 0.01,
-            "Shift": 1024.0,
-            "BitsRequired": 18
+            "Shift": 163.0,
+            "BitsRequired": 15
           },
           {
-            "MinValue": -1024,
-            "MaxValue": 1024,
+            "MinValue": -163,
+            "MaxValue": 163,
             "Accuracy": 0.01,
+            "Enabled": true,
             "Pack": 100.0,
             "Read": 0.01,
-            "Shift": 1024.0,
-            "BitsRequired": 18
+            "Shift": 163.0,
+            "BitsRequired": 15
           },
           {
-            "MinValue": -1024,
-            "MaxValue": 1024,
+            "MinValue": -163,
+            "MaxValue": 163,
             "Accuracy": 0.01,
+            "Enabled": true,
             "Pack": 100.0,
             "Read": 0.01,
-            "Shift": 1024.0,
-            "BitsRequired": 18
+            "Shift": 163.0,
+            "BitsRequired": 15
           }
         ]
       },
@@ -336,7 +360,7 @@
           }
         },
         {
-          "Name": "Ability",
+          "Name": "Ability1",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
@@ -349,9 +373,20 @@
           }
         },
         {
+          "Name": "Ability2",
+          "Enabled": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyCommandSettings, bolt.compiler"
+          }
+        },
+        {
           "Name": "Seed",
           "Enabled": true,
-          "Expanded": true,
           "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
@@ -448,31 +483,34 @@
             "RotationSelection": 14,
             "PositionCompression": [
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               },
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               },
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               }
             ],
             "RotationCompression": [
@@ -510,43 +548,49 @@
           },
           "AssetSettings": {
             "$type": "Bolt.Compiler.PropertyStateSettings, bolt.compiler",
+            "SmoothingAlgorithm": 1,
             "ExtrapolationErrorTolerance": 0.25,
             "_ExtrapolationCorrectionFrames": 6,
             "ExtrapolationMaxFrames": 9,
-            "SnapMagnitude": 10.0
+            "SnapMagnitude": 5.0
           }
         }
       ],
       "PacketMaxBits": 512,
       "PacketMaxProperties": 16,
+      "CompressInstantiationValues": true,
       "InitialPositionCompression": {
+        "Selection": 14,
         "Compression": [
           {
-            "MinValue": -1024,
-            "MaxValue": 1024,
+            "MinValue": -163,
+            "MaxValue": 163,
             "Accuracy": 0.01,
+            "Enabled": true,
             "Pack": 100.0,
             "Read": 0.01,
-            "Shift": 1024.0,
-            "BitsRequired": 18
+            "Shift": 163.0,
+            "BitsRequired": 15
           },
           {
-            "MinValue": -1024,
-            "MaxValue": 1024,
+            "MinValue": -163,
+            "MaxValue": 163,
             "Accuracy": 0.01,
+            "Enabled": true,
             "Pack": 100.0,
             "Read": 0.01,
-            "Shift": 1024.0,
-            "BitsRequired": 18
+            "Shift": 163.0,
+            "BitsRequired": 15
           },
           {
-            "MinValue": -1024,
-            "MaxValue": 1024,
+            "MinValue": -163,
+            "MaxValue": 164,
             "Accuracy": 0.01,
+            "Enabled": true,
             "Pack": 100.0,
             "Read": 0.01,
-            "Shift": 1024.0,
-            "BitsRequired": 18
+            "Shift": 163.0,
+            "BitsRequired": 15
           }
         ]
       },
@@ -602,31 +646,34 @@
             "Selection": 14,
             "Compression": [
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               },
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               },
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               }
             ]
           },
@@ -670,31 +717,34 @@
             "Selection": 14,
             "Compression": [
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               },
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               },
               {
-                "MinValue": -1024,
-                "MaxValue": 1024,
+                "MinValue": -163,
+                "MaxValue": 163,
                 "Accuracy": 0.01,
+                "Enabled": true,
                 "Pack": 100.0,
                 "Read": 0.01,
-                "Shift": 1024.0,
-                "BitsRequired": 18
+                "Shift": 163.0,
+                "BitsRequired": 15
               }
             ]
           },
@@ -745,6 +795,29 @@
             "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
             "MaxValue": 1023,
             "CompressionEnabled": true
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        },
+        {
+          "Name": "Precision",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeFloat, bolt.compiler",
+            "Compression": {
+              "MinValue": -1,
+              "MaxValue": 3,
+              "Accuracy": 0.001,
+              "Enabled": true,
+              "Pack": 999.999939,
+              "Read": 0.001,
+              "Shift": 1.0,
+              "BitsRequired": 12
+            }
           },
           "AssetSettings": {
             "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"

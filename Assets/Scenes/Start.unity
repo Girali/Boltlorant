@@ -165,7 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc7ebc7938094345ad4deb4b7cd465a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  username: 
   _headlessServerManager: {fileID: 1897845219}
 --- !u!4 &700298967
 Transform:
@@ -287,5 +286,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _map: snow_2
   _gameType: 
-  _roomID: 
-  _isServer: 1
+  _roomID: GAY
+  _isServer: 0

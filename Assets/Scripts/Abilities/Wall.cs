@@ -23,20 +23,23 @@ public class Wall : Ability
     private Color _red;
     private Color _blue;
 
-
-    RaycastHit hit;
+    private UI_Cooldown _UI_cooldown;
+    private RaycastHit hit;
 
     public void Awake()
     {
         _cooldown = 10;
         _red = new Color(255 / 255, 81 / 255, 0, 40 / 255);
         _blue = new Color(0, 183 / 255, 255 / 255, 40 / 255);
+        _UI_cooldown = GUI_Controller.Current.Cooldown2;
+        _UI_cooldown.InitView(_abilityInterval);
+        _cost = 2;
     }
 
     public override void UpdateAbility(bool button)
     {
         base.UpdateAbility(button);
-        if (_buttonDown && _timer + _abilityInterval <= BoltNetwork.ServerFrame)
+        if (_buttonDown && _timer + _abilityInterval <= BoltNetwork.ServerFrame && (state.Energy - _cost) >= 0)
         {
             if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, Mathf.Infinity, _layerMask))
             {
@@ -53,6 +56,7 @@ public class Wall : Ability
                     {
                         if (!_tooFar)
                         {
+                            _UI_cooldown.StartCooldown();
                             _timer = BoltNetwork.ServerFrame;
                         }
                         _tooFar = false;
@@ -67,6 +71,9 @@ public class Wall : Ability
                         {
                             if (hit.distance < MAX_DISTANCE)
                             {
+                                if (entity.IsOwner)
+                                    state.Energy -= _cost;
+
                                 _timer = BoltNetwork.ServerFrame;
                                 if (_wallInstatiated != null)
                                     BoltNetwork.Destroy(_wallInstatiated);
@@ -108,11 +115,4 @@ public class Wall : Ability
             }
         }
     }
-    /*
-    public override void OnEvent(CreateWallEvent evnt)
-    {
-        if (_wallInstatiated != null)
-            BoltNetwork.Destroy(_wallInstatiated);
-         _wallInstatiated = BoltNetwork.Instantiate(_wallPreset,evnt.Position,Quaternion.Euler(0,evnt.Rotation,0));
-    }*/
 }

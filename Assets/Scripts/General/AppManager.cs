@@ -1,11 +1,22 @@
-﻿using Bolt.Samples.HeadlessServer;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AppManager : MonoBehaviour
 {
     private static AppManager _instance;
-    public string username;
+
+    public string Username
+    {
+        get
+        {
+            return PlayerPrefs.GetString("Username","None");
+        }
+
+        set
+        {
+            PlayerPrefs.GetString("Username",value);
+        }
+    }
 
     public static AppManager Instance
     {

@@ -295,6 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   feedback: {fileID: 0}
+  username: {fileID: 0}
 --- !u!54 &7346133335373810910
 Rigidbody:
   m_ObjectHideFlags: 0

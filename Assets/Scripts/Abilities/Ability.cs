@@ -8,6 +8,7 @@ public class Ability : Bolt.EntityEventListener<IPlayerState>
 
     protected int _cooldown = 0;
     protected float _timer = 0f;
+    protected int _cost = 0;
 
     protected int _abilityInterval
     {

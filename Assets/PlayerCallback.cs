@@ -1,5 +1,5 @@
 ﻿using Bolt;
-
+using UnityEngine;
 public class PlayerCallback : EntityEventListener<IPlayerState>
 {
     PlayerMotor _playerMotor;
@@ -15,21 +15,30 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     {
         state.AddCallback("Life", UpdatePlayerLife);
         state.AddCallback("WeaponIndex", UpdateWeaponIndex);
+        state.AddCallback("Energy", UpdateEnergy);
+        if (entity.IsOwner)
+            state.Energy = 1;
     }
 
-    public void CreateFireEffect(int seed)
+    public void UpdateEnergy()
+    {
+        GUI_Controller.Current.UpdateAbilityView(state.Energy);
+    }
+
+    public void CreateFireEffect(int seed, float precision)
     {
         if (entity.IsOwner)
         {
             FireEffectEvent evnt = FireEffectEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
             evnt.Seed = seed;
+            evnt.Precision = precision;
             evnt.Send();
         }
     }
 
     public override void OnEvent(FireEffectEvent evnt)
     {
-        _playerWeapons.FireEffect(evnt.Seed);
+        _playerWeapons.FireEffect(evnt.Seed,evnt.Precision);
     }
 
     public void UpdateWeaponIndex()

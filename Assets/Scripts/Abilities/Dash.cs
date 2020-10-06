@@ -9,19 +9,25 @@ public class Dash : Ability
     private float _dashForce = 20f;
     private float _dashDuration = 1f;
     private bool _dashing = false;
+    private UI_Cooldown _UI_cooldown;
 
     public void Awake()
     {
         _cooldown = 2;
         _networkBody = GetComponent<NetworkRigidbody>();
+        _UI_cooldown = GUI_Controller.Current.Cooldown1;
+        _UI_cooldown.InitView(_abilityInterval);
+        _cost = 1;
     }
 
     public override void UpdateAbility(bool button)
     {
         base.UpdateAbility(button);
-        if (_buttonDown && _timer + _abilityInterval <= BoltNetwork.ServerFrame)
+        if (_buttonDown && _timer + _abilityInterval <= BoltNetwork.ServerFrame && (state.Energy - _cost) >= 0)
         {
             _timer = BoltNetwork.ServerFrame;
+            if(entity.HasControl)
+                _UI_cooldown.StartCooldown();
             _Dash();
         }
 
@@ -33,6 +39,8 @@ public class Dash : Ability
 
     private void _Dash()
     {
+        if (entity.IsOwner)
+            state.Energy -= _cost;
         StartCoroutine(Dashing());
     }
 

@@ -12,8 +12,8 @@ public class LauncherWeapon : Weapon
             if (_fireFrame + _fireInterval <= BoltNetwork.ServerFrame)
             {
                 _fireFrame = BoltNetwork.ServerFrame;
-                _playerCallback.CreateFireEffect(seed);
-                FireEffect(seed);
+                _playerCallback.CreateFireEffect(seed,0);
+                FireEffect(seed,0);
                 _currentAmmo -= _weaponStat.ammoPerShot;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
                 if (_playerWeapons.entity.IsOwner)
@@ -28,7 +28,7 @@ public class LauncherWeapon : Weapon
         }
     }
 
-    public override void FireEffect(int seed)
+    public override void FireEffect(int seed,float precision)
     {
         _muzzleFlash.Play(true);
         _aniamtor.SetTrigger("Fire");

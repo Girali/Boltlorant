@@ -61,9 +61,9 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
         _weapons[_weaponIndex].ExecuteCommand(fire, aiming, reload, seed);
     }
 
-    public void FireEffect(int seed)
+    public void FireEffect(int seed,float precision)
     {
-        _weapons[_weaponIndex].FireEffect(seed);
+        _weapons[_weaponIndex].FireEffect(seed,precision);
     }
 
     public void SetWeapon(int index)
