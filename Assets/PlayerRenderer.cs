@@ -25,10 +25,12 @@ public class PlayerRenderer : EntityBehaviour<IPlayerState>
 
     public void Init()
     {
+        if (entity.IsControllerOrOwner)
+            _camera.gameObject.SetActive(true);
+
         if (entity.HasControl) 
         {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<PlayerSetupController>().SceneCamera.gameObject.SetActive(false);
-            _camera.gameObject.SetActive(true);
         }
         else
         {
