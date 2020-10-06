@@ -32,22 +32,20 @@ public class PlayerRenderer : EntityBehaviour<IPlayerState>
         }
         else
         {
-            _textMesh.gameObject.SetActive(true);
             _meshRenderer.gameObject.SetActive(true);
 
             if (_playerMotor.IsEnemy)
             {
                 _meshRenderer.material.color = _enemyColor;
-                _textMesh.gameObject.SetActive(false);
             }
             else
             {
-                _meshRenderer.material.color = _allyColor;
+                _textMesh.gameObject.SetActive(true);
                 PlayerToken pt = (PlayerToken)entity.AttachToken;
                 _textMesh.text = pt.name;
+
+                _meshRenderer.material.color = _allyColor;
             }
-
         }
-
     }
 }

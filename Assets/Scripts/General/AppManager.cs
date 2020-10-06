@@ -14,7 +14,7 @@ public class AppManager : MonoBehaviour
 
         set
         {
-            PlayerPrefs.GetString("Username",value);
+            PlayerPrefs.SetString("Username", value);
         }
     }
 
