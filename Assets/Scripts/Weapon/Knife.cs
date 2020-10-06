@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class Knife : Weapon
 {
-    private static float SPEED_MULTIPLIER = 1.5f;
+    private static float SPEED_MULTIPLIER = 2f;
     private static int DAMAGE_MULTIPLIER = 2;
-    private static float BACK_ANGLE_THRESHOLD = 20f;
+    private static float BACK_ANGLE_THRESHOLD = 60f;
+    private static Vector3 VECTOR_SCALE = new Vector3(1, 0, 1);
+    private PlayerMotor _playerMotor;
+
+    public override void Init(PlayerWeapons pw)
+    {
+        base.Init(pw);
+        _playerMotor = pw.GetComponent<PlayerMotor>();
+    }
+
+
     private void OnEnable()
     {
-        _playerWeapons.GetComponent<PlayerMotor>().speed *= SPEED_MULTIPLIER;
+        _playerMotor.ChangeSpeed(_playerMotor.baseSpeed * SPEED_MULTIPLIER);
     }
 
     private void OnDisable()
     {
-        _playerWeapons.GetComponent<PlayerMotor>().speed /= SPEED_MULTIPLIER;
+        _playerMotor.ChangeSpeed(_playerMotor.baseSpeed);
     }
 
     protected override void _Fire(int seed)
@@ -22,8 +32,8 @@ public class Knife : Weapon
         if (_fireFrame + _fireInterval <= BoltNetwork.ServerFrame)
         {
             _fireFrame = BoltNetwork.ServerFrame;
-            _playerCallback.CreateFireEffect(seed);
-            FireEffect(seed);
+            _playerCallback.CreateFireEffect(seed,0);
+            FireEffect(seed,0);
 
             Ray r = new Ray(_camera.position, _camera.forward);
             RaycastHit rh;
@@ -34,8 +44,10 @@ public class Knife : Weapon
                 if (target != null)
                 {
                     int dmg = _weaponStat.dmg;
-                    BoltConsole.Write(Vector3.Angle(Vector3.Scale(_camera.forward, Vector3.up), target.transform.forward).ToString());
-                    if (Vector3.Angle(Vector3.Scale(_camera.forward,Vector3.up), target.transform.forward) < BACK_ANGLE_THRESHOLD)
+                    BoltConsole.Write(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized.ToString());
+                    BoltConsole.Write(target.transform.forward.ToString());
+                    BoltConsole.Write(Vector3.Angle(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized, target.transform.forward).ToString());
+                    if (Vector3.Angle(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized, target.transform.forward) < BACK_ANGLE_THRESHOLD)
                         dmg *= DAMAGE_MULTIPLIER;
                     target.Life -= dmg;
                 }

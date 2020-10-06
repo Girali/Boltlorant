@@ -18,7 +18,7 @@ MonoBehaviour:
   ammoPerShot: 0
   rpm: 70
   dmg: 80
-  maxRange: 1
+  maxRange: 2
   precision: 0
   precisionMoveFactor: 0
   impactPrefab: {fileID: 0}

@@ -67,7 +67,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Init(PlayerWeapons pw)
+    public virtual void Init(PlayerWeapons pw)
     {
         _playerWeapons = pw;
 
