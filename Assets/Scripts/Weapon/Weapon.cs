@@ -106,7 +106,7 @@ public class Weapon : MonoBehaviour
 
     protected virtual void _Fire(int seed)
     {
-        if (_currentAmmo > 0)
+        if (_currentAmmo >= _weaponStat.ammoPerShot)
         {
             if (_fireFrame + _fireInterval <= BoltNetwork.ServerFrame)
             {
@@ -114,7 +114,7 @@ public class Weapon : MonoBehaviour
                 _playerCallback.CreateFireEffect(seed);
                 FireEffect(seed);
 
-                _currentAmmo--;
+                _currentAmmo -= _weaponStat.ammoPerShot;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
 
                 Random.InitState(seed);
@@ -122,7 +122,7 @@ public class Weapon : MonoBehaviour
                 Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
                 RaycastHit rh;
 
-                if (Physics.Raycast(r, out rh,_weaponStat.maxRange))
+                if (Physics.Raycast(r, out rh, _weaponStat.maxRange))
                 {
                     PlayerMotor target = rh.transform.GetComponent<PlayerMotor>();
                     if (target != null)
@@ -167,7 +167,8 @@ public class Weapon : MonoBehaviour
             trail.SetPosition(0, _muzzleFlash.transform.position);
             trail.SetPosition(1, _camera.forward * _weaponStat.maxRange + _camera.position);
         }
-        _muzzleFlash.Play(true);
+        if (_muzzleFlash != null)
+            _muzzleFlash.Play(true);
     }
 
     private void _Aiming()

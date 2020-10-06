@@ -7,6 +7,7 @@ public class WeaponStats : ScriptableObject
     public float reloadTime = 1f;
     public int magazin = 31;
     public int totalMagazin = 124;
+    public int ammoPerShot = 1;
     [Space(10)]
     public int rpm = 80;
     public int dmg = 25;

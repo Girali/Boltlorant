@@ -10,6 +10,11 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     private NetworkRigidbody _networkBody = null;
     private bool _jumpPressed=false;
     private float _speed = 7f;
+    public float speed
+    {
+        get => _speed;
+        set => _speed = value;
+    }
     private float _jumpForce = 9f;
     [SerializeField]
     private int _totalLife = 250;

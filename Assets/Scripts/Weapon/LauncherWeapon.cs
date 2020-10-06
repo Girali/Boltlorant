@@ -14,7 +14,7 @@ public class LauncherWeapon : Weapon
                 _fireFrame = BoltNetwork.ServerFrame;
                 _playerCallback.CreateFireEffect(seed);
                 FireEffect(seed);
-                _currentAmmo--;
+                _currentAmmo -= _weaponStat.ammoPerShot;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
                 if (_playerWeapons.entity.IsOwner)
                 {
