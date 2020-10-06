@@ -25,12 +25,12 @@ public class PlayerToken : Bolt.IProtocolToken
 
 public enum CharacterClass
 {
-    Scout,
-    Heavy,
-    Medic
+    Soldier,
+    Medic,
+    Heavy
 }
 public enum Team
 {
-    T,
+    TT,
     AT
 }

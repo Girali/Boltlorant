@@ -7,13 +7,18 @@ using Bolt.Matchmaking;
 public class NetworkController : GlobalEventListener
 {
     public UnityEngine.UI.Text feedback;
-    public UnityEngine.UI.Text username;
+    public UnityEngine.UI.InputField username;
+
+    private void Awake()
+    {
+        username.text = AppManager.Instance.Username;
+    }
 
     public void Connect()
     {
         if (username.text != "")
         {
-            AppManager.Instance.username = username.text;
+            AppManager.Instance.Username = username.text;
             BoltLauncher.StartClient();
             FeedbackUser("Starting");
         }

@@ -127,7 +127,10 @@ public class Weapon : MonoBehaviour
                     PlayerMotor target = rh.transform.GetComponent<PlayerMotor>();
                     if (target != null)
                     {
-                        target.Life -= _weaponStat.dmg;
+                        if(target.IsHeadshot(rh.collider))
+                            target.Life -= (int)(_weaponStat.dmg * 1.5f);
+                        else
+                            target.Life -= _weaponStat.dmg;
                     }
                 }
             }

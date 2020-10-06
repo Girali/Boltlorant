@@ -15,17 +15,17 @@ public class UI_Cooldown : MonoBehaviour
     [SerializeField]
     private Text _cost2 = null;
     [SerializeField]
-    private Image _BGS = null;
-    [SerializeField]
     private Color _gray = Color.gray;
     [SerializeField]
     private Color _blue = Color.blue;
     [SerializeField]
     private Color _darkGray = Color.black;
 
-    float _time;
-    float _cdTimer;
-    bool _counting = false;
+    private int _energry = 0;
+
+    private float _time = 0;
+    private float _cdTimer = 0;
+    private bool _counting = false;
 
     private void Update()
     {
@@ -44,6 +44,8 @@ public class UI_Cooldown : MonoBehaviour
                 _timer.color = _blue;
                 _fill.color = _blue;
                 _fill.fillAmount = 1;
+
+                UpdateCost(_energry);
             }
         }
     }
@@ -61,7 +63,6 @@ public class UI_Cooldown : MonoBehaviour
 
     public void StartCooldown()
     {
-        Debug.Log("Test");
         _time = _cdTimer + BoltNetwork.ServerFrame;
         _counting = true;
         _shortcut.color = Color.black;
@@ -73,23 +74,47 @@ public class UI_Cooldown : MonoBehaviour
 
     public void UpdateCost(int i)
     {
-        if(i == 0)
+        _energry = i;
+        if (!_counting)
         {
-            _cost1.color = _gray;
-            if(_cost2)
-                _cost2.color = _gray;
-        }
-        else if(i == 1)
-        {
-            _cost1.color = _blue;
-            if (_cost2)
-                _cost2.color = _gray;
-        }
-        else
-        {
-            _cost1.color = _blue;
-            if (_cost2)
-                _cost2.color = _blue;
+            if (i == 0)
+            {
+                _cost1.color = _gray;
+                if (_cost2)
+                    _cost2.color = _gray;
+
+                _shortcut.color = Color.black;
+                _timer.color = Color.white;
+                _fill.color = _darkGray;
+            }
+            else if (i == 1)
+            {
+                _cost1.color = _blue;
+                if (_cost2)
+                {
+                    _cost2.color = _gray;
+
+                    _shortcut.color = Color.black;
+                    _timer.color = Color.white;
+                    _fill.color = _darkGray;
+                }
+                else
+                {
+                    _shortcut.color = _blue;
+                    _timer.color = _blue;
+                    _fill.color = _blue;
+                }
+            }
+            else
+            {
+                _cost1.color = _blue;
+                if (_cost2)
+                    _cost2.color = _blue;
+
+                _shortcut.color = _blue;
+                _timer.color = _blue;
+                _fill.color = _blue;
+            }
         }
     }
     public static string FloatToTime(float toConvert, string format)

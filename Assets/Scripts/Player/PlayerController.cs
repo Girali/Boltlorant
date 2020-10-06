@@ -5,6 +5,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
 {
     private PlayerMotor _playerMotor;
     private PlayerWeapons _playerWeapons;
+    private PlayerRenderer _playerRenderer;
 
     bool _forward;
     bool _backward;
@@ -14,7 +15,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     bool _fire;
     bool _aiming;
     bool _reload;
-    bool _ability;
+    bool _ability1;
+    bool _ability2;
 
     float _yaw;
     float _pitch;
@@ -27,6 +29,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         var token = (PlayerToken)entity.AttachToken;
         _playerMotor.Init(token.characterClass);
         _playerWeapons.Init();
+        _playerRenderer.Init();
+
         if (entity.HasControl)
             Cursor.lockState = CursorLockMode.Locked;
     }
@@ -34,13 +38,13 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     public override void ControlGained()
     {
         GUI_Controller.Current.Show(true);
-        GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
     }
 
     public void Awake()
     {
         _playerMotor = GetComponent<PlayerMotor>();
         _playerWeapons = GetComponent<PlayerWeapons>();
+        _playerRenderer = GetComponent<PlayerRenderer>();
     }
 
     void Update()
@@ -60,7 +64,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
             _seed = Random.Range(0, 1023);
         _aiming = Input.GetMouseButton(1);
         _reload = Input.GetKey(KeyCode.R);
-        _ability = Input.GetKey(KeyCode.Q);
+        _ability1 = Input.GetKey(KeyCode.Q);
+        _ability2 = Input.GetKey(KeyCode.E);
 
         _yaw += Input.GetAxisRaw("Mouse X") * _mouseSensitivity;
         _yaw %= 360f;
@@ -84,7 +89,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         input.Fire = _fire;
         input.Aiming = _aiming;
         input.Reload = _reload;
-        input.Ability = _ability;
+        input.Ability1 = _ability1;
+        input.Ability2 = _ability2;
         input.Yaw = _yaw;
         input.Pitch = _pitch;
         input.Wheel = _wheel;
@@ -92,7 +98,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         
         entity.QueueInput(input);
 
-        _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _ability, _yaw, _pitch);
+        _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _ability1, _ability2, _yaw, _pitch);
         _playerWeapons.ExecuteCommand(_fire, _aiming, _reload, _wheel, _seed);
     }
 
@@ -115,7 +121,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
                 cmd.Input.Left,
                 cmd.Input.Right,
                 cmd.Input.Jump,
-                cmd.Input.Ability,
+                cmd.Input.Ability1,
+                cmd.Input.Ability2,
                 cmd.Input.Yaw,
                 cmd.Input.Pitch);
 

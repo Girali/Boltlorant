@@ -51,6 +51,13 @@ public class GUI_Controller : MonoBehaviour
         _cooldown2.gameObject.SetActive(active);
     }
 
+    public void UpdateAbilityView(int i)
+    {
+        _energyCount.text = i.ToString();
+        _cooldown1.UpdateCost(i);
+        _cooldown2.UpdateCost(i);
+    }
+
     public void UpdateLife(int current, int total)
     {
         _healthBar.UpdateLife(current, total);
