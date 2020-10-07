@@ -24,6 +24,8 @@ public class GUI_Controller : MonoBehaviour
     [SerializeField]
     private UI_Crossair _crossair = null;
     [SerializeField]
+    private GameObject _scope = null;
+    [SerializeField]
     private UI_HealthBar _healthBar = null;
     [SerializeField]
     private UI_AmmoPanel _ammoPanel = null;
@@ -76,5 +78,10 @@ public class GUI_Controller : MonoBehaviour
     public void UpdateCrossair(float t)
     {
         _crossair.UpdateView(t);
+    }
+
+    public void ShowScope(bool show)
+    {
+        _scope.SetActive(show);
     }
 }

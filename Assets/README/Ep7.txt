@@ -1,1 +1,2 @@
 Script RPG and Rocket
+Add Scope part in Weapon

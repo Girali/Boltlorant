@@ -19,5 +19,8 @@ public class WeaponStats : ScriptableObject
     public GameObject trailPrefab;
     [Space(30)]
     public Vector2 crossairLimits = new Vector2(5,40);
+    public bool canScope = false;
+    public float scopeSensitivity = 0.5f;
+    public float scopePrecision = 0.5f;
 }
 

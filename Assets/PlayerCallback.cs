@@ -39,6 +39,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     public void CreateFireEffect(int seed, float precision)
     {
+        BoltConsole.Write(precision.ToString());
         if (entity.IsOwner)
         {
             FireEffectEvent evnt = FireEffectEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
@@ -50,6 +51,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     public override void OnEvent(FireEffectEvent evnt)
     {
+        BoltConsole.Write(evnt.Precision.ToString());
         _playerWeapons.FireEffect(evnt.Seed,evnt.Precision);
     }
 

@@ -1,20 +1,23 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Bolt;
 
-public class Weapon : MonoBehaviour
+public class Weapon : EntityBehaviour<IPlayerState>
 {
     protected Transform _camera;
     [SerializeField]
     protected WeaponStats _weaponStat = null;
     [SerializeField]
     protected Animator _aniamtor = null;
-    //private bool _reloading = false;
-    //private bool _reloadNeed = false;
-    //private Coroutine _reloadCoroutine = null;
+    [SerializeField]
+    protected GameObject _weapon = null;
+
+
     protected int _currentAmmo = 0;
     protected int _currentTotalAmmo = 0;
     protected bool _isReloading = false;
     protected PlayerWeapons _playerWeapons;
+    protected PlayerController _playerController;
     protected PlayerCallback _playerCallback;
     protected NetworkRigidbody _networkRigidbody;
 
@@ -24,6 +27,10 @@ public class Weapon : MonoBehaviour
     protected float _basePrecision = 0;
     protected float _precision = 0;
     private Coroutine _reloadCrt = null;
+
+    private bool _scoping = false;
+    private float _baseSensitivity;
+    private float _scopeSensitivity;
 
     protected int _fireInterval
     {
@@ -62,6 +69,8 @@ public class Weapon : MonoBehaviour
     {
         //_precision = _weaponStat.precision * (_playerWeapons.PrecisionFactor * _weaponStat.precisionMoveFactor);
         _precision = _playerWeapons.PrecisionFactor;
+        if (_scoping)
+            _precision *= _weaponStat.scopePrecision;
         
         if (_playerWeapons.entity.HasControl)
         {
@@ -76,6 +85,7 @@ public class Weapon : MonoBehaviour
         if (!_playerWeapons.entity.HasControl)
             gameObject.layer = 0;
 
+        _playerController = pw.GetComponent<PlayerController>();
         _playerCallback = pw.GetComponent<PlayerCallback>();
         _networkRigidbody = pw.GetComponent<NetworkRigidbody>();
         _camera = _playerWeapons.Cam.transform;
@@ -83,6 +93,8 @@ public class Weapon : MonoBehaviour
         _basePrecision = _weaponStat.precision * _weaponStat.precisionMoveFactor;
         _currentAmmo = _weaponStat.magazin;
         _currentTotalAmmo = _weaponStat.totalMagazin;
+        _baseSensitivity = _playerController.mouseSensitivity;
+        _scopeSensitivity = _baseSensitivity * _weaponStat.scopeSensitivity;
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
@@ -99,9 +111,13 @@ public class Weapon : MonoBehaviour
                 {
                     _Fire(seed);
                 }
-                if (aiming)
+                if(_weaponStat.canScope)
                 {
-                    _Aiming();
+                    if(_scoping != aiming)
+                    {
+                        _scoping = aiming;
+                        _Aiming(_scoping);
+                    }
                 }
             }
         }
@@ -177,9 +193,23 @@ public class Weapon : MonoBehaviour
             _muzzleFlash.Play(true);
     }
 
-    private void _Aiming()
+    private void _Aiming(bool aim)
     {
-        //TODO aim
+        if(entity.HasControl)
+        {
+            GUI_Controller.Current.ShowScope(aim);
+            _weapon.SetActive(!aim);
+            if (aim)
+            {
+                _camera.GetComponent<Camera>().fieldOfView = 40;
+                _playerController.mouseSensitivity = _scopeSensitivity;
+            }
+            else
+            {
+                _camera.GetComponent<Camera>().fieldOfView = 75;
+                _playerController.mouseSensitivity = _baseSensitivity;
+            }
+        }
     }
     
     protected void _Reload()

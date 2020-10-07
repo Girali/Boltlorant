@@ -23,6 +23,11 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     int _wheel = 0;
     int _seed = 0;
     float _mouseSensitivity = 5f;
+    public float mouseSensitivity
+    {
+        get => _mouseSensitivity;
+        set => _mouseSensitivity = value;
+    }
 
     public override void Attached()
     {
