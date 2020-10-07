@@ -39,12 +39,23 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         //_speedWanted = speed;
     }
 
-
     void Awake()
     {
         _networkBody = GetComponent<NetworkRigidbody>();
         _headCollider = GetComponent<SphereCollider>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
+    }
+
+    public void OnDeath(bool b)
+    {
+        _headCollider.enabled = b;
+        _capsuleCollider.enabled = b;
+        _networkBody.enabled = b;
+
+        if (entity.IsOwner)
+        {
+            state.Life = _totalLife;
+        }
     }
 
     public bool IsHeadshot(Collider c)
@@ -57,7 +68,21 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         set
         {
             if (entity.IsOwner)
-                state.Life = value;
+            {
+                if (value < 0)
+                {
+                    state.Life = 0;
+                    state.IsDead = true;
+                }
+                else if(state.Life > _totalLife)
+                {
+                    state.Life = _totalLife;
+                }
+                else
+                {
+                    state.Life = value;
+                }
+            }
         }
 
         get

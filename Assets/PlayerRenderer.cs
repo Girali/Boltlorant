@@ -17,10 +17,43 @@ public class PlayerRenderer : EntityBehaviour<IPlayerState>
 
     [SerializeField]
     private Transform _camera;
+    private Transform _sceneCamera;
 
     private void Awake()
     {
         _playerMotor = GetComponent<PlayerMotor>();
+    }
+
+    public void OnDeath(bool b)
+    {
+        if (b)
+        {
+            if (entity.HasControl)
+                _sceneCamera.gameObject.SetActive(true);
+
+            _camera.gameObject.SetActive(false);
+            _meshRenderer.gameObject.SetActive(false);
+            _textMesh.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (entity.IsControllerOrOwner)
+                _camera.gameObject.SetActive(true);
+
+            if (entity.HasControl)
+            {
+                _sceneCamera.gameObject.SetActive(false);
+            }
+            else
+            {
+                _meshRenderer.gameObject.SetActive(true);
+
+                if (!_playerMotor.IsEnemy)
+                {
+                    _textMesh.gameObject.SetActive(true);
+                }
+            }
+        }
     }
 
     public void Init()
@@ -30,7 +63,8 @@ public class PlayerRenderer : EntityBehaviour<IPlayerState>
 
         if (entity.HasControl) 
         {
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<PlayerSetupController>().SceneCamera.gameObject.SetActive(false);
+            _sceneCamera = GameObject.FindGameObjectWithTag("GameController").GetComponent<PlayerSetupController>().SceneCamera;
+            _sceneCamera.gameObject.SetActive(false);
         }
         else
         {
@@ -45,7 +79,6 @@ public class PlayerRenderer : EntityBehaviour<IPlayerState>
                 _textMesh.gameObject.SetActive(true);
                 PlayerToken pt = (PlayerToken)entity.AttachToken;
                 _textMesh.text = pt.name;
-
                 _meshRenderer.material.color = _allyColor;
             }
         }
