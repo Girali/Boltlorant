@@ -16,7 +16,8 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
     private float _precisionFactor = 0;
     private NetworkRigidbody _networkRigidbody = null;
     private PlayerMotor _playerMotor = null;
-
+    private WeaponID _primary = WeaponID.Glock;
+    private WeaponID _secondary = WeaponID.None;
 
     public int WeaponIndex
     {
@@ -35,6 +36,40 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
     public void Update()
     {
         _precisionFactor = Mathf.Lerp(_precisionFactor, _networkRigidbody.MoveVelocity.magnitude / _playerMotor.Speed, 0.05f);
+    }
+
+    public bool CanAddWeapon(WeaponID toAdd)
+    {
+        bool addIt = true;
+
+        if (_primary != WeaponID.None)
+            if ((int)toAdd <= 3)
+                addIt = false;
+        if (_secondary != WeaponID.None)
+            if ((int)toAdd > 3)
+                addIt = false;
+
+        return addIt;
+    }
+
+    public void AddWeapon(WeaponID toAdd)
+    {
+
+    }
+
+    public void AddWeapon(WeaponDropToken token)
+    {
+
+    }
+
+    public void DropWeapon(WeaponID toRemove)
+    {
+
+    }
+
+    public void OnDeath(bool b)
+    {
+
     }
 
     public void Init()

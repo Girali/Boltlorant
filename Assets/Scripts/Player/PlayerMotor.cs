@@ -264,10 +264,8 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
             {
                 _lastServerPos = position;
             }
-            if (Vector3.Distance(transform.position, _lastServerPos) > 0.1f)
-            {
-                transform.position += (_lastServerPos - transform.position) * BoltNetwork.FrameDeltaTime * 5f;
-            }
+
+            transform.position += (_lastServerPos - transform.position) * 0.5f;
         }
     }
 

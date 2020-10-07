@@ -29,6 +29,7 @@ public enum CharacterClass
     Medic,
     Heavy
 }
+
 public enum Team
 {
     TT,
