@@ -21,6 +21,7 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     protected ParticleSystem _muzzleFlash = null;
     protected int _fireFrame = 0;
+    protected float _basePrecision = 0;
     protected float _precision = 0;
     private Coroutine _reloadCrt = null;
 
@@ -57,13 +58,14 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        _precision = _weaponStat.precision * (_playerWeapons.PrecisionFactor * _weaponStat.precisionMoveFactor);
+        //_precision = _weaponStat.precision * (_playerWeapons.PrecisionFactor * _weaponStat.precisionMoveFactor);
+        _precision = _playerWeapons.PrecisionFactor;
         
         if (_playerWeapons.entity.HasControl)
         {
-            GUI_Controller.Current.UpdateCrossair(_precision / _weaponStat.precision);
+            GUI_Controller.Current.UpdateCrossair(_precision * _weaponStat.precisionMoveFactor);
         }
     }
 
@@ -78,6 +80,7 @@ public class Weapon : MonoBehaviour
         _networkRigidbody = pw.GetComponent<NetworkRigidbody>();
         _camera = _playerWeapons.Cam.transform;
 
+        _basePrecision = _weaponStat.precision * _weaponStat.precisionMoveFactor;
         _currentAmmo = _weaponStat.magazin;
         _currentTotalAmmo = _weaponStat.totalMagazin;
     }
@@ -118,7 +121,7 @@ public class Weapon : MonoBehaviour
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
 
                 Random.InitState(seed);
-                Vector2 rnd = Random.insideUnitSphere * _precision;
+                Vector2 rnd = Random.insideUnitSphere * _precision * _basePrecision;
                 Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
                 RaycastHit rh;
 
@@ -144,7 +147,7 @@ public class Weapon : MonoBehaviour
     public virtual void FireEffect(int seed, float precision)
     {
         Random.InitState(seed);
-        Vector2 rnd = Random.insideUnitSphere * precision;
+        Vector2 rnd = Random.insideUnitSphere * precision * _basePrecision;
         Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
         RaycastHit rh;
         _aniamtor.SetTrigger("Fire");

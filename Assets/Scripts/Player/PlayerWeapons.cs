@@ -32,7 +32,7 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
         _playerMotor = GetComponent<PlayerMotor>();
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         _precisionFactor = Mathf.Lerp(_precisionFactor, _networkRigidbody.MoveVelocity.magnitude / _playerMotor.Speed, 0.05f);
     }
