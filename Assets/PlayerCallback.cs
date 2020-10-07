@@ -2,13 +2,15 @@
 using UnityEngine;
 public class PlayerCallback : EntityEventListener<IPlayerState>
 {
-    PlayerMotor _playerMotor;
-    PlayerWeapons _playerWeapons;
+    private PlayerMotor _playerMotor;
+    private PlayerWeapons _playerWeapons;
+    private PlayerRenderer _playerRenderer;
 
     private void Awake()
     {
         _playerMotor = GetComponent<PlayerMotor>();
         _playerWeapons = GetComponent<PlayerWeapons>();
+        _playerRenderer = GetComponent<PlayerRenderer>();
     }
 
     public override void Attached()
@@ -17,7 +19,17 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         state.AddCallback("WeaponIndex", UpdateWeaponIndex);
         state.AddCallback("Energy", UpdateEnergy);
         if (entity.IsOwner)
+        {
+            state.IsDead = false;
             state.Energy = 1;
+        }
+        state.AddCallback("IsDead", UpdateDeathState);
+    }
+
+    private void UpdateDeathState()
+    {
+        _playerMotor.OnDeath(state.IsDead);
+        _playerRenderer.OnDeath(state.IsDead);
     }
 
     public void UpdateEnergy()
