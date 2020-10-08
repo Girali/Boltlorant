@@ -3,6 +3,9 @@
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Equipment/Weapon")]
 public class WeaponStats : ScriptableObject
 {
+    [Space(10)]
+    public WeaponID ID = WeaponID.None;
+    public GameObject drop = null;
     [Space(40)]
     public float reloadTime = 1f;
     public int magazin = 31;

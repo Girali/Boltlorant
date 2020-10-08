@@ -34,10 +34,10 @@ public class NetworkRigidbody : Bolt.EntityEventListener<IPhysicState>
 
     public override void Attached()
     {
-        //if(renderTransform)
-        //    state.SetTransforms(state.Transform, transform, renderTransform);
-        //else
-        state.SetTransforms(state.Transform, transform);
+        if(_renderTransform)
+            state.SetTransforms(state.Transform, transform, _renderTransform);
+        else
+            state.SetTransforms(state.Transform, transform);
     }
 
     public float GravityForce

@@ -17,6 +17,7 @@ public class Weapon : MonoBehaviour
     protected PlayerWeapons _playerWeapons;
     protected PlayerCallback _playerCallback;
     protected NetworkRigidbody _networkRigidbody;
+    protected PlayerMotor _playerMotor;
 
     [SerializeField]
     protected ParticleSystem _muzzleFlash = null;
@@ -32,6 +33,11 @@ public class Weapon : MonoBehaviour
             return BoltNetwork.FramesPerSecond / rps;
         }
     }
+
+    public WeaponStats WeaponStat { get => _weaponStat; }
+    public int CurrentAmmo { get => _currentAmmo; }
+    public int TotalAmmo { get => _currentTotalAmmo; }
+
 
     private void OnEnable()
     {
@@ -70,6 +76,7 @@ public class Weapon : MonoBehaviour
     public virtual void Init(PlayerWeapons pw)
     {
         _playerWeapons = pw;
+        _playerMotor = _playerWeapons.GetComponent<PlayerMotor>();
 
         if (!_playerWeapons.entity.HasControl)
             gameObject.layer = 0;
@@ -80,6 +87,12 @@ public class Weapon : MonoBehaviour
 
         _currentAmmo = _weaponStat.magazin;
         _currentTotalAmmo = _weaponStat.totalMagazin;
+    }
+
+    public virtual void InitAmmo(int current,int total)
+    {
+        _currentAmmo = current;
+        _currentTotalAmmo = total;
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
@@ -128,9 +141,9 @@ public class Weapon : MonoBehaviour
                     if (target != null)
                     {
                         if(target.IsHeadshot(rh.collider))
-                            target.Life -= (int)(_weaponStat.dmg * 1.5f);
+                            target.Life(_playerMotor , -(int)(_weaponStat.dmg * 1.5f));
                         else
-                            target.Life -= _weaponStat.dmg;
+                            target.Life(_playerMotor , - _weaponStat.dmg);
                     }
                 }
             }

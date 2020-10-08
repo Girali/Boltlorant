@@ -10,18 +10,27 @@ public class WeaponDrop : EntityBehaviour<IPhysicState>
     [SerializeField]
     private GameObject _render = null;
     private bool _inited = false;
-    private WeaponDropToken _dropToken;
+    private WeaponDropToken _dropToken = null;
+    private PlayerMotor _launcher = null;
+    private float _time = 0;
 
     private void Awake()
     {
         _networkRigidbody = GetComponent<NetworkRigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
+        _sphereCollider = GetComponent<SphereCollider>();
+        _time = Time.time + 2f;
     }
 
     private IEnumerator Start()
     {
         yield return new WaitForFixedUpdate();
         _inited = true;
+    }
+
+    public void Init(PlayerMotor playerMotor)
+    {
+        _launcher = playerMotor;
     }
 
     public override void Attached()
@@ -50,20 +59,29 @@ public class WeaponDrop : EntityBehaviour<IPhysicState>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_inited && entity.IsAttached) 
+        if (_inited && entity.IsAttached && entity.IsOwner) 
         {
             if (other.GetComponent<PlayerMotor>())
             {
                 if (other.GetComponent<PlayerWeapons>().CanAddWeapon(_dropToken.ID))
                 {
-                    _networkRigidbody.enabled = false;
-                    _boxCollider.enabled = false;
-                    _render.SetActive(false);
-                    _sphereCollider.enabled = false;
-
-                    if (entity.IsOwner)
+                    if (other.GetComponent<PlayerMotor>() == _launcher && _time < Time.time)
                     {
                         other.GetComponent<PlayerWeapons>().AddWeapon(_dropToken);
+                        BoltNetwork.Destroy(entity);
+                        _networkRigidbody.enabled = false;
+                        _boxCollider.enabled = false;
+                        _render.SetActive(false);
+                        _sphereCollider.enabled = false;
+                    }
+                    else if (other.GetComponent<PlayerMotor>() != _launcher)
+                    {
+                        other.GetComponent<PlayerWeapons>().AddWeapon(_dropToken);
+                        BoltNetwork.Destroy(entity);
+                        _networkRigidbody.enabled = false;
+                        _boxCollider.enabled = false;
+                        _render.SetActive(false);
+                        _sphereCollider.enabled = false;
                     }
                 }
             }

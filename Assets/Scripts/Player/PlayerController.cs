@@ -15,6 +15,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     bool _fire;
     bool _aiming;
     bool _reload;
+    bool _drop;
     bool _ability1;
     bool _ability2;
 
@@ -23,6 +24,8 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
     int _wheel = 0;
     int _seed = 0;
     float _mouseSensitivity = 5f;
+
+    public int Wheel { get => _wheel; set => _wheel = value; }
 
     public override void Attached()
     {
@@ -64,6 +67,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
             _seed = Random.Range(0, 1023);
         _aiming = Input.GetMouseButton(1);
         _reload = Input.GetKey(KeyCode.R);
+        _drop = Input.GetKey(KeyCode.G);
         _ability1 = Input.GetKey(KeyCode.Q);
         _ability2 = Input.GetKey(KeyCode.E);
 
@@ -89,6 +93,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         input.Fire = _fire;
         input.Aiming = _aiming;
         input.Reload = _reload;
+        input.Drop = _drop;
         input.Ability1 = _ability1;
         input.Ability2 = _ability2;
         input.Yaw = _yaw;
@@ -99,7 +104,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         entity.QueueInput(input);
 
         _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _ability1, _ability2, _yaw, _pitch);
-        _playerWeapons.ExecuteCommand(_fire, _aiming, _reload, _wheel, _seed);
+        _playerWeapons.ExecuteCommand(_fire, _aiming, _reload, _drop, _wheel, _seed);
     }
 
     public override void ExecuteCommand(Command command, bool resetState)
@@ -130,6 +135,7 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
                     cmd.Input.Fire, 
                     cmd.Input.Aiming,
                     cmd.Input.Reload,
+                    cmd.Input.Drop,
                     cmd.Input.Wheel,
                     cmd.Input.Seed);
             }

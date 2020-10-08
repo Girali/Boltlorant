@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
+  ID: 0
+  drop: {fileID: 7796728439109039712, guid: bab13aa2ae1210346a93b01fe8d0e55f, type: 3}
   reloadTime: 1.2
   magazin: 30
   totalMagazin: 800
+  ammoPerShot: 1
   rpm: 500
   dmg: 25
   maxRange: 30

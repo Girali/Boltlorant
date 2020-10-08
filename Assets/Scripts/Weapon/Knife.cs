@@ -8,14 +8,6 @@ public class Knife : Weapon
     private static int DAMAGE_MULTIPLIER = 2;
     private static float BACK_ANGLE_THRESHOLD = 60f;
     private static Vector3 VECTOR_SCALE = new Vector3(1, 0, 1);
-    private PlayerMotor _playerMotor;
-
-    public override void Init(PlayerWeapons pw)
-    {
-        base.Init(pw);
-        _playerMotor = pw.GetComponent<PlayerMotor>();
-    }
-
 
     private void OnEnable()
     {
@@ -49,7 +41,7 @@ public class Knife : Weapon
                     BoltConsole.Write(Vector3.Angle(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized, target.transform.forward).ToString());
                     if (Vector3.Angle(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized, target.transform.forward) < BACK_ANGLE_THRESHOLD)
                         dmg *= DAMAGE_MULTIPLIER;
-                    target.Life -= dmg;
+                    target.Life(_playerMotor,-dmg);
                 }
             }
         }
