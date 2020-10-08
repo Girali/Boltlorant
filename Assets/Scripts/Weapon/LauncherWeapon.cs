@@ -18,7 +18,8 @@ public class LauncherWeapon : Weapon
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
                 if (_playerWeapons.entity.IsOwner)
                 {
-                    BoltNetwork.Instantiate(_rocket, _muzzleFlash.transform.position, _camera.rotation);
+                    GameObject g = BoltNetwork.Instantiate(_rocket, _muzzleFlash.transform.position, _camera.rotation);
+                    g.GetComponent<Rocket>().Init(_playerMotor);
                 }
             }
         }

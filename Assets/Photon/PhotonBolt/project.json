@@ -63,11 +63,28 @@
         {
           "Name": "IsDead",
           "Enabled": true,
-          "Expanded": true,
           "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
             "$type": "Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyStateSettings, bolt.compiler",
+            "ExtrapolationErrorTolerance": 0.25,
+            "_ExtrapolationCorrectionFrames": 6,
+            "ExtrapolationMaxFrames": 9,
+            "SnapMagnitude": 10.0
+          }
+        },
+        {
+          "Name": "Money",
+          "Enabled": true,
+          "ReplicationMode": 2,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 8191,
+            "CompressionEnabled": true
           },
           "AssetSettings": {
             "$type": "Bolt.Compiler.PropertyStateSettings, bolt.compiler",
@@ -374,6 +391,19 @@
           }
         },
         {
+          "Name": "Drop",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyCommandSettings, bolt.compiler"
+          }
+        },
+        {
           "Name": "Ability1",
           "Enabled": true,
           "Expanded": true,
@@ -562,7 +592,6 @@
           },
           "AssetSettings": {
             "$type": "Bolt.Compiler.PropertyStateSettings, bolt.compiler",
-            "SmoothingAlgorithm": 1,
             "ExtrapolationErrorTolerance": 0.25,
             "_ExtrapolationCorrectionFrames": 6,
             "ExtrapolationMaxFrames": 9,
@@ -971,6 +1000,54 @@
       "GlobalSenders": 1,
       "Name": "UpdateTeamCountEvent",
       "Guid": "2c4b056e-56ac-4416-9fba-41b4a3d0fc3c",
+      "Groups": []
+    },
+    {
+      "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "Index",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 3,
+            "CompressionEnabled": true
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "EntitySenders": 1,
+      "GlobalSenders": 3,
+      "Name": "RemoveWeaponEvent",
+      "Guid": "947e298b-1f6d-4a19-a8cb-8f4e14fe9e37",
+      "Groups": []
+    },
+    {
+      "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "Token",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeProtocolToken, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "EntitySenders": 1,
+      "GlobalSenders": 3,
+      "Name": "AddWeaponEvent",
+      "Guid": "b4bc436c-bbc5-4230-babd-e5fee71ff000",
       "Groups": []
     }
   ],

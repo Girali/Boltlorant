@@ -21,6 +21,7 @@ public class Weapon : EntityBehaviour<IPlayerState>
     protected PlayerController _playerController;
     protected PlayerCallback _playerCallback;
     protected NetworkRigidbody _networkRigidbody;
+    protected PlayerMotor _playerMotor;
 
     [SerializeField]
     protected ParticleSystem _muzzleFlash = null;
@@ -44,6 +45,11 @@ public class Weapon : EntityBehaviour<IPlayerState>
             return BoltNetwork.FramesPerSecond / rps;
         }
     }
+
+    public WeaponStats WeaponStat { get => _weaponStat; }
+    public int CurrentAmmo { get => _currentAmmo; }
+    public int TotalAmmo { get => _currentTotalAmmo; }
+
 
     private void OnEnable()
     {
@@ -91,6 +97,7 @@ public class Weapon : EntityBehaviour<IPlayerState>
     public virtual void Init(PlayerWeapons pw)
     {
         _playerWeapons = pw;
+        _playerMotor = _playerWeapons.GetComponent<PlayerMotor>();
 
         if (!_playerWeapons.entity.HasControl)
             gameObject.layer = 0;
@@ -105,6 +112,12 @@ public class Weapon : EntityBehaviour<IPlayerState>
         _currentTotalAmmo = _weaponStat.totalMagazin;
         _baseSensitivity = _playerController.mouseSensitivity;
         _scopeSensitivity = _baseSensitivity * _weaponStat.scopeSensitivity;
+    }
+
+    public virtual void InitAmmo(int current,int total)
+    {
+        _currentAmmo = current;
+        _currentTotalAmmo = total;
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
@@ -170,11 +183,12 @@ public class Weapon : EntityBehaviour<IPlayerState>
                             else
                                 _dmgCounter[target] += dmg;
                         }
+
                     }
                 }
 
                 foreach (PlayerMotor pm in _dmgCounter.Keys)
-                    pm.Life -= _dmgCounter[pm];
+                    pm.Life(_playerMotor, _dmgCounter[pm]);
                 _recoil += _weaponStat.recoil;
             }
         }

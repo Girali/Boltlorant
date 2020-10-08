@@ -34,6 +34,9 @@ public class GUI_Controller : MonoBehaviour
     private Text _energyCount = null;
 
     [SerializeField]
+    private Text _money = null;
+
+    [SerializeField]
     private UI_Cooldown _cooldown1 = null;
     [SerializeField]
     private UI_Cooldown _cooldown2 = null;
@@ -41,6 +44,11 @@ public class GUI_Controller : MonoBehaviour
     private void Start()
     {
         Show(false);
+    }
+
+    public void UpdateMoney(int i)
+    {
+        _money.text = "$ " + i;
     }
 
     public void Show(bool active)

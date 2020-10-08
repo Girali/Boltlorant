@@ -16,6 +16,7 @@ public class Rocket : EntityBehaviour<IPhysicState>
     [SerializeField]
     private GameObject _explosion = null;
     private NetworkRigidbody _networkRigidbody = null;
+    private PlayerMotor _playerMotor = null;
 
     private void Awake()
     {
@@ -26,6 +27,11 @@ public class Rocket : EntityBehaviour<IPhysicState>
     {
         yield return new WaitForFixedUpdate();
         _inited = true;
+    }
+
+    public void Init(PlayerMotor pm)
+    {
+        _playerMotor = pm;
     }
 
     public override void Attached()
@@ -63,7 +69,7 @@ public class Rocket : EntityBehaviour<IPhysicState>
         foreach (Collider col in colliders)
         {
             if (col.GetComponent<PlayerMotor>())
-                col.GetComponent<PlayerMotor>().Life -= _DAMAGE;
+                col.GetComponent<PlayerMotor>().Life(_playerMotor, -_DAMAGE);
         }
         BoltNetwork.Destroy(gameObject);
     }

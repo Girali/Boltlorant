@@ -35,7 +35,6 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     public void ChangeSpeed(float speed)
     {
         _speed = speed;
-        //_speedWanted = speed;
     }
 
     void Awake()
@@ -62,31 +61,27 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         return c == _headCollider;
     }
 
-    public int Life
+    public void Life(PlayerMotor killer, int life)
     {
-        set
+        if (entity.IsOwner)
         {
-            if (entity.IsOwner)
-            {
-                if (value < 0)
-                {
-                    state.Life = 0;
-                    state.IsDead = true;
-                }
-                else if(state.Life > _totalLife)
-                {
-                    state.Life = _totalLife;
-                }
-                else
-                {
-                    state.Life = value;
-                }
-            }
-        }
+            int value = state.Life + life;
 
-        get
-        {
-            return state.Life;
+            if (value < 0)
+            {
+                state.Life = 0;
+                state.IsDead = true;
+                killer.state.Money += 500;
+                //TODO Callback
+            }
+            else if(state.Life > _totalLife)
+            {
+                state.Life = _totalLife;
+            }
+            else
+            {
+                state.Life = value;
+            }
         }
     }
 
@@ -177,21 +172,12 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
                     if (!_isGrounded && slopeNormal <= _maxAngle)
                     {
                         _isGrounded = true;
-                        //_networkBody.UseGravity = false;
                     }
-                    //else if (_isGrounded)
-                    //{
-                    //    if (_networkBody.MoveVelocity.y < 0f)
-                    //        _networkBody.MoveVelocity += new Vector3(0, 1.5f * _networkBody.GravityForce , 0);
-                    //    else if (_networkBody.MoveVelocity.y > 0f)
-                    //        _networkBody.MoveVelocity += new Vector3(0, 1f * _networkBody.GravityForce , 0);
-                    //}
                 }
                 else
                 {
                     if (_isGrounded)
                     {
-                        //_networkBody.UseGravity = true;
                         _isGrounded = false;
                     }
                 }
@@ -263,10 +249,8 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
             {
                 _lastServerPos = position;
             }
-            if (Vector3.Distance(transform.position, _lastServerPos) > 0.1f)
-            {
-                transform.position += (_lastServerPos - transform.position) * BoltNetwork.FrameDeltaTime * 5f;
-            }
+
+            transform.position += (_lastServerPos - transform.position) * 0.5f;
         }
     }
 

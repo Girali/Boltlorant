@@ -18,23 +18,35 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         state.AddCallback("Life", UpdatePlayerLife);
         state.AddCallback("WeaponIndex", UpdateWeaponIndex);
         state.AddCallback("Energy", UpdateEnergy);
+
+        state.AddCallback("IsDead", UpdateDeathState);
+        state.AddCallback("Money", UpdateMoney);
+
         if (entity.IsOwner)
         {
             state.IsDead = false;
             state.Energy = 1;
+            state.Money = 250;
         }
-        state.AddCallback("IsDead", UpdateDeathState);
+    }
+
+    private void UpdateMoney()
+    {
+        if(entity.HasControl)
+            GUI_Controller.Current.UpdateMoney(state.Money);
     }
 
     private void UpdateDeathState()
     {
         _playerMotor.OnDeath(state.IsDead);
         _playerRenderer.OnDeath(state.IsDead);
+        _playerWeapons.OnDeath(state.IsDead);
     }
 
     public void UpdateEnergy()
     {
-        GUI_Controller.Current.UpdateAbilityView(state.Energy);
+        if(entity.HasControl)
+            GUI_Controller.Current.UpdateAbilityView(state.Energy);
     }
 
     public void CreateFireEffect(int seed, float precision)
@@ -55,8 +67,33 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         _playerWeapons.FireEffect(evnt.Seed,evnt.Precision);
     }
 
+    public void RemoveWeapon(int i)
+    {
+        RemoveWeaponEvent evnt = RemoveWeaponEvent.Create(entity,EntityTargets.EveryoneExceptOwnerAndController);
+        evnt.Index = i;
+        evnt.Send();
+    }
+
+    public override void OnEvent(RemoveWeaponEvent evnt)
+    {
+        _playerWeapons.RemoveWeapon(evnt.Index);
+    }
+
+    public void AddWeapon(WeaponDropToken w)
+    {
+        AddWeaponEvent evnt = AddWeaponEvent.Create(entity, EntityTargets.EveryoneExceptOwner);
+        evnt.Token = w;
+        evnt.Send();
+    }
+
+    public override void OnEvent(AddWeaponEvent evnt)
+    {
+        _playerWeapons.AddWeapon((WeaponDropToken)evnt.Token);
+    }
+
     public void UpdateWeaponIndex()
     {
+        GetComponent<PlayerController>().Wheel = state.WeaponIndex;
         _playerWeapons.SetWeapon(state.WeaponIndex);
     }
 
