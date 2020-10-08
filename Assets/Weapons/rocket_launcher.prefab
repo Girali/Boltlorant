@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5756512404209866047}
   - component: {fileID: 4948757104736663431}
   - component: {fileID: 2114026553967167729}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: rocket_launcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponStat: {fileID: 11400000, guid: 560936a467b3e7d46b2bf41ffd00ee38, type: 2}
   _aniamtor: {fileID: 2114026553967167729}
+  _weapon: {fileID: 0}
   _muzzleFlash: {fileID: 3940317916860093326}
   _rocket: {fileID: 5817254595381632334, guid: 196a83eddc4abc94fbcb26e257d03886, type: 3}
 --- !u!95 &2114026553967167729
@@ -220,6 +221,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MuzzleFlash
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204418926166926120, guid: 81d4cbdee91f9ec4fb01bc447276072c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204671444444847746, guid: 81d4cbdee91f9ec4fb01bc447276072c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81d4cbdee91f9ec4fb01bc447276072c, type: 3}

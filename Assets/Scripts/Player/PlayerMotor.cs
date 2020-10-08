@@ -5,7 +5,6 @@ using System.Collections;
 public class PlayerMotor : EntityBehaviour<IPlayerState>
 {
 
-
     [SerializeField]
     private Camera _cam = null;
     private NetworkRigidbody _networkBody = null;

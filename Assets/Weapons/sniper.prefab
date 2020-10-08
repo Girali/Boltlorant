@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1520585664079336565}
   - component: {fileID: 5411935904994172058}
   - component: {fileID: -7072000879683578530}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: sniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponStat: {fileID: 11400000, guid: d9052abc27745d5438dfac86794b70a7, type: 2}
   _aniamtor: {fileID: -7072000879683578530}
+  _weapon: {fileID: 0}
   _muzzleFlash: {fileID: 0}
 --- !u!95 &-7072000879683578530
 Animator:
@@ -129,7 +130,7 @@ GameObject:
   - component: {fileID: 7759136365595009673}
   - component: {fileID: 7765475505442663533}
   - component: {fileID: 7777554632741414835}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: scope
   m_TagString: Untagged
   m_Icon: {fileID: 0}

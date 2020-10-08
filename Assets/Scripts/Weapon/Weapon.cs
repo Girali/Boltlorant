@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Bolt;
+using System.Collections.Generic;
 
 public class Weapon : EntityBehaviour<IPlayerState>
 {
@@ -26,17 +27,20 @@ public class Weapon : EntityBehaviour<IPlayerState>
     protected int _fireFrame = 0;
     protected float _basePrecision = 0;
     protected float _precision = 0;
+    protected float _recoil = 0f;
     private Coroutine _reloadCrt = null;
 
     private bool _scoping = false;
     private float _baseSensitivity;
     private float _scopeSensitivity;
 
+    protected Dictionary<PlayerMotor, int> _dmgCounter;
+
     protected int _fireInterval
     {
         get
         {
-            int rps = (_weaponStat.rpm / 60);
+            int rps = _weaponStat.rpm / 60;
             return BoltNetwork.FramesPerSecond / rps;
         }
     }
@@ -68,10 +72,16 @@ public class Weapon : EntityBehaviour<IPlayerState>
     private void FixedUpdate()
     {
         //_precision = _weaponStat.precision * (_playerWeapons.PrecisionFactor * _weaponStat.precisionMoveFactor);
-        _precision = _playerWeapons.PrecisionFactor;
+        _precision = _playerWeapons.PrecisionFactor + _recoil;
+        BoltConsole.Write(_recoil.ToString());
+        if (_recoil != 0f)
+            if (_recoil < 0.1f)
+                _recoil = 0f;
+            else
+                _recoil = Mathf.Lerp(_recoil, 0f, BoltNetwork.FrameDeltaTime * 10);
         if (_scoping)
             _precision *= _weaponStat.scopePrecision;
-        
+
         if (_playerWeapons.entity.HasControl)
         {
             GUI_Controller.Current.UpdateCrossair(_precision * _weaponStat.precisionMoveFactor);
@@ -129,29 +139,43 @@ public class Weapon : EntityBehaviour<IPlayerState>
         {
             if (_fireFrame + _fireInterval <= BoltNetwork.ServerFrame)
             {
+                int dmg = 0;
                 _fireFrame = BoltNetwork.ServerFrame;
                 _playerCallback.CreateFireEffect(seed, _precision);
                 FireEffect(seed, _precision);
 
                 _currentAmmo -= _weaponStat.ammoPerShot;
                 GUI_Controller.Current.UpdateAmmo(_currentAmmo, _currentTotalAmmo);
-
                 Random.InitState(seed);
-                Vector2 rnd = Random.insideUnitSphere * _precision * _basePrecision;
-                Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
-                RaycastHit rh;
 
-                if (Physics.Raycast(r, out rh, _weaponStat.maxRange))
+                _dmgCounter = new Dictionary<PlayerMotor, int>();
+                for (int i = 0; i < _weaponStat.multiShot; i++)
                 {
-                    PlayerMotor target = rh.transform.GetComponent<PlayerMotor>();
-                    if (target != null)
+                    Vector2 rnd = Random.insideUnitSphere * _precision * _basePrecision;
+                    BoltConsole.Write(rnd.ToString());
+                    Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
+                    RaycastHit rh;
+
+                    if (Physics.Raycast(r, out rh, _weaponStat.maxRange))
                     {
-                        if(target.IsHeadshot(rh.collider))
-                            target.Life -= (int)(_weaponStat.dmg * 1.5f);
-                        else
-                            target.Life -= _weaponStat.dmg;
+                        PlayerMotor target = rh.transform.GetComponent<PlayerMotor>();
+                        if (target != null)
+                        {
+                            if (target.IsHeadshot(rh.collider))
+                                dmg = (int)(_weaponStat.dmg * 1.5f);
+                            else
+                                dmg = _weaponStat.dmg;
+                            if (!_dmgCounter.ContainsKey(target))
+                                _dmgCounter.Add(target, dmg);
+                            else
+                                _dmgCounter[target] += dmg;
+                        }
                     }
                 }
+
+                foreach (PlayerMotor pm in _dmgCounter.Keys)
+                    pm.Life -= _dmgCounter[pm];
+                _recoil += _weaponStat.recoil;
             }
         }
         else if (_currentTotalAmmo > 0)
@@ -163,31 +187,34 @@ public class Weapon : EntityBehaviour<IPlayerState>
     public virtual void FireEffect(int seed, float precision)
     {
         Random.InitState(seed);
-        Vector2 rnd = Random.insideUnitSphere * precision * _basePrecision;
-        Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
-        RaycastHit rh;
-        _aniamtor.SetTrigger("Fire");
-
-        if (Physics.Raycast(r, out rh))
+        for (int i = 0; i < _weaponStat.multiShot; i++)
         {
-            if (_weaponStat.impactPrefab)
-                Instantiate(_weaponStat.impactPrefab, rh.point, Quaternion.LookRotation(rh.normal));
-            if (_weaponStat.trailPrefab)
+            Vector2 rnd = Random.insideUnitSphere * precision * _basePrecision;
+            Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
+            RaycastHit rh;
+            _aniamtor.SetTrigger("Fire");
+
+            if (Physics.Raycast(r, out rh))
+            {
+                if (_weaponStat.impactPrefab)
+                    Instantiate(_weaponStat.impactPrefab, rh.point, Quaternion.LookRotation(rh.normal));
+                if (_weaponStat.trailPrefab)
+                {
+                    var trailGo = Instantiate(_weaponStat.trailPrefab, _muzzleFlash.transform.position, Quaternion.identity);
+                    var trail = trailGo.GetComponent<LineRenderer>();
+
+                    trail.SetPosition(0, _muzzleFlash.transform.position);
+                    trail.SetPosition(1, rh.point);
+                }
+            }
+            else if (_weaponStat.trailPrefab)
             {
                 var trailGo = Instantiate(_weaponStat.trailPrefab, _muzzleFlash.transform.position, Quaternion.identity);
                 var trail = trailGo.GetComponent<LineRenderer>();
 
                 trail.SetPosition(0, _muzzleFlash.transform.position);
-                trail.SetPosition(1, rh.point);
+                trail.SetPosition(1, _camera.forward * _weaponStat.maxRange + _camera.position);
             }
-        }
-        else if (_weaponStat.trailPrefab)
-        {
-            var trailGo = Instantiate(_weaponStat.trailPrefab, _muzzleFlash.transform.position, Quaternion.identity);
-            var trail = trailGo.GetComponent<LineRenderer>();
-
-            trail.SetPosition(0, _muzzleFlash.transform.position);
-            trail.SetPosition(1, _camera.forward * _weaponStat.maxRange + _camera.position);
         }
         if (_muzzleFlash != null)
             _muzzleFlash.Play(true);

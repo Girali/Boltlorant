@@ -15,8 +15,17 @@ MonoBehaviour:
   reloadTime: 1
   magazin: 1
   totalMagazin: 10
+  ammoPerShot: 1
+  multiShot: 1
   rpm: 80
   dmg: 0
   maxRange: 0
+  precision: 0.3
+  precisionMoveFactor: 1
+  recoil: 0
   impactPrefab: {fileID: 0}
   trailPrefab: {fileID: 0}
+  crossairLimits: {x: 5, y: 40}
+  canScope: 0
+  scopeSensitivity: 0.5
+  scopePrecision: 0.5
