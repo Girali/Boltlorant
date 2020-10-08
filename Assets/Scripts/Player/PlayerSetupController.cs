@@ -185,8 +185,19 @@ public class PlayerSetupController : Bolt.GlobalEventListener
             v.x += Random.Range(-_ATBase.localScale.x / 2f, _ATBase.localScale.x / 2f);
             v.z += Random.Range(-_ATBase.localScale.z / 2f, _ATBase.localScale.z / 2f);
         }
-
-        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Player, token, v, Quaternion.identity);
+        BoltEntity entity;
+        switch ((CharacterClass)evnt.Class)
+        {
+            case CharacterClass.Soldier:
+                entity = BoltNetwork.Instantiate(BoltPrefabs.Soldier, token, v, Quaternion.identity);
+                break;
+            case CharacterClass.Medic:
+                entity = BoltNetwork.Instantiate(BoltPrefabs.Medic, token, v, Quaternion.identity);
+                break;
+            default:
+                entity = BoltNetwork.Instantiate(BoltPrefabs.Heavy, token, v, Quaternion.identity);
+                break;
+        }
         entity.AssignControl(evnt.RaisedBy);
     }
 }

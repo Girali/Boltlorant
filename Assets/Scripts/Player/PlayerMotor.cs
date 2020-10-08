@@ -25,7 +25,9 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     private SphereCollider _headCollider = null;
     private CapsuleCollider _capsuleCollider = null;
 
+    [SerializeField]
     private Ability _ability1 = null;
+    [SerializeField]
     private Ability _ability2 = null;
     private bool _isEnemy = true;
 
@@ -91,26 +93,6 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
 
     public void Init(CharacterClass characterClass)
     {
-        foreach (Ability a in GetComponents<Ability>())
-            a.enabled = false;
-        switch (characterClass)
-        {
-            case CharacterClass.Soldier:
-                _ability1 = GetComponent<Dash>();
-                _ability2 = GetComponent<Wall>();
-                break;
-            case CharacterClass.Medic:
-                _ability1 = GetComponent<Dash>();
-                _ability2 = GetComponent<Wall>();
-                break;
-            case CharacterClass.Heavy:
-                _ability1 = GetComponent<Dash>();
-                _ability2 = GetComponent<Wall>();
-                break;
-        }
-
-        _ability1.enabled = true;
-        _ability2.enabled = true;
 
         if (entity.IsOwner)
         {
@@ -220,7 +202,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
         _ability1.UpdateAbility(ability1);
-        _ability2.UpdateAbility(ability2);
+        //_ability2.UpdateAbility(ability2);
 
         State stateMotor = new State();
         stateMotor.position = transform.position;
