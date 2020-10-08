@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: Shotgun
   m_EditorClassIdentifier: 
+  ID: 4
+  drop: {fileID: 3029316004545794833, guid: e1831b030aadc6e4a8faec6970123b0e, type: 3}
   reloadTime: 1.2
   magazin: 6
   totalMagazin: 18
@@ -21,7 +23,7 @@ MonoBehaviour:
   dmg: 6
   maxRange: 20
   precision: 2
-  precisionMoveFactor: 0
+  precisionMoveFactor: 0.1
   recoil: 2
   impactPrefab: {fileID: 1260490535886162419, guid: 7e716a774f5d52e4b8fe11625d63028e,
     type: 3}

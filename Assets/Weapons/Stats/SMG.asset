@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: SMG
   m_EditorClassIdentifier: 
+  ID: 8
+  drop: {fileID: 7949773376507035370, guid: b6591efe467af2d45994fcdeca24c29e, type: 3}
   reloadTime: 3
   magazin: 30
   totalMagazin: 120

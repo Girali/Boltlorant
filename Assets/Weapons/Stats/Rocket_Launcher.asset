@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: Rocket_Launcher
   m_EditorClassIdentifier: 
+  ID: 5
+  drop: {fileID: 5637513587484348172, guid: 2b6836b82f61aad418b3a4dff49380c7, type: 3}
   reloadTime: 1
   magazin: 1
   totalMagazin: 10

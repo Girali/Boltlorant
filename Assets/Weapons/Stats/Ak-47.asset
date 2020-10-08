@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: Ak-47
   m_EditorClassIdentifier: 
+  ID: 9
+  drop: {fileID: 6142357493260111565, guid: 97b4e3bd5e5147742b70c0c49016ff43, type: 3}
   reloadTime: 2.5
   magazin: 30
   totalMagazin: 90

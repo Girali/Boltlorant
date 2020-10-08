@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6399553655491152530}
   - component: {fileID: 7329217326423075012}
   - component: {fileID: 7422224657745687251}
+  - component: {fileID: 6661034183083877092}
   m_Layer: 11
   m_Name: silencer
   m_TagString: Untagged
@@ -99,9 +100,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponStat: {fileID: 11400000, guid: 42a9621caaa41c047953806951f12c42, type: 2}
-  _aniamtor: {fileID: 3676798580830192539}
+  _aniamtor: {fileID: 6661034183083877092}
   _weapon: {fileID: 9147868534070648391}
   _muzzleFlash: {fileID: 5013958532064642196}
+--- !u!95 &6661034183083877092
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7362722325006023819}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 446ed68adff4a994c821f69838b21e3f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!95 &3676798580830192539
 Animator:
   serializedVersion: 3

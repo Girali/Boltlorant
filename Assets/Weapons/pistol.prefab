@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8412318670188435861}
   - component: {fileID: 8402878959931602187}
   - component: {fileID: 4411081034035218243}
+  - component: {fileID: 4514976396579122386}
   m_Layer: 11
   m_Name: pistol
   m_TagString: Untagged
@@ -96,9 +97,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponStat: {fileID: 11400000, guid: b16a43dfe46114046964f1a434e67880, type: 2}
-  _aniamtor: {fileID: 0}
+  _aniamtor: {fileID: 4514976396579122386}
   _weapon: {fileID: 0}
   _muzzleFlash: {fileID: 529245740089510598}
+--- !u!95 &4514976396579122386
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8416361951168041575}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 446ed68adff4a994c821f69838b21e3f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &8800768824842737018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -106,6 +126,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8419626117145161051}
     m_Modifications:
+    - target: {fileID: 9041784034161188796, guid: 81d4cbdee91f9ec4fb01bc447276072c,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042066394133258010, guid: 81d4cbdee91f9ec4fb01bc447276072c,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042852899203710902, guid: 81d4cbdee91f9ec4fb01bc447276072c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042922600217885998, guid: 81d4cbdee91f9ec4fb01bc447276072c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9202504358988967666, guid: 81d4cbdee91f9ec4fb01bc447276072c,
         type: 3}
       propertyPath: m_LocalPosition.x

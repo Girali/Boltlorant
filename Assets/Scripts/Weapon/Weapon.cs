@@ -188,7 +188,7 @@ public class Weapon : EntityBehaviour<IPlayerState>
                 }
 
                 foreach (PlayerMotor pm in _dmgCounter.Keys)
-                    pm.Life(_playerMotor, _dmgCounter[pm]);
+                    pm.Life(_playerMotor, -_dmgCounter[pm]);
                 _recoil += _weaponStat.recoil;
             }
         }

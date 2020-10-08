@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: Berettas
   m_EditorClassIdentifier: 
+  ID: 2
+  drop: {fileID: 7354647380197668088, guid: f91020c7f1145fc41b6abf1188158f5f, type: 3}
   reloadTime: 1.2
   magazin: 30
   totalMagazin: 90
@@ -22,6 +24,7 @@ MonoBehaviour:
   maxRange: 40
   precision: 0.3
   precisionMoveFactor: 1
+  recoil: 1
   impactPrefab: {fileID: 1260490535886162419, guid: 7e716a774f5d52e4b8fe11625d63028e,
     type: 3}
   trailPrefab: {fileID: 3331758041860932221, guid: 6b9a6193480b0ab4d99b044563745805,

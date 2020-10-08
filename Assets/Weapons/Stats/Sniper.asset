@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: Sniper
   m_EditorClassIdentifier: 
+  ID: 7
+  drop: {fileID: 4722318929245654804, guid: fb326c84d3835ea4298793685761c9b9, type: 3}
   reloadTime: 1
   magazin: 1
   totalMagazin: 12

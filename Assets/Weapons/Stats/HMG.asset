@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: HMG
   m_EditorClassIdentifier: 
+  ID: 6
+  drop: {fileID: 3964151533350162834, guid: 7221d2e34288f184ba1058b3b1249312, type: 3}
   reloadTime: 5.5
   magazin: 100
   totalMagazin: 200

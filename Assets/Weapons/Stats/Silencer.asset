@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a2a0dcbb539be47ade67db878f886b, type: 3}
   m_Name: Silencer
   m_EditorClassIdentifier: 
+  ID: 3
+  drop: {fileID: 1519853431003808826, guid: 0f587b31aa6a8a84194e9c764b5d498c, type: 3}
   reloadTime: 2
   magazin: 12
   totalMagazin: 24
@@ -22,6 +24,7 @@ MonoBehaviour:
   maxRange: 30
   precision: 0.3
   precisionMoveFactor: 1
+  recoil: 1
   impactPrefab: {fileID: 1260490535886162419, guid: 7e716a774f5d52e4b8fe11625d63028e,
     type: 3}
   trailPrefab: {fileID: 3331758041860932221, guid: 6b9a6193480b0ab4d99b044563745805,

@@ -19,8 +19,8 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
     private NetworkRigidbody _networkRigidbody = null;
     private PlayerMotor _playerMotor = null;
     private PlayerCallback _playerCallback = null;
-    private WeaponID _primary = WeaponID.Glock;
-    private WeaponID _secondary = WeaponID.RPG;
+    private WeaponID _primary = WeaponID.DoubleBeretas;
+    private WeaponID _secondary = WeaponID.Shotgun;
 
     public int WeaponIndex
     {
@@ -181,7 +181,6 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
             _weaponsCam.enabled = false;
 
         _weapons[0].Init(this);
-
 
         Weapon prefab = null;
 
