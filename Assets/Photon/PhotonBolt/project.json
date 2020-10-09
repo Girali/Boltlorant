@@ -1048,7 +1048,7 @@
           "Name": "TotalAmmo",
           "Enabled": true,
           "Expanded": true,
-          "ReplicationMode": 1,
+          "ReplicationMode": 2,
           "Priority": 1,
           "PropertyType": {
             "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
@@ -1067,7 +1067,7 @@
           "Name": "CurrentAmmo",
           "Enabled": true,
           "Expanded": true,
-          "ReplicationMode": 1,
+          "ReplicationMode": 2,
           "Priority": 1,
           "PropertyType": {
             "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",

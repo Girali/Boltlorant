@@ -25,8 +25,8 @@ public class Weapon : MonoBehaviour
         }
         set
         {
-            if (entity.IsOwner)
-                state.Weapons[_index].CurrentAmmo = value;
+            if (_playerWeapons.entity.IsOwner)
+                _playerWeapons.state.Weapons[_index].CurrentAmmo = value;
             _ammo = value;
         }
     }
@@ -38,8 +38,8 @@ public class Weapon : MonoBehaviour
         }
         set
         {
-            if (entity.IsOwner)
-                state.Weapons[_index].TotalAmmo = value;
+            if (_playerWeapons.entity.IsOwner)
+                _playerWeapons.state.Weapons[_index].TotalAmmo = value;
             _totalAmmo = value;
         }
     }
@@ -92,6 +92,8 @@ public class Weapon : MonoBehaviour
             if (_currentAmmo == 0)
                 _reloadCrt = StartCoroutine(Reloading());
         }
+        else
+            _aniamtor.SetBool("Out", true);
     }
 
     private void OnDisable()
@@ -139,13 +141,16 @@ public class Weapon : MonoBehaviour
         _currentTotalAmmo = _weaponStat.totalMagazin;
         _baseSensitivity = _playerController.mouseSensitivity;
         _scopeSensitivity = _baseSensitivity * _weaponStat.scopeSensitivity;
+
+        
     }
 
     public virtual void InitAmmo(int current,int total)
     {
+        if(Mathf.Abs(current-_currentAmmo) > 1 || Mathf.Abs(total - _currentTotalAmmo) > 1)
+            GUI_Controller.Current.UpdateAmmo(current, total);
         _currentAmmo = current;
         _currentTotalAmmo = total;
-        GUI_Controller.Current.UpdateAmmo(current, total);
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
