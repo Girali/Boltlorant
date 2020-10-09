@@ -11,6 +11,7 @@ public class PlayerSetupController : Bolt.GlobalEventListener
     [SerializeField]
     private GameObject _classSelector = null;
     private Team _selectedTeam = Team.AT;
+    private PlayerSquadID _playerSquad;
     [SerializeField]
     private Transform _TTBase = null;
     [SerializeField]
@@ -27,6 +28,14 @@ public class PlayerSetupController : Bolt.GlobalEventListener
     private int _ATCount = 0;
     [SerializeField]
     private Transform _sceneCamera = null;
+
+    [SerializeField]
+    private Text _soldierCount = null;
+    [SerializeField]
+    private Text _medicCount = null;
+    [SerializeField]
+    private Text _heavyCount = null;
+
     public Transform SceneCamera { get => _sceneCamera; set => _sceneCamera = value; }
     private System.Guid _eventID = System.Guid.Empty;
 
@@ -105,6 +114,32 @@ public class PlayerSetupController : Bolt.GlobalEventListener
         evnt.Send();
     }
 
+    public void UpdateClassView()
+    {
+        int s = 0;
+        int m = 0;
+        int h = 0;
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject p in players)
+        {
+            PlayerToken token = (PlayerToken)p.GetComponent<PlayerMotor>().entity.AttachToken;
+            if (token.team == _selectedTeam)
+            {
+                if (token.characterClass == CharacterClass.Soldier)
+                    s++;
+                else if (token.characterClass == CharacterClass.Heavy)
+                    h++;
+                else if(token.characterClass == CharacterClass.Medic)
+                    m++;
+            }
+        }
+
+        _heavyCount.text = h.ToString();
+        _medicCount.text = m.ToString();
+        _soldierCount.text = s.ToString();
+    }
+
     public override void OnEvent(ChoseTeamEvent evnt)
     {
         if (BoltNetwork.IsServer)
@@ -123,13 +158,21 @@ public class PlayerSetupController : Bolt.GlobalEventListener
             }
 
 
-            AddTeamCount((Team)evnt.Team);
+
 
             ConfirmTeamEvent evntT = ConfirmTeamEvent.Create(ReliabilityModes.ReliableOrdered);
             evntT.Team = evnt.Team;
             evntT.Accepted = accepted;
             evntT.ID = evnt.ID;
+
+            if ((Team)evnt.Team == Team.AT)
+                evntT.SquadID = _ATCount;
+            else
+                evntT.SquadID = _TTCount;
+
             evntT.Send();
+
+            AddTeamCount((Team)evnt.Team);
         }
     }
 
@@ -139,10 +182,12 @@ public class PlayerSetupController : Bolt.GlobalEventListener
         {
             if (_eventID == evnt.ID)
             {
+                GUI_Controller.Current.GuiTeam = (Team)evnt.Team;
                 _teamSelector.SetActive(false);
                 _classSelector.SetActive(true);
             }
 
+            _playerSquad = (PlayerSquadID)evnt.SquadID;
 
             if (BoltNetwork.IsClient)
                 AddTeamCount((Team)evnt.Team);
@@ -151,6 +196,8 @@ public class PlayerSetupController : Bolt.GlobalEventListener
         {
             UpdateTeamButtons();
         }
+
+        UpdateClassView();
     }
 
     public void RaiseSpawnPlayerEvent(int index)
@@ -159,6 +206,7 @@ public class PlayerSetupController : Bolt.GlobalEventListener
         spawn.PlayerName = AppManager.Instance.Username;
         spawn.Team = (short)_selectedTeam;
         spawn.Class = index;
+        spawn.SquadID = (short)_playerSquad;
         spawn.Send();
     }
 
@@ -167,6 +215,7 @@ public class PlayerSetupController : Bolt.GlobalEventListener
         var token = new PlayerToken();
         token.name = evnt.PlayerName;
         token.team = (Team)evnt.Team;
+        token.playerSquadID = (PlayerSquadID)evnt.SquadID;
         token.characterClass = (CharacterClass)evnt.Class;
 
         Vector3 v = Vector3.zero;

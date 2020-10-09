@@ -240,6 +240,21 @@
           "AssetSettings": {
             "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
           }
+        },
+        {
+          "Name": "SquadID",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 7,
+            "CompressionEnabled": true
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
         }
       ],
       "EntitySenders": 3,
@@ -956,6 +971,21 @@
           "PropertyType": {
             "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
             "MaxValue": 1,
+            "CompressionEnabled": true
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        },
+        {
+          "Name": "SquadID",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 7,
             "CompressionEnabled": true
           },
           "AssetSettings": {

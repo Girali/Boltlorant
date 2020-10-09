@@ -83,7 +83,8 @@ public class Weapon : MonoBehaviour
             if (_recoil < 0.1f)
                 _recoil = 0f;
             else
-                _recoil = Mathf.Lerp(_recoil, 0f, BoltNetwork.FrameDeltaTime * 10);
+                _recoil = Mathf.Lerp(_recoil, 0f, BoltNetwork.FrameDeltaTime * 5);
+
         if (_scoping)
             _precision *= _weaponStat.scopePrecision;
 
@@ -96,11 +97,11 @@ public class Weapon : MonoBehaviour
     public virtual void Init(PlayerWeapons pw)
     {
         _playerWeapons = pw;
-        _playerMotor = _playerWeapons.GetComponent<PlayerMotor>();
 
         if (!_playerWeapons.entity.HasControl)
             gameObject.layer = 0;
 
+        _playerMotor = pw.GetComponent<PlayerMotor>();
         _playerController = pw.GetComponent<PlayerController>();
         _playerCallback = pw.GetComponent<PlayerCallback>();
         _networkRigidbody = pw.GetComponent<NetworkRigidbody>();

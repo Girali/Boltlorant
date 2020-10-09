@@ -286,5 +286,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _map: snow_2
   _gameType: 
-  _roomID: d
-  _isServer: 1
+  _roomID: 456
+  _isServer: 0
