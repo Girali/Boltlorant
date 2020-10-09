@@ -31,8 +31,6 @@ public class Wall : Ability
         _cooldown = 10;
         _red = new Color(255 / 255, 81 / 255, 0, 40 / 255);
         _blue = new Color(0, 183 / 255, 255 / 255, 40 / 255);
-        _UI_cooldown = GUI_Controller.Current.Cooldown2;
-        _UI_cooldown.InitView(_abilityInterval);
         _cost = 2;
     }
 
