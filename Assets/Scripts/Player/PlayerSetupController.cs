@@ -200,4 +200,24 @@ public class PlayerSetupController : Bolt.GlobalEventListener
         }
         entity.AssignControl(evnt.RaisedBy);
     }
+
+    public Vector3 GetSpawnPoint(Team t)
+    {
+        Vector3 v = Vector3.zero;
+
+        if (t == Team.TT)
+        {
+            v = _TTBase.transform.position;
+            v.x += Random.Range(-_TTBase.localScale.x / 2f, _TTBase.localScale.x / 2f);
+            v.z += Random.Range(-_TTBase.localScale.z / 2f, _TTBase.localScale.z / 2f);
+        }
+        else
+        {
+            v = _ATBase.transform.position;
+            v.x += Random.Range(-_ATBase.localScale.x / 2f, _ATBase.localScale.x / 2f);
+            v.z += Random.Range(-_ATBase.localScale.z / 2f, _ATBase.localScale.z / 2f);
+        }
+
+        return v;
+    }
 }

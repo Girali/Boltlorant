@@ -57,6 +57,9 @@ public class GUI_Controller : MonoBehaviour
         _healthBar.gameObject.SetActive(active);
         _ammoPanel.gameObject.SetActive(active);
         _energyCount.transform.parent.gameObject.SetActive(active);
+        _money.transform.parent.gameObject.SetActive(active);
+        if(_scope.gameObject.activeSelf)
+            _scope.gameObject.SetActive(active);
         _cooldown1.gameObject.SetActive(active);
         _cooldown2.gameObject.SetActive(active);
     }

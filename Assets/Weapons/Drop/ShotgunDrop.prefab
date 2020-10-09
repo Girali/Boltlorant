@@ -129,8 +129,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.39219618, z: 0.5258032}
-  m_Center: {x: 0, y: -0.018666029, z: 0.120791264}
+  m_Size: {x: 0.1, y: 0.2322433, z: 1.5217547}
+  m_Center: {x: 0, y: 0.06131041, z: 0.618767}
 --- !u!135 &3029316004545794844
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: 4fd4eb95-407f-4cfc-ab83-86f7da2cedf8
-  _prefabId: 12
+  _prefabId: 13
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 1

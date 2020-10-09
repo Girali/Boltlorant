@@ -8,6 +8,7 @@ public class HeadlessServerManager : Bolt.GlobalEventListener
 {
     [SerializeField]
     private string _map = "";
+    private static string s_map;
     [SerializeField]
     private string _gameType = "";
     [SerializeField]
@@ -21,6 +22,11 @@ public class HeadlessServerManager : Bolt.GlobalEventListener
     public static string RoomID()
     {
         return s_roomID;
+    }
+
+    public static string Map()
+    {
+        return s_map;
     }
 
     public override void BoltStartBegin()
@@ -62,7 +68,7 @@ public class HeadlessServerManager : Bolt.GlobalEventListener
     {
         // Get custom arguments from command line
         _isServer = "true" == (GetArg("-s", "-isServer") ?? (_isServer ? "true" : "false"));
-        _map = GetArg("-m", "-map") ?? _map;
+        s_map = GetArg("-m", "-map") ?? _map;
         _gameType = GetArg("-t", "-gameType") ?? _gameType; // ex: get game type from command line
         s_roomID = GetArg("-r", "-room") ?? _roomID;
 
