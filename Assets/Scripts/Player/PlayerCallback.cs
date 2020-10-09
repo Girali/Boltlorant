@@ -29,6 +29,42 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
             state.IsDead = false;
             state.Energy = 1;
             state.Money = 250;
+            state.Life = _playerMotor.TotalLife;
+            GameController.Current.UpdateGameState();
+            GameController.Current.state.AlivePlayers++;
+        }
+    }
+
+    public void RoundReset()
+    {
+        if (entity.IsOwner)
+        {
+            if (GameController.Current.CurrentPhase != GamePhase.Starting)
+            {
+                if (state.IsDead == true)
+                {
+                    state.IsDead = false;
+                    if (GameController.Current.CurrentPhase == GamePhase.WaitForPlayers)
+                    {
+                        state.Energy = 1;
+                    }
+                }
+
+                if (GameController.Current.CurrentPhase == GamePhase.StartRound)
+                {
+                    if (state.Energy < 5)
+                        state.Energy += 1;
+                }
+
+                state.Life = _playerMotor.TotalLife;
+                state.SetTeleport(state.Transform);
+                PlayerToken token = (PlayerToken)entity.AttachToken;
+                transform.position = FindObjectOfType<PlayerSetupController>().GetSpawnPoint(token.team);
+            }
+            else
+            {
+                state.Money = 250;
+            }
         }
     }
 
@@ -58,6 +94,14 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     private void UpdateDeathState()
     {
+        if (entity.IsOwner)
+        {
+            if (state.IsDead)
+                GameController.Current.state.AlivePlayers--;
+            else
+                GameController.Current.state.AlivePlayers++;
+        }
+
         _playerMotor.OnDeath(state.IsDead);
         _playerRenderer.OnDeath(state.IsDead);
         _playerWeapons.OnDeath(state.IsDead);

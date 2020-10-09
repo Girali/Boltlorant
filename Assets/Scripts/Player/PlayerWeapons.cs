@@ -61,6 +61,34 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
         _weapons[i].InitAmmo(current, total);
     }
 
+    public void RefillWeapon(WeaponID id)
+    {
+        Weapon prefab = null;
+
+        foreach (GameObject w in _weaponPrefabs)
+        {
+            if (w.GetComponent<Weapon>().WeaponStat.ID == id)
+            {
+                prefab = w.GetComponent<Weapon>();
+                break;
+            }
+        }
+
+        int i = 0;
+
+        if ((int)id <= 3)
+        {
+            i = 1;
+        }
+        else
+        {
+            i = 2;
+        }
+
+        state.Weapons[i].CurrentAmmo = prefab.WeaponStat.magazin;
+        state.Weapons[i].TotalAmmo = prefab.WeaponStat.totalMagazin;
+    }
+
     public void AddWeaponEvent(WeaponID id)
     {
         if (id == WeaponID.None)
@@ -217,10 +245,31 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
 
     public void OnDeath(bool b)
     {
-        if (entity.IsControllerOrOwner)
+        if (b)
         {
-            DropWeapon(_primary, true);
-            DropWeapon(_secondary, true);
+            if (entity.IsControllerOrOwner)
+            {
+                DropWeapon(_primary, true);
+                DropWeapon(_secondary, true);
+            }
+
+            if (entity.IsOwner)
+            {
+                state.WeaponIndex = CalculateIndex(1);
+            }
+        }
+        else
+        {
+            if (entity.IsOwner)
+            {
+                if (state.Weapons[1].ID == -1)
+                    AddWeaponEvent(WeaponID.Glock);
+                else
+                    RefillWeapon((WeaponID)(state.Weapons[1].ID - 1));
+
+                if (state.Weapons[2].ID != -1)
+                    RefillWeapon((WeaponID)(state.Weapons[2].ID - 1));
+            }
         }
     }
 

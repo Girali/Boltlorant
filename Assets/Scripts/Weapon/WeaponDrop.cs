@@ -53,8 +53,9 @@ public class WeaponDrop : EntityBehaviour<IPhysicState>
 
     private void OnCollisionStay(Collision collision)
     {
-        if (entity.IsOwner && (_inited || !collision.gameObject.GetComponent<PlayerMotor>()))
-            _networkRigidbody.MoveVelocity *= 0.5f;
+        if(entity.IsAttached)
+            if (entity.IsOwner && (_inited || !collision.gameObject.GetComponent<PlayerMotor>()))
+                _networkRigidbody.MoveVelocity *= 0.5f;
     }
 
     private void OnTriggerEnter(Collider other)

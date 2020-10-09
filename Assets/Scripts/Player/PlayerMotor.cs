@@ -48,14 +48,9 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
 
     public void OnDeath(bool b)
     {
-        _headCollider.enabled = b;
-        _capsuleCollider.enabled = b;
-        _networkBody.enabled = b;
-
-        if (entity.IsOwner)
-        {
-            state.Life = _totalLife;
-        }
+        _headCollider.enabled = !b;
+        _capsuleCollider.enabled = !b;
+        _networkBody.enabled = !b;
     }
 
     public bool IsHeadshot(Collider c)
