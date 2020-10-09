@@ -36,9 +36,6 @@ public class Knife : Weapon
                 if (target != null)
                 {
                     int dmg = _weaponStat.dmg;
-                    BoltConsole.Write(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized.ToString());
-                    BoltConsole.Write(target.transform.forward.ToString());
-                    BoltConsole.Write(Vector3.Angle(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized, target.transform.forward).ToString());
                     if (Vector3.Angle(Vector3.Scale(_camera.forward, VECTOR_SCALE).normalized, target.transform.forward) < BACK_ANGLE_THRESHOLD)
                         dmg *= DAMAGE_MULTIPLIER;
                     target.Life(_playerMotor,-dmg);

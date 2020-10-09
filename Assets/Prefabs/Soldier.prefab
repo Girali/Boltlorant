@@ -254,7 +254,7 @@ MonoBehaviour:
   _cam: {fileID: 3486356112979482142}
   _weaponsCam: {fileID: 8935317357062836265}
   _weapons:
-  - {fileID: 3405998062361146205}
+  - {fileID: 733762770911047066}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -490,41 +490,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3486356112979482113}
   m_Enabled: 1
---- !u!95 &4876681912745816263
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4817711370752061070}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 446ed68adff4a994c821f69838b21e3f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3405998062361146205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4817711370752061070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f8b8dea47253f408013a2d5d24040d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weaponStat: {fileID: 11400000, guid: 113f85a2f425462488d6c54bc5cf6181, type: 2}
-  _aniamtor: {fileID: 4876681912745816263}
-  _weapon: {fileID: 0}
-  _muzzleFlash: {fileID: 0}
 --- !u!1 &5308540122169329985
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,16 +659,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: knife
       objectReference: {fileID: 0}
-    - target: {fileID: 7471932049783402569, guid: f28d5f34ec7223241b8ba80d1b956d52,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7471932049783402569, guid: f28d5f34ec7223241b8ba80d1b956d52,
-        type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 7474333183440941583, guid: f28d5f34ec7223241b8ba80d1b956d52,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -767,9 +722,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2696055747849707207}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4817711370752061070 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7471932049783402569, guid: f28d5f34ec7223241b8ba80d1b956d52,
+--- !u!114 &733762770911047066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3405998062361146205, guid: f28d5f34ec7223241b8ba80d1b956d52,
     type: 3}
   m_PrefabInstance: {fileID: 2696055747849707207}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f8b8dea47253f408013a2d5d24040d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

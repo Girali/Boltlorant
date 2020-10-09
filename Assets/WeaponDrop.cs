@@ -67,7 +67,7 @@ public class WeaponDrop : EntityBehaviour<IPhysicState>
                 {
                     if (other.GetComponent<PlayerMotor>() == _launcher && _time < Time.time)
                     {
-                        other.GetComponent<PlayerWeapons>().AddWeapon(_dropToken);
+                        other.GetComponent<PlayerWeapons>().AddWeaponEvent((int)_dropToken.ID, _dropToken.currentAmmo, _dropToken.totalAmmp);
                         BoltNetwork.Destroy(entity);
                         _networkRigidbody.enabled = false;
                         _boxCollider.enabled = false;
@@ -76,7 +76,7 @@ public class WeaponDrop : EntityBehaviour<IPhysicState>
                     }
                     else if (other.GetComponent<PlayerMotor>() != _launcher)
                     {
-                        other.GetComponent<PlayerWeapons>().AddWeapon(_dropToken);
+                        other.GetComponent<PlayerWeapons>().AddWeaponEvent((int)_dropToken.ID, _dropToken.currentAmmo, _dropToken.totalAmmp);
                         BoltNetwork.Destroy(entity);
                         _networkRigidbody.enabled = false;
                         _boxCollider.enabled = false;

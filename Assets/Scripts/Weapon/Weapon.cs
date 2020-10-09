@@ -3,7 +3,7 @@ using UnityEngine;
 using Bolt;
 using System.Collections.Generic;
 
-public class Weapon : EntityBehaviour<IPlayerState>
+public class Weapon : MonoBehaviour
 {
     protected Transform _camera;
     [SerializeField]
@@ -79,7 +79,6 @@ public class Weapon : EntityBehaviour<IPlayerState>
     {
         //_precision = _weaponStat.precision * (_playerWeapons.PrecisionFactor * _weaponStat.precisionMoveFactor);
         _precision = _playerWeapons.PrecisionFactor + _recoil;
-        BoltConsole.Write(_recoil.ToString());
         if (_recoil != 0f)
             if (_recoil < 0.1f)
                 _recoil = 0f;
@@ -118,6 +117,7 @@ public class Weapon : EntityBehaviour<IPlayerState>
     {
         _currentAmmo = current;
         _currentTotalAmmo = total;
+        GUI_Controller.Current.UpdateAmmo(current, total);
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
@@ -165,7 +165,6 @@ public class Weapon : EntityBehaviour<IPlayerState>
                 for (int i = 0; i < _weaponStat.multiShot; i++)
                 {
                     Vector2 rnd = Random.insideUnitSphere * _precision * _basePrecision;
-                    BoltConsole.Write(rnd.ToString());
                     Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
                     RaycastHit rh;
 
@@ -236,7 +235,7 @@ public class Weapon : EntityBehaviour<IPlayerState>
 
     private void _Aiming(bool aim)
     {
-        if(entity.HasControl)
+        if(_playerWeapons.entity.HasControl)
         {
             GUI_Controller.Current.ShowScope(aim);
             _weapon.SetActive(!aim);

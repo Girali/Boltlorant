@@ -18,9 +18,11 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         state.AddCallback("Life", UpdatePlayerLife);
         state.AddCallback("WeaponIndex", UpdateWeaponIndex);
         state.AddCallback("Energy", UpdateEnergy);
-
         state.AddCallback("IsDead", UpdateDeathState);
         state.AddCallback("Money", UpdateMoney);
+        state.AddCallback("Weapons[].ID", UpdateWeaponList);
+        state.AddCallback("Weapons[].CurrentAmmo", UpdateWeaponAmmo);
+        state.AddCallback("Weapons[].TotalAmmo", UpdateWeaponAmmo);
 
         if (entity.IsOwner)
         {
@@ -28,6 +30,24 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
             state.Energy = 1;
             state.Money = 250;
         }
+    }
+
+    public void UpdateWeaponList(IState state, string propertyPath, Bolt.ArrayIndices arrayIndices)
+    {
+        int index = arrayIndices[0];
+        IPlayerState s = (IPlayerState)state;
+
+        if (s.Weapons[index].ID == -1)
+            _playerWeapons.RemoveWeapon(index);
+        else
+            _playerWeapons.AddWeapon((WeaponID)s.Weapons[index].ID-1);
+    }
+
+    public void UpdateWeaponAmmo(IState state, string propertyPath, ArrayIndices arrayIndices)
+    {
+        int index = arrayIndices[0];
+        IPlayerState s = (IPlayerState)state;
+        _playerWeapons.InitAmmo(index,s.Weapons[index].CurrentAmmo, s.Weapons[index].TotalAmmo);
     }
 
     private void UpdateMoney()
@@ -51,7 +71,6 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     public void CreateFireEffect(int seed, float precision)
     {
-        BoltConsole.Write(precision.ToString());
         if (entity.IsOwner)
         {
             FireEffectEvent evnt = FireEffectEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
@@ -63,32 +82,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     public override void OnEvent(FireEffectEvent evnt)
     {
-        BoltConsole.Write(evnt.Precision.ToString());
         _playerWeapons.FireEffect(evnt.Seed,evnt.Precision);
-    }
-
-    public void RemoveWeapon(int i)
-    {
-        RemoveWeaponEvent evnt = RemoveWeaponEvent.Create(entity,EntityTargets.EveryoneExceptOwnerAndController);
-        evnt.Index = i;
-        evnt.Send();
-    }
-
-    public override void OnEvent(RemoveWeaponEvent evnt)
-    {
-        _playerWeapons.RemoveWeapon(evnt.Index);
-    }
-
-    public void AddWeapon(WeaponDropToken w)
-    {
-        AddWeaponEvent evnt = AddWeaponEvent.Create(entity, EntityTargets.EveryoneExceptOwner);
-        evnt.Token = w;
-        evnt.Send();
-    }
-
-    public override void OnEvent(AddWeaponEvent evnt)
-    {
-        _playerWeapons.AddWeapon((WeaponDropToken)evnt.Token);
     }
 
     public void UpdateWeaponIndex()
