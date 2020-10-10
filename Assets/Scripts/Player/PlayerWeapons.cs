@@ -11,20 +11,16 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
     [SerializeField]
     private Camera _weaponsCam = null;
     [SerializeField]
-    private GameObject _weaponsRender = null;
-    [SerializeField]
     private Weapon[] _weapons = null;
     [SerializeField]
     private GameObject[] _weaponPrefabs = null;
-    [SerializeField]
-    private Weapon _knifeRender = null;
     private int _weaponIndex = 0;
     private float _precisionFactor = 0;
     private NetworkRigidbody _networkRigidbody = null;
     private PlayerMotor _playerMotor = null;
     private PlayerCallback _playerCallback = null;
-    private WeaponID _primary = WeaponID.DoubleBeretas;
-    private WeaponID _secondary = WeaponID.RPG;
+    private WeaponID _primary = WeaponID.None;
+    private WeaponID _secondary = WeaponID.None;
 
     public int WeaponIndex
     {
@@ -43,7 +39,7 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
 
     public void FixedUpdate()
     {
-        _precisionFactor = Mathf.Lerp(_precisionFactor, _networkRigidbody.MoveVelocity.magnitude / _playerMotor.Speed, 0.05f);
+        _precisionFactor = Mathf.Lerp(_precisionFactor, _networkRigidbody.MoveVelocity.magnitude / _playerMotor.Speed, BoltNetwork.FrameDeltaTime * 5f);
     }
 
     public bool CanAddWeapon(WeaponID toAdd)
@@ -157,22 +153,21 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
             }
         }
 
-        if (entity.IsControllerOrOwner)
-            prefab = Instantiate(prefab, _weaponsCam.transform.position, Quaternion.LookRotation(_weaponsCam.transform.forward), _weaponsCam.transform);
-        else
-        {
-            prefab = Instantiate(prefab, _weaponsCam.transform.position, Quaternion.LookRotation(_weaponsCam.transform.forward), _weaponsRender.transform);
-            prefab.layer = 1;
-        }
-
+        prefab = Instantiate(prefab, _weaponsCam.transform.position, Quaternion.LookRotation(_weaponsCam.transform.forward), _weaponsCam.transform);
 
         if ((int)id <= 3)
         {
+            if (_primary != WeaponID.None)
+                DropWeapon(_primary, false);
+
             _primary = id;
             _weapons[1] = prefab.GetComponent<Weapon>();
         }
         else
         {
+            if (_secondary != WeaponID.None)
+                DropWeapon(_secondary, false);
+
             _secondary = id;
             _weapons[2] = prefab.GetComponent<Weapon>();
         }
@@ -293,13 +288,8 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
 
         if (entity.IsOwner)
         {
-            AddWeaponEvent(_primary);
-            AddWeaponEvent(_secondary);
-        }
-
-        if(!entity.IsControllerOrOwner)
-        {
-            _weapons[0] = _knifeRender;
+            AddWeaponEvent(WeaponID.Glock);
+            AddWeaponEvent(WeaponID.RPG);
         }
 
         SetWeapon(_weaponIndex);

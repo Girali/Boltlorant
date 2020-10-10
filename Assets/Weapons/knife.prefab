@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7474333183440941583}
   - component: {fileID: 7476636432171936983}
   - component: {fileID: 7486562347968026241}
-  - component: {fileID: 4876681912745816263}
   - component: {fileID: 3405998062361146205}
+  - component: {fileID: 8365179810258185305}
   m_Layer: 11
   m_Name: knife
   m_TagString: Untagged
@@ -83,7 +83,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &4876681912745816263
+--- !u!114 &3405998062361146205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471932049783402569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f8b8dea47253f408013a2d5d24040d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponStat: {fileID: 11400000, guid: 113f85a2f425462488d6c54bc5cf6181, type: 2}
+  _aniamtor: {fileID: 8365179810258185305}
+  _weapon: {fileID: 0}
+  _muzzleFlash: {fileID: 0}
+--- !u!95 &8365179810258185305
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -102,19 +118,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3405998062361146205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7471932049783402569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f8b8dea47253f408013a2d5d24040d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weaponStat: {fileID: 11400000, guid: 113f85a2f425462488d6c54bc5cf6181, type: 2}
-  _aniamtor: {fileID: 4876681912745816263}
-  _weapon: {fileID: 0}
-  _muzzleFlash: {fileID: 0}

@@ -19,7 +19,10 @@ public class GUI_Controller : MonoBehaviour
 
     public UI_Cooldown Cooldown1 { get => _cooldown1; }
     public UI_Cooldown Cooldown2 { get => _cooldown2; }
+    public Team GuiTeam { set => _guiTeam = value; }
     #endregion
+
+    Team _guiTeam = Team.AT;
 
     [SerializeField]
     private UI_Crossair _crossair = null;
@@ -41,9 +44,76 @@ public class GUI_Controller : MonoBehaviour
     [SerializeField]
     private UI_Cooldown _cooldown2 = null;
 
+    [SerializeField]
+    private Sprite[] _icons = null;
+
+    [SerializeField]
+    private UI_PlayerPlate[] _allayPlates = null;
+    [SerializeField]
+    private UI_PlayerPlate[] _enemyPlates = null;
+
+    [SerializeField]
+    private Text _allayScore;
+    [SerializeField]
+    private Text _enemyScore;
+
+    [SerializeField]
+    private UI_Timer _timer; 
+
     private void Start()
     {
         Show(false);
+    }
+
+    public void UpdatePlayersPlate(GameObject[] players, GameObject localPlayer)
+    {
+        PlayerMotor pm;
+        PlayerToken pt;
+
+        if (localPlayer != null)
+        {
+            pm = localPlayer.GetComponent<PlayerMotor>();
+            pt = (PlayerToken)pm.entity.AttachToken;
+
+            _allayPlates[(int)pt.playerSquadID].Init(_icons[(int)pt.characterClass]);
+            _allayPlates[(int)pt.playerSquadID].Death(pm.state.IsDead);
+        }
+
+        foreach (GameObject p in players)
+        {
+            pm = p.GetComponent<PlayerMotor>();
+            pt = (PlayerToken)pm.entity.AttachToken;
+
+            if (pm.IsEnemy)
+            {
+                _enemyPlates[(int)pt.playerSquadID].Init(_icons[(int)pt.characterClass]);
+                _enemyPlates[(int)pt.playerSquadID].Death(pm.state.IsDead);
+            }
+            else
+            {
+                _allayPlates[(int)pt.playerSquadID].Init(_icons[(int)pt.characterClass]);
+                _allayPlates[(int)pt.playerSquadID].Death(pm.state.IsDead);
+            }
+        }
+    }
+
+    public void UpdatePoints(int AT,int TT)
+    {
+        if(_guiTeam == Team.AT)
+        {
+            _allayScore.text = AT.ToString();
+            _enemyScore.text = TT.ToString();
+        }
+        else
+        {
+            _allayScore.text = TT.ToString();
+            _enemyScore.text = AT.ToString();
+        }
+    }
+
+    public void UpdateTimer(float f)
+    {
+        _timer.Init(f);
     }
 
     public void UpdateMoney(int i)
@@ -58,7 +128,7 @@ public class GUI_Controller : MonoBehaviour
         _ammoPanel.gameObject.SetActive(active);
         _energyCount.transform.parent.gameObject.SetActive(active);
         _money.transform.parent.gameObject.SetActive(active);
-        if(_scope.gameObject.activeSelf)
+        if (_scope.gameObject.activeSelf)
             _scope.gameObject.SetActive(active);
         _cooldown1.gameObject.SetActive(active);
         _cooldown2.gameObject.SetActive(active);

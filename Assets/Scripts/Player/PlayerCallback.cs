@@ -33,6 +33,10 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
             GameController.Current.UpdateGameState();
             GameController.Current.state.AlivePlayers++;
         }
+        else
+        {
+            FindObjectOfType<PlayerSetupController>().UpdateClassView();
+        }
     }
 
     public void RoundReset()
@@ -47,6 +51,11 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
                     if (GameController.Current.CurrentPhase == GamePhase.WaitForPlayers)
                     {
                         state.Energy = 1;
+
+                        state.Life = _playerMotor.TotalLife;
+                        state.SetTeleport(state.Transform);
+                        PlayerToken token = (PlayerToken)entity.AttachToken;
+                        transform.position = FindObjectOfType<PlayerSetupController>().GetSpawnPoint(token.team);
                     }
                 }
 
@@ -54,12 +63,12 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
                 {
                     if (state.Energy < 5)
                         state.Energy += 1;
-                }
 
-                state.Life = _playerMotor.TotalLife;
-                state.SetTeleport(state.Transform);
-                PlayerToken token = (PlayerToken)entity.AttachToken;
-                transform.position = FindObjectOfType<PlayerSetupController>().GetSpawnPoint(token.team);
+                    state.Life = _playerMotor.TotalLife;
+                    state.SetTeleport(state.Transform);
+                    PlayerToken token = (PlayerToken)entity.AttachToken;
+                    transform.position = FindObjectOfType<PlayerSetupController>().GetSpawnPoint(token.team);
+                }
             }
             else
             {
@@ -68,7 +77,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         }
     }
 
-    public void UpdateWeaponList(IState state, string propertyPath, Bolt.ArrayIndices arrayIndices)
+    public void UpdateWeaponList(IState state, string propertyPath, ArrayIndices arrayIndices)
     {
         int index = arrayIndices[0];
         IPlayerState s = (IPlayerState)state;
