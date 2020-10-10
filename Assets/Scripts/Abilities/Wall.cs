@@ -23,7 +23,6 @@ public class Wall : Ability
     private Color _red;
     private Color _blue;
 
-    private UI_Cooldown _UI_cooldown;
     private RaycastHit hit;
 
     public void Awake()
