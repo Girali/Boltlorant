@@ -97,6 +97,7 @@
         {
           "Name": "Weapons",
           "Enabled": true,
+          "Expanded": true,
           "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
@@ -1276,25 +1277,11 @@
     },
     {
       "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
-      "Properties": [
-        {
-          "Name": "Set",
-          "Enabled": true,
-          "Expanded": true,
-          "ReplicationMode": 1,
-          "Priority": 1,
-          "PropertyType": {
-            "$type": "Bolt.Compiler.PropertyTypeBool, bolt.compiler"
-          },
-          "AssetSettings": {
-            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
-          }
-        }
-      ],
+      "Properties": [],
       "EntitySenders": 1,
       "GlobalSenders": 3,
-      "Name": "SetWallsEvent",
-      "Guid": "2202b964-9499-47b5-9127-2aec93a6d7b3",
+      "Name": "FlashEvent",
+      "Guid": "98451856-5397-46ce-acf3-c56d98ccefb6",
       "Groups": []
     }
   ],

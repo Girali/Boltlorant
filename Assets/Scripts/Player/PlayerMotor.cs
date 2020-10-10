@@ -74,7 +74,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
                 else if (killer.state.Money + 600 > 8000)
                     killer.state.Money = 8000;
             }
-            else if(state.Life > _totalLife)
+            else if(value > _totalLife)
             {
                 state.Life = _totalLife;
             }
@@ -200,7 +200,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
         _ability1.UpdateAbility(ability1);
-        //_ability2.UpdateAbility(ability2);
+        _ability2.UpdateAbility(ability2);
 
         State stateMotor = new State();
         stateMotor.position = transform.position;

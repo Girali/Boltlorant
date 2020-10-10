@@ -276,6 +276,8 @@ GameObject:
   - component: {fileID: 5515444011811122710}
   - component: {fileID: 5555498919564143556}
   - component: {fileID: -53695251359695591}
+  - component: {fileID: 4887002191812156195}
+  - component: {fileID: -6645757319227068970}
   m_Layer: 0
   m_Name: Medic
   m_TagString: Player
@@ -341,7 +343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: 49d968d6-e8c5-4eaa-b1a2-2633a996b7d1
-  _prefabId: 3
+  _prefabId: 7
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 1
@@ -398,8 +400,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cam: {fileID: 3486356112979482142}
   _totalLife: 250
-  _ability1: {fileID: 0}
-  _ability2: {fileID: 0}
+  _ability1: {fileID: -6645757319227068970}
+  _ability2: {fileID: 4887002191812156195}
 --- !u!114 &7734592048233975451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +475,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderTransform: {fileID: 2071820735259268214}
   _gravityForce: 2
+--- !u!114 &4887002191812156195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486356111897762221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44d8f7e82c5efb74caf5869d982fbfb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectPreview: {fileID: 106824152871175008, guid: a7fad71ab1bc57f4cada430d255a3290,
+    type: 3}
+  _objectToLaunch: {fileID: 8275271445785071170, guid: 2b9f37f5a6cfdd04094bbae058839b96,
+    type: 3}
+  _cam: {fileID: 3486356112979482112}
+  _launchForce: 20
+--- !u!114 &-6645757319227068970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486356111897762221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 808dea4ce5a12b74298c4d4db8eeb470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cam: {fileID: 3486356112979482112}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &3486356112979482113
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,6 +820,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f28d5f34ec7223241b8ba80d1b956d52, type: 3}
+--- !u!4 &4814482171652877512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7474333183440941583, guid: f28d5f34ec7223241b8ba80d1b956d52,
+    type: 3}
+  m_PrefabInstance: {fileID: 2696055747849707207}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &733762770911047066 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3405998062361146205, guid: f28d5f34ec7223241b8ba80d1b956d52,
@@ -796,9 +838,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f8b8dea47253f408013a2d5d24040d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4814482171652877512 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7474333183440941583, guid: f28d5f34ec7223241b8ba80d1b956d52,
-    type: 3}
-  m_PrefabInstance: {fileID: 2696055747849707207}
-  m_PrefabAsset: {fileID: 0}

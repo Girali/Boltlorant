@@ -173,4 +173,15 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         if (entity.HasControl)
             GUI_Controller.Current.UpdateLife(state.Life, _playerMotor.TotalLife);
     }
+
+    public void RaiseFlashEvent()
+    {
+        FlashEvent evnt = FlashEvent.Create(entity, EntityTargets.OnlyController);
+        evnt.Send();
+    }
+
+    public override void OnEvent(FlashEvent evnt)
+    {
+        GUI_Controller.Current.Flash();
+    }
 }

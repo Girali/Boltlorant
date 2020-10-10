@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GUI_Controller : MonoBehaviour
@@ -10,7 +11,7 @@ public class GUI_Controller : MonoBehaviour
     {
         get
         {
-            if(_instance == null)
+            if (_instance == null)
                 _instance = FindObjectOfType<GUI_Controller>();
 
             return _instance;
@@ -62,6 +63,8 @@ public class GUI_Controller : MonoBehaviour
 
     [SerializeField]
     private UI_Shop _shop;
+    private Image _blindMask = null;
+    Coroutine blind;
 
     private void Start()
     {
@@ -118,9 +121,9 @@ public class GUI_Controller : MonoBehaviour
         }
     }
 
-    public void UpdatePoints(int AT,int TT)
+    public void UpdatePoints(int AT, int TT)
     {
-        if(_guiTeam == Team.AT)
+        if (_guiTeam == Team.AT)
         {
             _allayScore.text = AT.ToString();
             _enemyScore.text = TT.ToString();
@@ -187,5 +190,29 @@ public class GUI_Controller : MonoBehaviour
     public void ShowScope(bool show)
     {
         _scope.SetActive(show);
+    }
+
+    public void Flash()
+    {
+
+        if (blind != null)
+            StopCoroutine(blind);
+        blind = StartCoroutine(CRT_Blind(3f));
+    }
+
+    IEnumerator CRT_Blind(float f)
+    {
+        float startTime = Time.time;
+        while (startTime + f > Time.time)
+        {
+            _blindMask.color = new Color(1, 1, 1, 1);
+            yield return null;
+            while (startTime + f - 1 < Time.time && startTime + f > Time.time)
+            {
+                _blindMask.color = new Color(1, 1, 1, -(Time.time - (startTime + f)));
+                yield return null;
+            }
+        }
+        _blindMask.color = new Color(1, 1, 1, 0);
     }
 }

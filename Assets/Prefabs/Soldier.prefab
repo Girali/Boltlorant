@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 5555498919564143556}
   - component: {fileID: -53695251359695591}
   - component: {fileID: -2729347108270361237}
+  - component: {fileID: 6388817625605409810}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Player
@@ -180,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: 49d968d6-e8c5-4eaa-b1a2-2633a996b7d1
-  _prefabId: 4
+  _prefabId: 8
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 1
@@ -238,7 +239,7 @@ MonoBehaviour:
   _cam: {fileID: 3486356112979482142}
   _totalLife: 250
   _ability1: {fileID: -2729347108270361237}
-  _ability2: {fileID: 0}
+  _ability2: {fileID: 6388817625605409810}
 --- !u!114 &7734592048233975451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +326,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cam: {fileID: 3486356112979482112}
+--- !u!114 &6388817625605409810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486356111897762221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44d8f7e82c5efb74caf5869d982fbfb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectPreview: {fileID: 1436615123581660558, guid: 3a67a98ec3a9ec743a2b4ebf189f9c98,
+    type: 3}
+  _objectToLaunch: {fileID: 753512894906121224, guid: 2c75d1f86b318fc4a909e6ff9438debe,
+    type: 3}
+  _cam: {fileID: 3486356112979482112}
+  _launchForce: 20
 --- !u!1 &3486356112430307986
 GameObject:
   m_ObjectHideFlags: 0

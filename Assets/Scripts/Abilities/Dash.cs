@@ -9,7 +9,6 @@ public class Dash : Ability
     private float _dashForce = 20f;
     private float _dashDuration = 1f;
     private bool _dashing = false;
-    private UI_Cooldown _UI_cooldown;
 
     public void Awake()
     {
