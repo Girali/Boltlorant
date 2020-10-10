@@ -45,5 +45,6 @@ public enum CharacterClass
 public enum Team
 {
     TT,
-    AT
+    AT,
+    None
 }

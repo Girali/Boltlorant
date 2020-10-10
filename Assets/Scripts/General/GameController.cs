@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bolt;
 
-public class GameController : EntityBehaviour<IGameModeState>
+public class GameController : EntityEventListener<IGameModeState>
 {
     #region Singleton
     private static GameController _instance = null;
@@ -24,7 +24,15 @@ public class GameController : EntityBehaviour<IGameModeState>
     GamePhase _currentPhase = GamePhase.WaitForPlayers;
     int _playerCountTarget = 4;
     float _nextEvent = 0;
+    GameObject _walls;
+    Team _roundWinner = Team.None;
+
     public GamePhase CurrentPhase { get => _currentPhase; }
+
+    private void Start()
+    {
+        _walls = GameObject.Find("__Walls");
+    }
 
     public override void Attached()
     {
@@ -33,6 +41,21 @@ public class GameController : EntityBehaviour<IGameModeState>
         state.AddCallback("ATPoints", UpdatePoints);
         state.AddCallback("Timer", UpdateTime);
     }
+    
+    public void SetWalls(bool b)
+    {
+        SetWallsEvent evnt = SetWallsEvent.Create(entity);
+        evnt.Set = b;
+        evnt.Send();
+    }
+
+    public override void OnEvent(SetWallsEvent evnt)
+    {
+        for (int i = 0; i < _walls.transform.childCount; i++)
+        {
+            _walls.transform.GetChild(i).gameObject.SetActive(evnt.Set);
+        }
+    }
 
     public void UpdatePlayersAlive()
     {
@@ -40,17 +63,68 @@ public class GameController : EntityBehaviour<IGameModeState>
 
         if (entity.IsOwner)
         {
+            int ATCount = 0;
+            int TTCount = 0;
+
+            foreach (GameObject player in players)
+            {
+                PlayerToken pt = (PlayerToken)player.GetComponent<PlayerMotor>().entity.AttachToken;
+
+                if (!player.GetComponent<PlayerMotor>().state.IsDead)
+                {
+                    if (pt.team == Team.AT)
+                        ATCount++;
+                    else
+                        TTCount++;
+                }
+            }
+
+            _roundWinner = Team.None;
+
+            if (_currentPhase == GamePhase.AT_Defending)
+            {
+                if (ATCount == 0)
+                {
+                    state.TTPoints++;
+                    _nextEvent = BoltNetwork.ServerTime + 10f;
+                    state.Timer = 10f;
+                    _currentPhase = GamePhase.EndRound;
+                    _roundWinner = Team.TT;
+                }
+
+                if (TTCount == 0)
+                {
+                    state.ATPoints++;
+                    _nextEvent = BoltNetwork.ServerTime + 10f;
+                    state.Timer = 10f;
+                    _currentPhase = GamePhase.EndRound;
+                    _roundWinner = Team.AT;
+                }
+            }
+
             if (GamePhase.WaitForPlayers == _currentPhase)
             {
                 foreach (GameObject player in players)
                 {
-                    player.GetComponent<PlayerCallback>().RoundReset();
+                    player.GetComponent<PlayerCallback>().RoundReset(Team.None);
+                }
+            }
+
+            if (_currentPhase == GamePhase.TT_Planted)
+            {
+                if (ATCount == 0)
+                {
+                    state.TTPoints++;
+                    _nextEvent = BoltNetwork.ServerTime + 10f;
+                    state.Timer = 10f;
+                    _currentPhase = GamePhase.EndRound;
                 }
             }
         }
 
         GameObject lp = GameObject.FindGameObjectWithTag("LocalPlayer");
         GUI_Controller.Current.UpdatePlayersPlate(players,lp);
+
     }
 
     public void UpdatePoints()
@@ -75,7 +149,7 @@ public class GameController : EntityBehaviour<IGameModeState>
                     GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                     foreach (GameObject player in players)
                     {
-                        player.GetComponent<PlayerCallback>().RoundReset();
+                        player.GetComponent<PlayerCallback>().RoundReset(Team.None);
                     }
 
                     _nextEvent = BoltNetwork.ServerTime + 15f;
@@ -96,6 +170,15 @@ public class GameController : EntityBehaviour<IGameModeState>
             case GamePhase.AT_Defending:
                 break;
             case GamePhase.TT_Planted:
+                break;
+            case GamePhase.EndRound:
+                if (_nextEvent < BoltNetwork.ServerTime)
+                {
+                    _nextEvent = BoltNetwork.ServerTime + 15f;
+                    state.Timer = 15f;
+                    _currentPhase = GamePhase.StartRound;
+                    UpdateGameState();
+                }
                 break;
             case GamePhase.EndGame:
                 break;
@@ -122,7 +205,7 @@ public class GameController : EntityBehaviour<IGameModeState>
             case GamePhase.Starting:
                 break;
             case GamePhase.StartRound:
-                //TODO Up wall
+                SetWalls(true);
                 GameObject[] drops = GameObject.FindGameObjectsWithTag("Drop");
 
                 foreach (GameObject drop in drops)
@@ -132,15 +215,17 @@ public class GameController : EntityBehaviour<IGameModeState>
 
                 foreach (GameObject player in players)
                 {
-                    player.GetComponent<PlayerCallback>().RoundReset();
+                    player.GetComponent<PlayerCallback>().RoundReset(_roundWinner);
                 }
                 _nextEvent = BoltNetwork.ServerTime + 10f;
                 state.Timer = 10f;
                 break;
             case GamePhase.AT_Defending:
-                //TODO Down walls
+                SetWalls(false);
                 break;
             case GamePhase.TT_Planted:
+                break;
+            case GamePhase.EndRound:
                 break;
             case GamePhase.EndGame:
                 break;
@@ -157,5 +242,6 @@ public enum GamePhase
     StartRound,
     AT_Defending,
     TT_Planted,
+    EndRound,
     EndGame
 }

@@ -68,8 +68,11 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
             {
                 state.Life = 0;
                 state.IsDead = true;
-                killer.state.Money += 500;
-                //TODO Callback
+
+                if (killer.state.Money < 8000)
+                    killer.state.Money += 600;
+                else if (killer.state.Money + 600 > 8000)
+                    killer.state.Money = 8000;
             }
             else if(state.Life > _totalLife)
             {

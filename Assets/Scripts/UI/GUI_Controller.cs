@@ -58,11 +58,32 @@ public class GUI_Controller : MonoBehaviour
     private Text _enemyScore;
 
     [SerializeField]
-    private UI_Timer _timer; 
+    private UI_Timer _timer;
+
+    [SerializeField]
+    private UI_Shop _shop;
 
     private void Start()
     {
         Show(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (_shop.gameObject.activeSelf)
+                Cursor.lockState = CursorLockMode.Locked;
+            else
+                Cursor.lockState = CursorLockMode.None;
+
+            _shop.gameObject.SetActive(!_shop.gameObject.activeSelf);
+        }
+    }
+
+    public void UpdateShop(int e,int m)
+    {
+        _shop.UpdateView(e, m);
     }
 
     public void UpdatePlayersPlate(GameObject[] players, GameObject localPlayer)
@@ -130,6 +151,8 @@ public class GUI_Controller : MonoBehaviour
         _money.transform.parent.gameObject.SetActive(active);
         if (_scope.gameObject.activeSelf)
             _scope.gameObject.SetActive(active);
+        if(_shop.gameObject.activeSelf)
+            _shop.gameObject.SetActive(active);
         _cooldown1.gameObject.SetActive(active);
         _cooldown2.gameObject.SetActive(active);
     }

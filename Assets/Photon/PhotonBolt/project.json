@@ -97,7 +97,6 @@
         {
           "Name": "Weapons",
           "Enabled": true,
-          "Expanded": true,
           "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
@@ -1273,6 +1272,29 @@
       },
       "Name": "GameModeState",
       "Guid": "5463eca5-4167-45ce-bedd-967042061ae4",
+      "Groups": []
+    },
+    {
+      "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "Set",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "EntitySenders": 1,
+      "GlobalSenders": 3,
+      "Name": "SetWallsEvent",
+      "Guid": "2202b964-9499-47b5-9127-2aec93a6d7b3",
       "Groups": []
     }
   ],

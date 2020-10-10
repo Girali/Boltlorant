@@ -28,7 +28,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         {
             state.IsDead = false;
             state.Energy = 1;
-            state.Money = 250;
+            state.Money = 800;
             state.Life = _playerMotor.TotalLife;
             GameController.Current.UpdateGameState();
             GameController.Current.state.AlivePlayers++;
@@ -39,7 +39,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         }
     }
 
-    public void RoundReset()
+    public void RoundReset(Team winner)
     {
         if (entity.IsOwner)
         {
@@ -61,18 +61,33 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
                 if (GameController.Current.CurrentPhase == GamePhase.StartRound)
                 {
-                    if (state.Energy < 5)
+                    if (state.Energy < 4)
                         state.Energy += 1;
+
+                    if (state.Money < 8000)
+                        state.Money += 800;
+                    else if(state.Money + 800 > 8000)
+                        state.Money = 8000;
+
+                    PlayerToken token = (PlayerToken)entity.AttachToken;
+
+                    if (token.team == winner)
+                    {
+                        if (state.Money < 8000)
+                            state.Money += 500;
+                        else if (state.Money + 500 > 8000)
+                            state.Money = 8000;
+                    }
 
                     state.Life = _playerMotor.TotalLife;
                     state.SetTeleport(state.Transform);
-                    PlayerToken token = (PlayerToken)entity.AttachToken;
                     transform.position = FindObjectOfType<PlayerSetupController>().GetSpawnPoint(token.team);
                 }
             }
             else
             {
-                state.Money = 250;
+                state.Money = 0;
+                state.Energy = 0;
             }
         }
     }
@@ -97,8 +112,11 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     private void UpdateMoney()
     {
-        if(entity.HasControl)
+        if (entity.HasControl)
+        {
             GUI_Controller.Current.UpdateMoney(state.Money);
+            GUI_Controller.Current.UpdateShop(state.Energy, state.Money);
+        }
     }
 
     private void UpdateDeathState()
@@ -111,6 +129,9 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
                 GameController.Current.state.AlivePlayers++;
         }
 
+        if (entity.HasControl)
+            GUI_Controller.Current.Show(false);
+
         _playerMotor.OnDeath(state.IsDead);
         _playerRenderer.OnDeath(state.IsDead);
         _playerWeapons.OnDeath(state.IsDead);
@@ -118,8 +139,11 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     public void UpdateEnergy()
     {
-        if(entity.HasControl)
+        if (entity.HasControl)
+        {
+            GUI_Controller.Current.UpdateShop(state.Energy, state.Money);
             GUI_Controller.Current.UpdateAbilityView(state.Energy);
+        }
     }
 
     public void CreateFireEffect(int seed, float precision)
