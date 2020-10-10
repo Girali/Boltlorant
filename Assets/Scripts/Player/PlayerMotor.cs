@@ -197,7 +197,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
         transform.rotation = Quaternion.Euler(0, yaw, 0);
 
         _ability1.UpdateAbility(ability1);
-        //_ability2.UpdateAbility(ability2);
+        _ability2.UpdateAbility(ability2);
 
         State stateMotor = new State();
         stateMotor.position = transform.position;

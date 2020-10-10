@@ -1274,6 +1274,15 @@
       "Name": "GameModeState",
       "Guid": "5463eca5-4167-45ce-bedd-967042061ae4",
       "Groups": []
+    },
+    {
+      "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "EntitySenders": 1,
+      "GlobalSenders": 3,
+      "Name": "FlashEvent",
+      "Guid": "98451856-5397-46ce-acf3-c56d98ccefb6",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"

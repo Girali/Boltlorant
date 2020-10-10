@@ -1,39 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Bolt;
 
-public class Grenade : Ability
+public class Grenade : EntityBehaviour<IPhysicState>
 {
+    private NetworkRigidbody _networkRigidbody = null;
     [SerializeField]
-    GameObject _grenade = null;
-    [SerializeField]
-    private Transform _cam = null;
-    private float _launchForce = 10f;
+    private float _timer = 5f;
+    private float _bouceThreshold = 0.2f;
+    private float _repulsionForce = 0.5f;
 
-    public void Awake()
+    [SerializeField]
+    private GameObject _explosion;
+
+    protected PlayerMotor _launcher = null;
+    public PlayerMotor laucher { set => _launcher = value; }
+
+    private IEnumerator Start()
     {
-        _cooldown = 2;
-        _UI_cooldown = GUI_Controller.Current.Cooldown1;
-        _UI_cooldown.InitView(_abilityInterval);
-        _cost = 0;
+        _networkRigidbody = GetComponent<NetworkRigidbody>();
+        yield return new WaitForSeconds(_timer);
+        if (entity.IsOwner)
+            BoltNetwork.Destroy(gameObject);
     }
 
-    public override void UpdateAbility(bool button)
+    private void OnCollisionEnter(Collision collision)
     {
-        base.UpdateAbility(button);
-        if (_buttonDown && _timer + _abilityInterval <= BoltNetwork.ServerFrame && (state.Energy - _cost) >= 0)
-        {
-            _timer = BoltNetwork.ServerFrame;
-            if (entity.HasControl)
-                _UI_cooldown.StartCooldown();
-            if(entity.IsOwner)
-                _Launch();
-        }
+        Vector3 velocity = _networkRigidbody.MoveVelocity;
+
+        float x = collision.contacts[0].normal.x;
+        float y = collision.contacts[0].normal.y;
+        float z = collision.contacts[0].normal.z;
+        x = (Mathf.Abs(x) < _bouceThreshold) ? 1f : -Mathf.Abs(x);
+        y = (Mathf.Abs(y) < _bouceThreshold) ? 1f : -Mathf.Abs(y);
+        z = (Mathf.Abs(z) < _bouceThreshold) ? 1f : -Mathf.Abs(z);
+        Vector3 repulsionVector = new Vector3(x, y, z);
+        _networkRigidbody.MoveVelocity = Vector3.Scale(velocity, repulsionVector * _repulsionForce);
     }
 
-    private void _Launch()
+    public override void Detached()
     {
-        GameObject grenade = BoltNetwork.Instantiate(_grenade, _cam.transform.position, _cam.transform.rotation);
-        grenade.GetComponent<NetworkRigidbody>().MoveVelocity = _cam.transform.forward * _launchForce;
+        if (!entity.IsOwner)
+            GameObject.Instantiate(_explosion, transform.position, Quaternion.identity);
     }
 }
+        
+

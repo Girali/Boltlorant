@@ -1,2 +1,6 @@
 Add weapons
 Script multiple projectile per shot 
+Create grenade
+	Add Sphere collider
+Script LaunchObject and Grenade
+Create FlameZone

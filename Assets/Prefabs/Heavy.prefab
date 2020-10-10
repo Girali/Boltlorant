@@ -277,6 +277,7 @@ GameObject:
   - component: {fileID: 5555498919564143556}
   - component: {fileID: -53695251359695591}
   - component: {fileID: 7500209154837236}
+  - component: {fileID: 4460034427426901457}
   m_Layer: 0
   m_Name: Heavy
   m_TagString: Player
@@ -342,7 +343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: 49d968d6-e8c5-4eaa-b1a2-2633a996b7d1
-  _prefabId: 3
+  _prefabId: 5
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 1
@@ -400,7 +401,7 @@ MonoBehaviour:
   _cam: {fileID: 3486356112979482142}
   _totalLife: 250
   _ability1: {fileID: 7500209154837236}
-  _ability2: {fileID: 0}
+  _ability2: {fileID: 4460034427426901457}
 --- !u!114 &7734592048233975451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +495,24 @@ MonoBehaviour:
     type: 3}
   _stateMachine: {fileID: 2369222816916921689, guid: 5a37712e1b9fe2e4d97ad7c72dcf2e04,
     type: 3}
+--- !u!114 &4460034427426901457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486356111897762221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44d8f7e82c5efb74caf5869d982fbfb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectPreview: {fileID: 5120137983888305378, guid: 34b84e7665f226a449fa18b86829e2f3,
+    type: 3}
+  _objectToLaunch: {fileID: 4501914545005760992, guid: da14f49b8337f3f4eb14d0ebd82d9fcd,
+    type: 3}
+  _cam: {fileID: 3486356112979482112}
+  _launchForce: 20
 --- !u!1 &3486356112430307986
 GameObject:
   m_ObjectHideFlags: 0
