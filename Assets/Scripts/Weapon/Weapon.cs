@@ -12,38 +12,10 @@ public class Weapon : MonoBehaviour
     protected Animator _aniamtor = null;
     [SerializeField]
     protected GameObject _weapon = null;
-    protected int _index=0;
 
 
-    private int _ammo = 0;
-    protected int _totalAmmo = 0;
-    protected int _currentAmmo
-    {
-        get
-        {
-            return _ammo;
-        }
-        set
-        {
-            if (_playerWeapons.entity.IsOwner)
-                _playerWeapons.state.Weapons[_index].CurrentAmmo = value;
-            _ammo = value;
-        }
-    }
-    protected int _currentTotalAmmo
-    {
-        get
-        {
-            return _totalAmmo;
-        }
-        set
-        {
-            if (_playerWeapons.entity.IsOwner)
-                _playerWeapons.state.Weapons[_index].TotalAmmo = value;
-            _totalAmmo = value;
-        }
-    }
-
+    protected int _currentAmmo = 0;
+    protected int _currentTotalAmmo = 0;
     protected bool _isReloading = false;
     protected PlayerWeapons _playerWeapons;
     protected PlayerController _playerController;
@@ -92,8 +64,6 @@ public class Weapon : MonoBehaviour
             if (_currentAmmo == 0)
                 _reloadCrt = StartCoroutine(Reloading());
         }
-        else
-            _aniamtor.SetBool("Out", true);
     }
 
     private void OnDisable()
@@ -142,16 +112,13 @@ public class Weapon : MonoBehaviour
         _currentTotalAmmo = _weaponStat.totalMagazin;
         _baseSensitivity = _playerController.mouseSensitivity;
         _scopeSensitivity = _baseSensitivity * _weaponStat.scopeSensitivity;
-
-        
     }
 
     public virtual void InitAmmo(int current,int total)
     {
-        if(Mathf.Abs(current-_currentAmmo) > 1 || Mathf.Abs(total - _currentTotalAmmo) > 1)
-            GUI_Controller.Current.UpdateAmmo(current, total);
         _currentAmmo = current;
         _currentTotalAmmo = total;
+        GUI_Controller.Current.UpdateAmmo(current, total);
     }
 
     public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)

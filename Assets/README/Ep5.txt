@@ -9,6 +9,3 @@ Add aiming and Fire and Reload processing to PlayerContoller and PlayerMotor
 Add Weapon to PlayerMotor
 Script Weapon ExecuteCommand, _Fire(), _Reload() and _FireEffect()
 Add lambda to state.OnFire to PlayerController to Synch FireEffect
-Create WeaponObject in Bolt asset
-	CurrentAmmo and TotalAmmo replicate only controller and owner
-	Add Array of obj in PLayerState

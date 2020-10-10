@@ -11,13 +11,9 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
     [SerializeField]
     private Camera _weaponsCam = null;
     [SerializeField]
-    private GameObject _weaponsRender = null;
-    [SerializeField]
     private Weapon[] _weapons = null;
     [SerializeField]
     private GameObject[] _weaponPrefabs = null;
-    [SerializeField]
-    private Weapon _knifeRender = null;
     private int _weaponIndex = 0;
     private float _precisionFactor = 0;
     private NetworkRigidbody _networkRigidbody = null;
@@ -157,14 +153,7 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
             }
         }
 
-        if (entity.IsControllerOrOwner)
-            prefab = Instantiate(prefab, _weaponsCam.transform.position, Quaternion.LookRotation(_weaponsCam.transform.forward), _weaponsCam.transform);
-        else
-        {
-            prefab = Instantiate(prefab, _weaponsCam.transform.position, Quaternion.LookRotation(_weaponsCam.transform.forward), _weaponsRender.transform);
-            prefab.layer = 1;
-        }
-
+        prefab = Instantiate(prefab, _weaponsCam.transform.position, Quaternion.LookRotation(_weaponsCam.transform.forward), _weaponsCam.transform);
 
         if ((int)id <= 3)
         {
@@ -301,11 +290,6 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
         {
             AddWeaponEvent(WeaponID.Glock);
             AddWeaponEvent(WeaponID.RPG);
-        }
-
-        if(!entity.IsControllerOrOwner)
-        {
-            _weapons[0] = _knifeRender;
         }
 
         SetWeapon(_weaponIndex);
