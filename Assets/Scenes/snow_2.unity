@@ -53991,6 +53991,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7057098133900948546, guid: ce4d280e031652843a0c79f65337954d,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7214765674367802583, guid: ce4d280e031652843a0c79f65337954d,
         type: 3}
       propertyPath: _Textcost
