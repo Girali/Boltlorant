@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 1710306410}
-  _cost: {fileID: 1824128093}
+  _Textcost: {fileID: 0}
   _button: {fileID: 290843293}
   _icon: {fileID: 1177741682}
 --- !u!1 &465004207
@@ -723,9 +723,9 @@ RectTransform:
   - {fileID: 6039492330667237936}
   - {fileID: 1074118511914195980}
   - {fileID: 3605079668282017533}
-  - {fileID: 7340874709884410071}
   - {fileID: 1860166489866712359}
   - {fileID: 9087280930050662105}
+  - {fileID: 7340874709884410071}
   m_Father: {fileID: 6792553716889252132}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1436,7 +1436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 9146615753345723741}
-  _cost: {fileID: 4222998444104477154}
+  _Textcost: {fileID: 0}
   _button: {fileID: 5771709327169300920}
   _icon: {fileID: 6682284273000699813}
 --- !u!1 &841831625651597596
@@ -2915,7 +2915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 8422655773980717312}
-  _cost: {fileID: 6778137520312575511}
+  _Textcost: {fileID: 0}
   _button: {fileID: 2027883032594659672}
   _icon: {fileID: 107735715337075207}
 --- !u!1 &2346046970619938792
@@ -3028,7 +3028,7 @@ RectTransform:
   - {fileID: 150010285609532457}
   - {fileID: 5324998071927310045}
   m_Father: {fileID: 1903176098}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -3129,7 +3129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 7016984015464929436}
-  _cost: {fileID: 7299584409476703660}
+  _Textcost: {fileID: 0}
   _button: {fileID: 1883020855285303553}
   _icon: {fileID: 0}
 --- !u!1 &2664766695242584275
@@ -3436,7 +3436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 2428437870350544719}
-  _cost: {fileID: 7927638566779981724}
+  _Textcost: {fileID: 0}
   _button: {fileID: 706951792699561091}
   _icon: {fileID: 1301360990121907397}
 --- !u!1 &3138777632007691648
@@ -4284,7 +4284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 2380103940619667877}
-  _cost: {fileID: 5814306081699519080}
+  _Textcost: {fileID: 0}
   _button: {fileID: 99480982164210841}
   _icon: {fileID: 1898287009844534074}
 --- !u!1 &3978042131511041421
@@ -4498,7 +4498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 8626118591386911249}
-  _cost: {fileID: 8508166542916355387}
+  _Textcost: {fileID: 0}
   _button: {fileID: 8926396723858067837}
   _icon: {fileID: 8646258425372846863}
 --- !u!1 &4280104561270926837
@@ -5042,7 +5042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 849997130151933968}
-  _cost: {fileID: 5479738120643329835}
+  _Textcost: {fileID: 0}
   _button: {fileID: 4893506318018848742}
   _icon: {fileID: 4925703090866430219}
 --- !u!1 &5022750590076213227
@@ -7255,7 +7255,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1903176098}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -8196,7 +8196,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1903176098}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -8882,7 +8882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 3269028659892568178}
-  _cost: {fileID: 5490360664627194317}
+  _Textcost: {fileID: 0}
   _button: {fileID: 6825887534878037436}
   _icon: {fileID: 7989289807885848576}
 --- !u!1 &9113477356047542561
@@ -9021,6 +9021,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 8091712997502755752}
-  _cost: {fileID: 1079477168809637038}
+  _Textcost: {fileID: 0}
   _button: {fileID: 5507698755460713509}
   _icon: {fileID: 3288871809698190623}

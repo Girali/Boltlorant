@@ -63,8 +63,16 @@ public class GUI_Controller : MonoBehaviour
 
     [SerializeField]
     private UI_Shop _shop;
+    public UI_Shop shop { get => _shop; }
     private Image _blindMask = null;
     Coroutine blind;
+
+    private GameObject _localPlayer = null;
+    public GameObject localPlayer
+    {
+        get => _localPlayer;
+        set => _localPlayer = value; 
+    }
 
     private void Start()
     {

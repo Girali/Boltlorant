@@ -8,7 +8,8 @@ public class UI_ShopItem : MonoBehaviour
     [SerializeField]
     private Text _title;
     [SerializeField]
-    private Text _cost;
+    private Text _Textcost;
+    private int _cost;
     [SerializeField]
     private Button _button;
     [SerializeField]
@@ -16,7 +17,9 @@ public class UI_ShopItem : MonoBehaviour
 
     public void Init(WeaponID id, int cost)
     {
-        _cost.text = "$ " + cost;
+        _Textcost.text = "$ " + cost;
+        _cost = cost;
+        //Interactable(GUI_Controller.Current.localPlayer.GetComponent<BoltEntity>().GetState<IPlayerState>().Money >= cost);
     }
 
     public void Interactable(bool b)
@@ -28,14 +31,14 @@ public class UI_ShopItem : MonoBehaviour
             if(_icon)
                 _icon.color = Color.white;
             _title.color = Color.white;
-            _cost.color = Color.red;
+            _Textcost.color = Color.red;
         }
         else
         {
             if(_icon)
                 _icon.color = Color.black;
             _title.color = Color.black;
-            _cost.color = Color.green;
+            _Textcost.color = Color.green;
         }
     }
 }

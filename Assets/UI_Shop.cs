@@ -22,16 +22,12 @@ public class UI_Shop : MonoBehaviour
         {
             shopItems[i].button.Init(shopItems[i].ID, shopItems[i].cost);
         }
+        //_energyButton.Init(WeaponID.None, _energyCost[GUI_Controller.Current.localPlayer.GetComponent<BoltEntity>().GetState<IPlayerState>().Energy]);
     }
 
     public void BuyWeapon(int index)
     {
-        for (int i = 0; i < shopItems.Length; i++)
-        {
-            shopItems[i].button.Interactable(false);
-        }
-
-        //TODO
+        GUI_Controller.Current.localPlayer.GetComponent<PlayerCallback>().RaiseBuyWeaponEvent(index+1);
     }
 
     public void UpdateView(int energy, int money)
@@ -39,6 +35,7 @@ public class UI_Shop : MonoBehaviour
         _energyCount.text = _energyView[energy];
         _energyButton.Init(WeaponID.None, _energyCost[energy]);
         _energyButton.Interactable(_energyCost[energy] <= money);
+        _currentEnergy = energy;
 
         for (int i = 0; i < shopItems.Length; i++)
         {
@@ -48,7 +45,18 @@ public class UI_Shop : MonoBehaviour
 
     public void BuyEnergy()
     {
-        //TODO
+        BoltConsole.Write("sjbgvlksrejzbklzsrekjgfze js;g");
+        GUI_Controller.Current.localPlayer.GetComponent<PlayerCallback>().RaiseBuyEnergyEvent();
+    }
+
+    public int ItemCost(int index)
+    {
+        return shopItems[index].cost;
+    }
+
+    public int EnergyCost()
+    {
+        return _energyCost[_currentEnergy];
     }
 }
 
