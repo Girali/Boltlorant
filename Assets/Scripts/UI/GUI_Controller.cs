@@ -54,15 +54,16 @@ public class GUI_Controller : MonoBehaviour
     private UI_PlayerPlate[] _enemyPlates = null;
 
     [SerializeField]
-    private Text _allayScore;
+    private Text _allayScore = null;
     [SerializeField]
-    private Text _enemyScore;
+    private Text _enemyScore = null;
 
     [SerializeField]
-    private UI_Timer _timer;
+    private UI_Timer _timer = null;
 
     [SerializeField]
-    private UI_Shop _shop;
+    private UI_Shop _shop = null;
+    [SerializeField]
     private Image _blindMask = null;
     Coroutine blind;
 

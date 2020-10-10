@@ -1283,6 +1283,29 @@
       "Name": "FlashEvent",
       "Guid": "98451856-5397-46ce-acf3-c56d98ccefb6",
       "Groups": []
+    },
+    {
+      "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "Set",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "EntitySenders": 1,
+      "GlobalSenders": 3,
+      "Name": "SetWallsEvent",
+      "Guid": "c3efba0b-6ec5-4230-91e2-949035d0d5b4",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"
