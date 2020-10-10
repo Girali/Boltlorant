@@ -78,8 +78,8 @@ public class GameController : EntityBehaviour<IGameModeState>
                         player.GetComponent<PlayerCallback>().RoundReset();
                     }
 
-                    _nextEvent = BoltNetwork.ServerTime + 10f;
-                    state.Timer = 10f;
+                    _nextEvent = BoltNetwork.ServerTime + 15f;
+                    state.Timer = 15f;
                     _currentPhase = GamePhase.StartRound;
                     UpdateGameState();
                 }
@@ -123,6 +123,13 @@ public class GameController : EntityBehaviour<IGameModeState>
                 break;
             case GamePhase.StartRound:
                 //TODO Up wall
+                GameObject[] drops = GameObject.FindGameObjectsWithTag("Drop");
+
+                foreach (GameObject drop in drops)
+                {
+                    BoltNetwork.Destroy(drop.GetComponent<BoltEntity>());
+                }
+
                 foreach (GameObject player in players)
                 {
                     player.GetComponent<PlayerCallback>().RoundReset();
