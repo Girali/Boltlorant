@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlameZone : MonoBehaviour
+public class AOE : MonoBehaviour
 {
     private Dictionary<int, float> _playerHitted = new Dictionary<int, float>();
+    [SerializeField]
     private int _dmg = 10;
     private float _time = 0.2f;
     private float _interval

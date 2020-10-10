@@ -71,7 +71,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
                 killer.state.Money += 500;
                 //TODO Callback
             }
-            else if(state.Life > _totalLife)
+            else if(value > _totalLife)
             {
                 state.Life = _totalLife;
             }

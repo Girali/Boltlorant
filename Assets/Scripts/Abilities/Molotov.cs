@@ -9,6 +9,6 @@ public class Molotov : Grenade
     public override void Detached()
     {
         base.Detached();
-        GameObject.Instantiate(_flameZone, transform.position, Quaternion.identity).GetComponent<FlameZone>().laucher = _launcher;
+        GameObject.Instantiate(_flameZone, transform.position, Quaternion.identity).GetComponent<AOE>().laucher = _launcher;
     }
 }

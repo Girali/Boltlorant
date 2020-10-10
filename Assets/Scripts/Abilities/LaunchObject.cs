@@ -20,7 +20,7 @@ public class LaunchObject : Ability
         _cooldown = 2;
         _UI_cooldown = GUI_Controller.Current.Cooldown1;
         _UI_cooldown.InitView(_abilityInterval);
-        _cost = 0;
+        _cost = 2;
     }
 
     public override void UpdateAbility(bool button)
