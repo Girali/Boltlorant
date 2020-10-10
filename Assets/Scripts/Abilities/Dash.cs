@@ -15,6 +15,8 @@ public class Dash : Ability
     {
         _cooldown = 2;
         _networkBody = GetComponent<NetworkRigidbody>();
+        _UI_cooldown = GUI_Controller.Current.Cooldown1;
+        _UI_cooldown.InitView(_abilityInterval);
         _cost = 1;
     }
 

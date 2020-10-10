@@ -10,14 +10,6 @@ public class Ability : Bolt.EntityEventListener<IPlayerState>
     protected float _timer = 0f;
     protected int _cost = 0;
 
-    protected UI_Cooldown _UI_cooldown;
-
-    private void Awake()
-    {
-        _UI_cooldown = GUI_Controller.Current.Cooldown1;
-        _UI_cooldown.InitView(_abilityInterval);
-    }
-
     protected int _abilityInterval
     {
         get { return _cooldown * BoltNetwork.FramesPerSecond; }
