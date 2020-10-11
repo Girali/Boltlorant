@@ -26,12 +26,19 @@ public class GameController : EntityEventListener<IGameModeState>
     float _nextEvent = 0;
     GameObject _walls;
     Team _roundWinner = Team.None;
+    int _winningRoundAmmount = 10;
+    SiteController _ASite;
+    SiteController _BSite;
+
+    public bool IsInSite { get => _ASite.IsPlayerIn || _BSite.IsPlayerIn; }
 
     public GamePhase CurrentPhase { get => _currentPhase; }
 
     private void Start()
     {
         _walls = GameObject.Find("__Walls");
+        _ASite = GameObject.Find("__ASite").GetComponent<SiteController>();
+        _BSite = GameObject.Find("__BSite").GetComponent<SiteController>();
     }
 
     public override void Attached()
@@ -118,6 +125,16 @@ public class GameController : EntityEventListener<IGameModeState>
                     _nextEvent = BoltNetwork.ServerTime + 10f;
                     state.Timer = 10f;
                     _currentPhase = GamePhase.EndRound;
+                    _roundWinner = Team.TT;
+                }
+
+                if (TTCount == 0)
+                {
+                    state.ATPoints++;
+                    _nextEvent = BoltNetwork.ServerTime + 10f;
+                    state.Timer = 10f;
+                    _currentPhase = GamePhase.EndRound;
+                    _roundWinner = Team.AT;
                 }
             }
         }
@@ -127,9 +144,23 @@ public class GameController : EntityEventListener<IGameModeState>
 
     }
 
+    public void Planted()
+    {
+        _nextEvent = BoltNetwork.ServerTime + 60;
+        state.Timer = 60;
+        _currentPhase = GamePhase.TT_Planted;
+        UpdateGameState();
+    }
+
     public void UpdatePoints()
     {
         GUI_Controller.Current.UpdatePoints(state.ATPoints, state.TTPoints);
+
+        if(_winningRoundAmmount == state.ATPoints || _winningRoundAmmount == state.TTPoints)
+        {
+            _currentPhase = GamePhase.EndGame;
+            UpdateGameState();
+        }
     }
 
     public void UpdateTime()
@@ -168,8 +199,24 @@ public class GameController : EntityEventListener<IGameModeState>
                 }
                 break;
             case GamePhase.AT_Defending:
+                if (_nextEvent < BoltNetwork.ServerTime)
+                {
+                    _nextEvent = BoltNetwork.ServerTime + 10f;
+                    state.Timer = 10f;
+                    _currentPhase = GamePhase.EndRound;
+                    state.ATPoints++;
+                    _roundWinner = Team.AT;
+                }
                 break;
             case GamePhase.TT_Planted:
+                if (_nextEvent < BoltNetwork.ServerTime)
+                {
+                    _nextEvent = BoltNetwork.ServerTime + 10f;
+                    state.Timer = 10f;
+                    _currentPhase = GamePhase.EndRound;
+                    state.TTPoints++;
+                    _roundWinner = Team.TT;
+                }
                 break;
             case GamePhase.EndRound:
                 if (_nextEvent < BoltNetwork.ServerTime)
@@ -228,6 +275,7 @@ public class GameController : EntityEventListener<IGameModeState>
             case GamePhase.EndRound:
                 break;
             case GamePhase.EndGame:
+                //TODO WINNER
                 break;
             default:
                 break;

@@ -66,10 +66,29 @@ public class GUI_Controller : MonoBehaviour
     [SerializeField]
     private Image _blindMask = null;
     Coroutine blind;
+    [SerializeField]
+    private Image _bombBar = null;
+    [SerializeField]
+    private Image _bombPlanted = null;
 
     private void Start()
     {
         Show(false);
+    }
+
+    public void PlantingProgress(float b)
+    {
+        _bombBar.fillAmount = b;
+    }
+
+    public void PlantingProgressShow(bool b)
+    {
+        _bombBar.transform.parent.gameObject.SetActive(b);
+    }
+
+    public void Planted(bool b)
+    {
+        _bombPlanted.enabled = b;
     }
 
     private void Update()

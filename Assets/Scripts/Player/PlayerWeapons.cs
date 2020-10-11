@@ -29,6 +29,7 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
 
     public Camera Cam { get => _cam; }
     public float PrecisionFactor { get => _precisionFactor; set => _precisionFactor = value; }
+    public bool HasBomb { get => _weapons[3] != null; }
 
     private void Awake()
     {
@@ -46,12 +47,17 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
     {
         bool addIt = true;
 
+        PlayerToken pt = (PlayerToken)entity.AttachToken;
+        if(pt.team == Team.AT && toAdd == WeaponID.Bomb)
+            addIt = false;
+
         if (_primary != WeaponID.None)
             if ((int)toAdd <= 3)
                 addIt = false;
         if (_secondary != WeaponID.None)
             if ((int)toAdd > 3)
                 addIt = false;
+        
 
         return addIt;
     }
@@ -111,9 +117,13 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
         {
             i = 1;
         }
-        else
+        else if(prefab.WeaponStat.ID != WeaponID.Bomb)
         {
             i = 2;
+        }
+        else
+        {
+            i = 3;
         }
 
         state.Weapons[i].ID = 1 + (int)id;
@@ -129,11 +139,17 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
             state.Weapons[1].CurrentAmmo = ca;
             state.Weapons[1].TotalAmmo = ta;
         }
-        else
+        else if(i != (int)WeaponID.Bomb)
         {
             state.Weapons[2].ID = 1 + i;
             state.Weapons[2].CurrentAmmo = ca;
             state.Weapons[2].TotalAmmo = ta;
+        }
+        else
+        {
+            state.Weapons[3].ID = 1 + i;
+            state.Weapons[3].CurrentAmmo = ca;
+            state.Weapons[3].TotalAmmo = ta;
         }
     }
 
@@ -158,19 +174,51 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
         if ((int)id <= 3)
         {
             if (_primary != WeaponID.None)
-                DropWeapon(_primary, false);
+            {
+                if (entity.IsOwner)
+                {
+                    WeaponDropToken token = new WeaponDropToken();
+                    token.ID = _primary;
+                    token.currentAmmo = _weapons[1].CurrentAmmo;
+                    token.totalAmmp = _weapons[1].TotalAmmo;
+
+                    GameObject g = BoltNetwork.Instantiate(_weapons[1].WeaponStat.drop, token, _weaponsCam.transform.position + _weaponsCam.transform.forward, Quaternion.LookRotation(_weaponsCam.transform.forward));
+
+                    g.GetComponent<WeaponDrop>().Init(_playerMotor);
+                }
+
+                Destroy(_weapons[1].gameObject);
+            }
 
             _primary = id;
             _weapons[1] = prefab.GetComponent<Weapon>();
         }
-        else
+        else if(id != WeaponID.Bomb)
         {
             if (_secondary != WeaponID.None)
-                DropWeapon(_secondary, false);
+            {
+                if (entity.IsOwner)
+                {
+                    WeaponDropToken token = new WeaponDropToken();
+                    token.ID = _secondary;
+                    token.currentAmmo = _weapons[2].CurrentAmmo;
+                    token.totalAmmp = _weapons[2].TotalAmmo;
+
+                    GameObject g = BoltNetwork.Instantiate(_weapons[2].WeaponStat.drop, token, _weaponsCam.transform.position + _weaponsCam.transform.forward, Quaternion.LookRotation(_weaponsCam.transform.forward));
+
+                    g.GetComponent<WeaponDrop>().Init(_playerMotor);
+                }
+                Destroy(_weapons[2].gameObject);
+            }
 
             _secondary = id;
             _weapons[2] = prefab.GetComponent<Weapon>();
         }
+        else
+        {
+            _weapons[3] = prefab.GetComponent<Weapon>();
+        }
+
 
         prefab.GetComponent<Weapon>().Init(this);
     }
@@ -243,9 +291,27 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
             _weapons[2] = null;
             _secondary = WeaponID.None;
         }
-        else
+        else if(_weapons[3] != null)
         {
-            //TODO
+            if (entity.IsOwner)
+            {
+                WeaponDropToken token = new WeaponDropToken();
+                token.ID = toRemove;
+
+                GameObject g = null;
+
+                if (random)
+                    g = BoltNetwork.Instantiate(_weapons[3].WeaponStat.drop, token, _weaponsCam.transform.position, Quaternion.identity);
+                else
+                    g = BoltNetwork.Instantiate(_weapons[3].WeaponStat.drop, token, _weaponsCam.transform.position + _weaponsCam.transform.forward, Quaternion.LookRotation(Random.onUnitSphere));
+
+                g.GetComponent<WeaponDrop>().Init(_playerMotor);
+
+                state.Weapons[3].ID = -1;
+            }
+
+            Destroy(_weapons[3].gameObject);
+            _weapons[3] = null;
         }
     }
 
@@ -257,6 +323,7 @@ public class PlayerWeapons : EntityBehaviour<IPlayerState>
             {
                 DropWeapon(_primary, true);
                 DropWeapon(_secondary, true);
+                DropWeapon(WeaponID.Bomb, true);
             }
 
             if (entity.IsOwner)

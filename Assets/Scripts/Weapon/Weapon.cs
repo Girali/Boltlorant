@@ -121,7 +121,7 @@ public class Weapon : MonoBehaviour
         GUI_Controller.Current.UpdateAmmo(current, total);
     }
 
-    public void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
+    public virtual void ExecuteCommand(bool fire, bool aiming, bool reload,int seed)
     {
         if (!_isReloading)
         {

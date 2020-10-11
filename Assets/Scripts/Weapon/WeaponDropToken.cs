@@ -35,5 +35,6 @@ public enum WeaponID
     HMG,
     Sniper,
     SMG,
-    AK_47
+    AK_47,
+    Bomb//LAST INDEX PLZ
 }
