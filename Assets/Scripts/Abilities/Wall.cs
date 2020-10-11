@@ -32,7 +32,7 @@ public class Wall : Ability
         _blue = new Color(0, 183 / 255, 255 / 255, 40 / 255);
         _UI_cooldown = GUI_Controller.Current.Cooldown2;
         _UI_cooldown.InitView(_abilityInterval);
-        _cost = 2;
+        _cost = 1;
     }
 
     public override void UpdateAbility(bool button)
@@ -70,13 +70,15 @@ public class Wall : Ability
                         {
                             if (hit.distance < MAX_DISTANCE)
                             {
-                                if (entity.IsOwner)
-                                    state.Energy -= _cost;
-
+                                state.Energy -= _cost;
                                 _timer = BoltNetwork.ServerFrame;
+
                                 if (_wallInstatiated != null)
                                     BoltNetwork.Destroy(_wallInstatiated);
-                                _wallInstatiated = BoltNetwork.Instantiate(_wallPreset, hit.point, Quaternion.Euler(Vector3.Scale(_cam.transform.eulerAngles, Vector3.up)));
+                                _wallInstatiated = BoltNetwork.Instantiate(_wallPreset);
+                                _wallInstatiated.transform.rotation = transform.rotation;
+                                _wallInstatiated.transform.position = hit.point;
+
                             }
                         }
                     }
@@ -92,7 +94,7 @@ public class Wall : Ability
         {
             if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, Mathf.Infinity, _layerMask))
             {
-                _preview.transform.rotation = Quaternion.Euler(Vector3.Scale(_cam.transform.eulerAngles, Vector3.up));
+                _preview.transform.rotation = /*Quaternion.Euler(Vector3.Scale(_cam.transform.eulerAngles, Vector3.up))*/transform.rotation;
 
                 _preview.transform.position = hit.point;
                 _preview.transform.Translate(Vector3.up * 0.5f);

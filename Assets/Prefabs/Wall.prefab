@@ -228,9 +228,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7346133335373810908}
   - component: {fileID: 7346133335373810904}
-  - component: {fileID: 7346133335373810911}
   - component: {fileID: 7346133335373810910}
   - component: {fileID: 7346133335373810909}
+  - component: {fileID: -7337354276373684044}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -282,20 +282,6 @@ MonoBehaviour:
   _entityBehaviourQueryOption: 0
   _entityPriorityCalculatorQueryOption: 0
   _entityReplicationFilterQueryOption: 0
---- !u!114 &7346133335373810911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7346133335373810899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b513a199cbd5bd419b602e41a88c42a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  feedback: {fileID: 0}
-  username: {fileID: 0}
 --- !u!54 &7346133335373810910
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -325,3 +311,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _decay: 30
+--- !u!114 &-7337354276373684044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7346133335373810899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7112a27c9e93fc047aad71cfc70a52ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderTransform: {fileID: 0}
+  _gravityForce: 1
