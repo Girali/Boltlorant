@@ -6,7 +6,7 @@ public class Dash : Ability
     private NetworkRigidbody _networkBody = null;
     [SerializeField]
     private Transform _cam = null;
-    private float _dashForce = 20f;
+    private float _dashForce = 40f;
     private float _dashDuration = 1f;
     private bool _dashing = false;
 
