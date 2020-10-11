@@ -45,6 +45,7 @@ public class LaunchObject : Ability
             }
             if (entity.IsOwner)
             {
+                state.Energy -= _cost;
                 GameObject o = BoltNetwork.Instantiate(_objectToLaunch, _cam.position + _cam.forward, _cam.rotation);
                 o.GetComponent<NetworkRigidbody>().MoveVelocity = _cam.transform.forward * _launchForce;
                 o.GetComponent<Grenade>().laucher = GetComponent<PlayerMotor>();

@@ -1304,7 +1304,41 @@
       "EntitySenders": 1,
       "GlobalSenders": 3,
       "Name": "SetWallsEvent",
-      "Guid": "c3efba0b-6ec5-4230-91e2-949035d0d5b4",
+      "Guid": "b9b1f258-1bf1-41ed-8dc4-c7d01c1c2539",
+      "Groups": []
+    },
+    {
+      "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "index",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 11,
+            "CompressionEnabled": true
+          },
+          "AssetSettings": {
+            "$type": "Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "EntitySenders": 2,
+      "GlobalSenders": 3,
+      "Name": "BuyWeaponEvent",
+      "Guid": "6f0078db-fe54-417e-a141-01693d561412",
+      "Groups": []
+    },
+    {
+      "$type": "Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "EntitySenders": 2,
+      "GlobalSenders": 3,
+      "Name": "BuyEnergyEvent",
+      "Guid": "08f21b69-e3f7-4075-80b7-1f5ec2ec7a8c",
       "Groups": []
     },
     {

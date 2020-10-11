@@ -96,7 +96,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     {
         int index = arrayIndices[0];
         IPlayerState s = (IPlayerState)state;
-
+        BoltConsole.Write(s.Weapons[index].ID.ToString());
         if (s.Weapons[index].ID == -1)
             _playerWeapons.RemoveWeapon(index);
         else
@@ -183,5 +183,30 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     public override void OnEvent(FlashEvent evnt)
     {
         GUI_Controller.Current.Flash();
+    }
+
+    public void RaiseBuyWeaponEvent(int index)
+    {
+        BuyWeaponEvent evnt = BuyWeaponEvent.Create(entity, EntityTargets.OnlyOwner);
+        evnt.index = index;
+        evnt.Send();
+    }
+
+    public override void OnEvent(BuyWeaponEvent evnt)
+    {
+        state.Money -= GUI_Controller.Current.shop.ItemCost(evnt.index);
+        GetComponent<PlayerWeapons>().AddWeaponEvent((WeaponID)evnt.index);
+    }
+
+    public void RaiseBuyEnergyEvent()
+    {
+        BuyEnergyEvent evnt = BuyEnergyEvent.Create(entity, EntityTargets.OnlyOwner);
+        evnt.Send();
+    }
+
+    public override void OnEvent(BuyEnergyEvent evnt)
+    {
+        state.Money -= GUI_Controller.Current.shop.EnergyCost();
+        state.Energy++;
     }
 }

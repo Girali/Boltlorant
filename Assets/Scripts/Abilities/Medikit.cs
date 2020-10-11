@@ -28,6 +28,7 @@ public class Medikit : Ability
                 _UI_cooldown.StartCooldown();
             if (entity.IsOwner)
             {
+                state.Energy -= _cost;
                 RaycastHit hit;
                 if (Physics.Raycast(_cam.position, _cam.transform.forward, out hit, _maxDistance, _layerMask))
                 {

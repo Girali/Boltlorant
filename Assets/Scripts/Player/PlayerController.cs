@@ -40,7 +40,10 @@ public class PlayerController : Bolt.EntityBehaviour<IPlayerState>
         _playerRenderer.Init();
 
         if (entity.HasControl)
+        {
             Cursor.lockState = CursorLockMode.Locked;
+            GUI_Controller.Current.localPlayer = gameObject;
+        }
     }
 
     public override void ControlGained()
